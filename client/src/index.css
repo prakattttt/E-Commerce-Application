@@ -1,7 +1,5 @@
 @import "tailwindcss";
 
-@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap");
-
 :root {
   --font-size: 16px;
 
@@ -53,7 +51,7 @@
 }
 
 @theme {
-  --font-sans: "Inter", sans-serif;
+  --font-inter: "Inter", sans-serif;
   --font-display: "Plus Jakarta Sans", sans-serif;
 }
 
