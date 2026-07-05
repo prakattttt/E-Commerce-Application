@@ -24,6 +24,9 @@
 
   --ring: #6366f1;
   --radius: 1rem;
+
+  --muted: #f3f0ff;
+  --muted-foreground: #6b7280;
 }
 
 @theme inline {
@@ -48,10 +51,13 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
 }
 
 @theme {
-  --font-inter: "Inter", sans-serif;
+  --font-base: "Inter", sans-serif;
   --font-display: "Plus Jakarta Sans", sans-serif;
 }
 
@@ -61,42 +67,6 @@
   }
 
   body {
-    @apply bg-background text-foreground;
-  }
-
-  html {
-    font-size: var(--font-size);
-  }
-
-  h1 {
-    font-size: var(--text-2xl);
-    font-weight: var(--font-weight-medium);
-    line-height: 1.5;
-  }
-
-  h2 {
-    font-size: var(--text-xl);
-    font-weight: var(--font-weight-medium);
-    line-height: 1.5;
-  }
-
-  h3 {
-    font-size: var(--text-lg);
-    font-weight: var(--font-weight-medium);
-    line-height: 1.5;
-  }
-
-  h4,
-  label,
-  button {
-    font-size: var(--text-base);
-    font-weight: var(--font-weight-medium);
-    line-height: 1.5;
-  }
-
-  input {
-    font-size: var(--text-base);
-    font-weight: var(--font-weight-normal);
-    line-height: 1.5;
+    @apply bg-background text-foreground font-base;
   }
 }
