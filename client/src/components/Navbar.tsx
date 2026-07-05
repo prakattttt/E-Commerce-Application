@@ -1,9 +1,10 @@
-import { Heart, ShoppingCart, User, Search } from "lucide-react";
+import { Heart, ShoppingCart, User } from "lucide-react";
 import Menus from "./nav/Menus";
+import NavSearch from "./nav/NavSearch";
 
 const Navbar = () => {
   return (
-    <nav className="w-full border-b border-border bg-card">
+    <nav className="w-full border-b border-border bg-card animate-navbar">
       <div className="mx-auto flex max-w-7xl items-center justify-around px-6 py-3">
         {/* Left */}
         <div className="flex items-center gap-10">
@@ -22,20 +23,7 @@ const Navbar = () => {
         {/* Right */}
         <div className="flex items-center gap-4">
           {/* Search */}
-          <div className="relative hidden w-72 md:block">
-            <div className="absolute top-1/2 right-0 -translate-y-1/2">
-              <Search
-                size={16}
-                className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-muted-foreground"
-              />
-
-              <input
-                type="search"
-                placeholder="Search products..."
-                className="h-9 w-44 rounded-full border border-border bg-card py-1.5 pr-4 pl-9 text-sm text-foreground placeholder:text-muted-foreground transition-all duration-300 ease-in-out focus:w-72 focus:border-secondary-foreground focus:shadow-md focus:outline-none"
-              />
-            </div>
-          </div>
+          <NavSearch />
 
           {/* Wishlist */}
           <button className="rounded-full bg-card p-2 transition-colors hover:bg-secondary">
