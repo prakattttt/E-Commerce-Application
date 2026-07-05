@@ -38,12 +38,12 @@ const Navbar = () => {
           </div>
 
           {/* Wishlist */}
-          <button className="rounded-full bg-card p-1.5 transition-colors hover:bg-secondary">
+          <button className="rounded-full bg-card p-2 transition-colors hover:bg-secondary">
             <Heart size={20} />
           </button>
 
           {/* Cart */}
-          <button className="relative rounded-full bg-card p-1.5 transition-colors hover:bg-secondary">
+          <button className="relative rounded-full bg-card p-2 transition-colors hover:bg-secondary">
             <ShoppingCart size={20} />
 
             <span className="absolute -right-1 -top-1 flex h-4.5 w-4.5 items-center justify-center rounded-full bg-accent text-[10px] font-medium text-accent-foreground">
@@ -52,7 +52,7 @@ const Navbar = () => {
           </button>
 
           {/* Sign In */}
-          <button className="flex items-center gap-2 rounded-full bg-primary px-4 py-1.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90">
+          <button className="flex items-center gap-2 rounded-full bg-primary px-4 py-1.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-secondary-foreground">
             <User size={16} />
             <span>Sign In</span>
           </button>
