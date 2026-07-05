@@ -20,7 +20,7 @@ const menus = [
 
 const Menus = () => {
   return (
-    <ul className="hidden items-center gap-8 font-medium md:flex">
+    <ul className="hidden text-sm items-center gap-4 font-medium md:flex">
       {/*Mapping of Menu Items*/}
       {menus.map((menu) => (
         <li key={menu.name}>
