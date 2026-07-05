@@ -3,6 +3,7 @@ import { socialLinks } from "./footer.data";
 const FooterBrand = () => {
   return (
     <div>
+      {/*Brand info*/}
       <h2 className="font-display text-3xl font-bold tracking-tight">
         Shop<span className="text-accent">Sphere</span>
       </h2>
@@ -12,6 +13,7 @@ const FooterBrand = () => {
         delivery, and exceptional customer service.
       </p>
 
+      {/*Map each of the social links*/}
       <div className="mt-8 flex items-center gap-3">
         {socialLinks.map(({ icon: Icon, href }, index) => (
           <a

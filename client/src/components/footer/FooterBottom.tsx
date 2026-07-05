@@ -1,3 +1,5 @@
+{/*Bottom part of the footer*/}
+
 const FooterBottom = () => {
   return (
     <>
@@ -7,6 +9,7 @@ const FooterBottom = () => {
         <p>© 2025 ShopSphere. All rights reserved.</p>
 
         <ul className="flex items-center gap-6">
+          {/*Iterate each of the list items without repetetion*/}
           {["Privacy Policy", "Terms of Service", "Cookies"].map((item) => (
             <li
               key={item}

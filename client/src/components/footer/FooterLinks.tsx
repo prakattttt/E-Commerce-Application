@@ -11,6 +11,7 @@ const FooterLinks = ({ title, links }: Props) => {
       </h3>
 
       <ul className="mt-5 space-y-3 text-sm text-white/60">
+            {/*Map each of the footer links*/}
         {links.map((link) => (
           <li
             key={link}
