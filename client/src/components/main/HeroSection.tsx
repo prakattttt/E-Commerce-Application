@@ -10,13 +10,6 @@ const HeroSection = () => {
         text-primary-foreground
       "
     >
-      {/* Decorative Background */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute right-24 top-20 h-116 w-96 rounded-full bg-card/10 blur-[140px]" />
-
-        <div className="absolute bottom-10 left-20 h-92 w-72 rounded-full bg-card/10 blur-[120px]" />
-      </div>
-
       {/* Blur into next section */}
       <div className="absolute bottom-0 left-0 h-10 w-full bg-linear-to-t from-background to-transparent" />
 
