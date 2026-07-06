@@ -1,6 +1,8 @@
 import { ArrowRight } from "lucide-react";
 import { trendingProducts } from "../../utils/dummy";
 import ProductCard from "../main/ProductCard";
+import { motion } from "framer-motion";
+import { slideLeft } from "../../animations";
 
 const Trending = () => {
   return (
@@ -24,9 +26,18 @@ const Trending = () => {
       </div>
 
       {/* Products */}
-      <div className="grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-4">
-        {trendingProducts.map((p) => (
-          <ProductCard key={p.id} product={p} />
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        {trendingProducts.map((product, index) => (
+          <motion.div
+            key={product.id}
+            custom={index}
+            variants={slideLeft}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+          >
+            <ProductCard product={product} />
+          </motion.div>
         ))}
       </div>
     </section>

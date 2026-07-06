@@ -1,3 +1,6 @@
+import { motion } from "framer-motion";
+import { slideLeft } from "../../animations";
+
 const categories = [
   {
     name: "Sneakers",
@@ -7,7 +10,8 @@ const categories = [
   },
   {
     name: "Fashion",
-    image: "https://unsplash.com/photos/person-wearing-grey-knit-sweater-mU88MlEFcoU",
+    image:
+      "https://unsplash.com/photos/person-wearing-grey-knit-sweater-mU88MlEFcoU",
     count: "1,820",
     icon: "👕",
   },
@@ -50,10 +54,15 @@ const Categories = () => {
         </h2>
       </div>
 
-      <div className="grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-6">
-        {categories.map((category) => (
-          <button
+      <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-6">
+        {categories.map((category, index) => (
+          <motion.button
             key={category.name}
+            custom={index}
+            variants={slideLeft}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
             className="group overflow-hidden rounded-2xl bg-card shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl"
           >
             <div className="relative aspect-3/4 overflow-hidden">
@@ -75,7 +84,7 @@ const Categories = () => {
                 </p>
               </div>
             </div>
-          </button>
+          </motion.button>
         ))}
       </div>
     </section>

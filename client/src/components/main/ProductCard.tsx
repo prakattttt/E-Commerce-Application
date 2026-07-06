@@ -11,22 +11,18 @@ function ProductCard({ product }: { product: Product }) {
           alt={product.name}
           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
-
         {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-linear-to-t from-foreground/40 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-
         {/* Badge */}
         {product.badge && (
           <span className="absolute left-3 top-3 rounded-full bg-primary px-2.5 py-1 text-xs font-semibold text-primary-foreground">
             {product.badge}
           </span>
         )}
-
         {/* Wishlist Icon */}
         <button className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-card/90 text-muted-foreground transition hover:text-accent">
           <Heart size={16} />
         </button>
-
         Out of Stock
         {!product.inStock && (
           <div className="absolute inset-0 flex items-center justify-center bg-background/70">
