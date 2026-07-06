@@ -1,8 +1,8 @@
-import React from 'react'
+import HeroSection from "../components/main/HeroSection"
 
 const HomePage = () => {
   return (
-    <div>HomePage</div>
+    <HeroSection />
   )
 }
 
