@@ -1,4 +1,4 @@
-export interface Product  {
+export interface Product {
   image: string;
   name: string;
   badge?: string;
@@ -8,4 +8,14 @@ export interface Product  {
   reviews?: number;
   price: number;
   originalPrice?: number;
-};
+}
+
+export interface DiscountProduct {
+  id: number;
+  image: string;
+  name: string;
+  inStock: boolean;
+  price: number;
+  originalPrice: number;
+  discount: number;
+}

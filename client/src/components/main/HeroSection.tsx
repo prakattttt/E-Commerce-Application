@@ -48,7 +48,7 @@ const HeroSection = () => {
               <ArrowRight size={18} />
             </button>
 
-            <button className="rounded-xl border border-primary-foreground/20 bg-primary-foregorund/5 px-8 py-3 font-semibold text-primary-foreground backdrop-blur transition hover:bg-primary-foreground/10">
+            <button className="rounded-xl border border-primary-foreground/20 bg-primary-foregorund/5 px-8 py-3 font-semibold text-primary-foreground backdrop-blur transition hover:bg-primary-foreground/5">
               Explore Deals
             </button>
           </div>
