@@ -8,6 +8,9 @@ const HomePage = () => {
       <HeroSection />
       <Categories />
       <Trending />
+<FlashSale />
+      <NewArrivals />
+      <Newsletter />
     </>
   );
 };
