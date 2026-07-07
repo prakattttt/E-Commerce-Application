@@ -2,7 +2,7 @@ import { ArrowRight } from "lucide-react";
 import { trendingProducts } from "../../utils/dummy";
 import ProductCard from "../main/ProductCard";
 import { motion } from "framer-motion";
-import { slideLeft } from "../../animations";
+import { fadeUp } from "../../animations";
 
 const Trending = () => {
   return (
@@ -31,7 +31,7 @@ const Trending = () => {
           <motion.div
             key={product.id}
             custom={index}
-            variants={slideLeft}
+            variants={fadeUp}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
