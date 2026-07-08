@@ -4,13 +4,14 @@ import { Heart, ShoppingCart, User, Menu, X } from "lucide-react";
 import Menus from "./nav/Menus";
 import NavSearch from "./nav/NavSearch";
 import MobileMenu from "./nav/MobileMenu";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
 
   return (
     <>
-      <nav className="w-full border-b border-border bg-card animate-navbar">
+      <nav className="h-14 w-full border-b border-border bg-card animate-navbar">
         <div className="mx-auto flex max-w-7xl items-center justify-between md:justify-around px-2 py-3">
           {/* Left */}
           <div className="flex items-center gap-8">
@@ -43,10 +44,10 @@ const Navbar = () => {
               </span>
             </button>
 
-            <button className="ml-1 flex items-center gap-2 rounded-full bg-primary px-4 py-1.5 text-sm font-medium text-primary-foreground hover:bg-secondary-foreground transition-colors">
+            <Link to={"/auth"} className="ml-1 flex items-center gap-2 rounded-full bg-primary px-4 py-1.5 text-sm font-medium text-primary-foreground hover:bg-secondary-foreground transition-colors">
               <User size={16} />
               <span>Sign In</span>
-            </button>
+            </Link>
           </div>
 
           {/* Mobile Right */}

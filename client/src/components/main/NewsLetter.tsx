@@ -8,7 +8,7 @@ const Newsletter = () => {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.2 }}
-      className="mx-auto max-w-7xl px-6"
+      className="mx-auto mb-24 max-w-7xl px-6"
     >
       <div className="relative overflow-hidden rounded-4xl border border-border bg-card px-8 py-14 shadow-[0_20px_80px_rgba(99,102,241,0.08)] md:px-16 md:py-16">
         <div className="relative z-10 flex flex-col items-center text-center">
