@@ -1,7 +1,7 @@
-import FooterBottom from "./footer/FooterBottom";
-import FooterBrand from "./footer/FooterBrand";
-import FooterLinks from "./footer/FooterLinks";
-import { footerSections } from "./footer/footer.data";
+import FooterBottom from "./FooterBottom";
+import FooterBrand from "./FooterBrand";
+import FooterLinks from "./FooterLinks";
+import { footerSections } from "./footer.data";
 
 const Footer = () => {
   return (

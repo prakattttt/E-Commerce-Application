@@ -3,6 +3,7 @@ import MainLayout from "./layouts/MainLayout";
 import HomePage from "./pages/HomePage";
 import Profile from "./pages/Profile";
 import Shop from "./pages/Shop";
+import AuthPage from "./pages/AuthPage";
 
 function App() {
   return (
@@ -13,7 +14,7 @@ function App() {
             <Route index element={<HomePage />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/shop" element={<Shop />} />
-<Route path="/auth" element={<AuthPage />} />
+            <Route path="/auth" element={<AuthPage />} />
           </Route>
         </Routes>
       </BrowserRouter>

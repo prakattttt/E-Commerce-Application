@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Heart, ShoppingCart, User, Menu, X } from "lucide-react";
 
-import Menus from "./nav/Menus";
-import NavSearch from "./nav/NavSearch";
-import MobileMenu from "./nav/MobileMenu";
+import Menus from "./Menus";
+import NavSearch from "./NavSearch";
+import MobileMenu from "./MobileMenu";
 import { Link } from "react-router-dom";
 
 const Navbar = () => {

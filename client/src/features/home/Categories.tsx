@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { fadeUp } from "../../animations";
-import categories from "./categories.data";
+import categories from "../../components/dummy/categories.data";
 
 const Categories = () => {
   return (
