@@ -3,7 +3,7 @@
 const FooterBottom = () => {
   return (
     <>
-      <div className="my-10 h-px bg-white/10" />
+      <div className="my-5 h-px bg-white/10" />
 
       <div className="flex flex-col items-center justify-between gap-4 text-sm text-white/60 md:flex-row">
         <p>© 2025 ShopSphere. All rights reserved.</p>

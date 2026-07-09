@@ -6,7 +6,7 @@ import { footerSections } from "./footer.data";
 const Footer = () => {
   return (
     <footer className="bg-linear-to-r from-indigo-900 via-indigo-700 to-indigo-500 text-primary-foreground">
-      <div className="mx-auto max-w-7xl px-6 py-16">
+      <div className="mx-auto max-w-7xl px-6 py-12">
         <div className="grid gap-12 md:grid-cols-[2fr_3fr]">
           <FooterBrand />
 

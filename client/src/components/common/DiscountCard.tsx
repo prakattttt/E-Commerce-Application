@@ -2,7 +2,7 @@ import type { DiscountProduct } from "../../types/product.types";
 
 function DiscountCard({ product }: { product: DiscountProduct }) {
   return (
-    <div className="group overflow-hidden rounded-2xl border border-border bg-card/15 transition-all duration-300 hover:bg-card/20">
+    <div className="group overflow-hidden rounded-2xl border border-white/50 border-border bg-card/15 transition-all duration-300 hover:bg-card/20">
       {/* Image */}
       <div className="relative aspect-square overflow-hidden bg-muted">
         <img
