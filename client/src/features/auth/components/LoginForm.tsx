@@ -7,6 +7,8 @@ import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { fadeUp } from "../../../animations";
 import { motion } from "framer-motion";
 import Error from "../../../components/common/Error";
+import { toast } from "sonner";
+import { getErrorMessage } from "../../../utils/getErrorMessage";
 
 interface Props {
   switchMode: () => void;
@@ -25,10 +27,10 @@ const LoginForm = ({ switchMode }: Props) => {
 
   const onSubmit = async (data: LoginFormData) => {
     try {
-      const response = await loginUser(data);
-      console.log(response);
+      await loginUser(data);
+      toast.success("User registered successfully");
     } catch (error) {
-      console.log(error);
+      toast.error(getErrorMessage(error));
     }
   };
 

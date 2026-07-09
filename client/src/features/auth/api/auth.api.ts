@@ -8,7 +8,7 @@ import type {
 // Register
 
 export const registerUser = async (data: RegisterFormData) => {
-  const response = await api.post("/register", data);
+  const response = await api.post("/users/register", data);
 
   return response.data;
 };
@@ -16,7 +16,7 @@ export const registerUser = async (data: RegisterFormData) => {
 // Login
 
 export const loginUser = async (data: LoginFormData) => {
-  const response = await api.post("/login", data);
+  const response = await api.post("/users/login", data);
 
   return response.data;
 };
@@ -24,7 +24,7 @@ export const loginUser = async (data: LoginFormData) => {
 // Logout
 
 export const logoutUser = async () => {
-  const response = await api.post("/logout");
+  const response = await api.post("/users/logout");
 
   return response.data;
 };
@@ -32,7 +32,7 @@ export const logoutUser = async () => {
 // Get current user
 
 export const getMe = async () => {
-  const response = await api.get("/me");
+  const response = await api.get("/users/me");
 
   return response.data;
 };

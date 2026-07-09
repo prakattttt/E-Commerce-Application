@@ -4,6 +4,8 @@ import { registerSchema, type RegisterFormData } from "../schemas/auth.schema";
 import { registerUser } from "../api/auth.api";
 import { User, Mail, Lock } from "lucide-react";
 import Error from "../../../components/common/Error";
+import { toast } from "sonner";
+import { getErrorMessage } from "../../../utils/getErrorMessage";
 
 interface Props {
   switchMode: () => void;
@@ -20,10 +22,10 @@ const RegisterForm = ({ switchMode }: Props) => {
 
   const onSubmit = async (data: RegisterFormData) => {
     try {
-      const response = await registerUser(data);
-      console.log(response);
+      await registerUser(data);
+      toast.success("User registered successfully");
     } catch (error) {
-      console.log(error);
+      toast.error(getErrorMessage(error));
     }
   };
 
