@@ -1,12 +1,15 @@
 import { useState } from "react";
-import { Heart, ShoppingCart, User, Menu, X } from "lucide-react";
+import { Heart, ShoppingCart, Menu, X } from "lucide-react";
 
 import Menus from "./Menus";
 import NavSearch from "./NavSearch";
 import MobileMenu from "./MobileMenu";
-import { Link } from "react-router-dom";
+import AuthButton from "./AuthButton";
+import useAuth from "../../../features/auth/hooks/useAuth";
 
 const Navbar = () => {
+  const { isAuthenticated, logout } = useAuth();
+
   const [open, setOpen] = useState(false);
 
   return (
@@ -44,10 +47,7 @@ const Navbar = () => {
               </span>
             </button>
 
-            <Link to={"/auth"} className="ml-1 flex items-center gap-2 rounded-full bg-primary px-4 py-1.5 text-sm font-medium text-primary-foreground hover:bg-secondary-foreground transition-colors">
-              <User size={16} />
-              <span>Sign In</span>
-            </Link>
+            <AuthButton isAuthenticated={isAuthenticated} logout={logout} />
           </div>
 
           {/* Mobile Right */}

@@ -1,5 +1,7 @@
 import { NavLink } from "react-router-dom";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, User, LogOut } from "lucide-react";
+import useAuth from "../../../features/auth/hooks/useAuth";
+import { Link } from "react-router-dom";
 
 type Props = {
   open: boolean;
@@ -12,6 +14,7 @@ const menuItems = [
 ];
 
 const MobileMenu = ({ open }: Props) => {
+  const { isAuthenticated, logout } = useAuth();
   return (
     <div
       className={`
@@ -46,9 +49,23 @@ const MobileMenu = ({ open }: Props) => {
         </ul>
 
         {/* Sign In Button */}
-        <button className="w-full rounded-full bg-primary py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-secondary-foreground">
-          Sign In
-        </button>
+        {isAuthenticated ? (
+          <button
+            className="flex w-full items-center justify-center rounded-full bg-primary p-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-secondary-foreground"
+            onClick={logout}
+          >
+            <LogOut size={18} className="mr-2" />
+            Log Out
+          </button>
+        ) : (
+          <Link
+            to="/auth"
+            className="flex w-full items-center justify-center rounded-full bg-primary p-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-secondary-foreground"
+          >
+            <User size={18} className="mr-2" />
+            Sign In
+          </Link>
+        )}
       </div>
     </div>
   );
