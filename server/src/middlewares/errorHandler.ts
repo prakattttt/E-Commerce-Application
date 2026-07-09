@@ -1,6 +1,7 @@
 import type { NextFunction, Request, Response } from "express";
 import AppError from "../utils/AppError.js";
 import env from "../config/env.js";
+import { ZodError } from "zod";
 
 export const errorHandler = (
   err: unknown,
@@ -8,6 +9,16 @@ export const errorHandler = (
   res: Response,
   _next: NextFunction,
 ) => {
+  // Zod validation error
+  if (err instanceof ZodError) {
+    return res.status(400).json({
+      status: "fail",
+      statusCode: 400,
+      message: err.issues.map((issue) => issue.message),
+    });
+  }
+
+  //Other errors
   const error =
     err instanceof AppError
       ? err

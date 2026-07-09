@@ -1,5 +1,6 @@
 import expressAsyncHandler from "express-async-handler";
 import type { RequestHandler } from "express";
+import {registerSchema, loginSchema} from "../validators/users.validators.js"
 
 import {
   registerUserService,
@@ -24,13 +25,9 @@ const cookieOptions = {
 
 export const registerUser: RequestHandler = expressAsyncHandler(
   async (req, res) => {
-    const { name, email, password } = req.body;
+    const data = registerSchema.parse(req.body);
 
-    const user = await registerUserService({
-      name,
-      email,
-      password,
-    });
+    const user = await registerUserService(data);
 
     const token = generateToken(user._id.toString());
 
@@ -56,12 +53,9 @@ export const registerUser: RequestHandler = expressAsyncHandler(
 
 export const loginUser: RequestHandler = expressAsyncHandler(
   async (req, res) => {
-    const { email, password } = req.body;
+    const data = loginSchema.parse(req.body);
 
-    const user = await loginUserService({
-      email,
-      password,
-    });
+    const user = await loginUserService(data);
 
     const token = generateToken(user._id.toString());
 
@@ -86,7 +80,7 @@ export const loginUser: RequestHandler = expressAsyncHandler(
 // LOGOUT
 
 export const logoutUser: RequestHandler = expressAsyncHandler(
-  async (req, res) => {
+  async (_req, res) => {
     res.clearCookie("token", cookieOptions).status(200).json({
       success: true,
 

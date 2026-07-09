@@ -1,13 +1,22 @@
-import dotenv from "dotenv/config";
+import _dotenv from "dotenv/config";
 
-import express from "express";
+import express, { urlencoded } from "express";
+import cookieParser from "cookie-parser";
 import connectToDb from "./config/db.js";
 import { errorHandler, notFoundHandler } from "./middlewares/errorHandler.js";
 import env from "./config/env.js";
 
+import userRoutes from "./routes/users.routes.js";
+
 const app = express();
 
 app.use(express.json());
+
+app.use(urlencoded({extended: false}));
+
+app.use(cookieParser());
+
+app.use("/api/user", userRoutes);
 
 app.use(notFoundHandler);
 
