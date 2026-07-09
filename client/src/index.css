@@ -28,6 +28,8 @@
 
   --muted: #efebf8;
   --muted-foreground: #6b7280;
+
+  --error: #d32f2f;
 }
 
 @theme inline {
@@ -56,6 +58,8 @@
 
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
+
+  --color-error: var(--error);
 }
 
 @theme {
