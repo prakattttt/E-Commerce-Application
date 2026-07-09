@@ -30,16 +30,16 @@ const Newsletter = () => {
           </p>
 
           {/* Form */}
-          <form className="mt-10 flex w-full max-w-xl items-center gap-3">
+          <form className="mt-10 flex w-full max-w-xl flex-col items-center gap-3 sm:flex-row">
             <input
               type="email"
               placeholder="Email address"
-              className="flex-1 rounded-2xl border border-border bg-background px-5 py-3 shadow-sm transition-all duration-300 outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 placeholder:text-muted-foreground"
+              className="w-full flex-1 rounded-2xl border border-border bg-background px-5 py-3 shadow-sm transition-all duration-300 outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 placeholder:text-muted-foreground"
             />
 
             <button
               type="submit"
-              className="rounded-2xl bg-primary px-7 py-3 font-medium text-primary-foreground transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/25"
+              className="w-full rounded-2xl bg-primary px-7 py-3 font-medium text-primary-foreground transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-primary/25 sm:w-auto"
             >
               Subscribe
             </button>
