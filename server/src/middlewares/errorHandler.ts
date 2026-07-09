@@ -1,7 +1,10 @@
 import type { NextFunction, Request, Response } from "express";
+import mongoose from "mongoose";
+import { MongoServerError } from "mongodb";
+import { ZodError } from "zod";
+
 import AppError from "../utils/AppError.js";
 import env from "../config/env.js";
-import { ZodError } from "zod";
 
 export const errorHandler = (
   err: unknown,
@@ -18,26 +21,64 @@ export const errorHandler = (
     });
   }
 
-  //Other errors
-  const error =
-    err instanceof AppError
-      ? err
-      : new AppError(
-          err instanceof Error ? err.message : "Internal Server Error",
-          500,
-        );
+  // Mongoose validation error
+  if (err instanceof mongoose.Error.ValidationError) {
+    return res.status(400).json({
+      status: "fail",
+      statusCode: 400,
+      message: Object.values(err.errors).map((error) => error.message),
+    });
+  }
+
+  // Invalid MongoDB ObjectId
+  if (err instanceof mongoose.Error.CastError) {
+    return res.status(400).json({
+      status: "fail",
+      statusCode: 400,
+      message: `Invalid ${err.path}`,
+    });
+  }
+
+  // Duplicate key error
+  if (err instanceof MongoServerError && err.code === 11000) {
+    const field = Object.keys(err.keyPattern ?? {})[0];
+
+    return res.status(409).json({
+      status: "fail",
+      statusCode: 409,
+      message: `${field} already exists`,
+    });
+  }
+
+  // Custom application errors
+  if (err instanceof AppError) {
+    const responseBody: Record<string, unknown> = {
+      status: err.status,
+      statusCode: err.statusCode,
+      message: err.message,
+    };
+
+    if (env.environment === "development") {
+      responseBody.stack = err.stack;
+    }
+
+    return res.status(err.statusCode).json(responseBody);
+  }
+
+  // Unknown errors
+  const error = err instanceof Error ? err : new Error("Internal Server Error");
 
   const responseBody: Record<string, unknown> = {
-    status: error.status,
-    statusCode: error.statusCode,
+    status: "error",
+    statusCode: 500,
     message: error.message,
   };
 
   if (env.environment === "development") {
-    responseBody["stack"] = error.stack;
+    responseBody.stack = error.stack;
   }
 
-  return res.status(error.statusCode).json(responseBody);
+  return res.status(500).json(responseBody);
 };
 
 export const notFoundHandler = (
