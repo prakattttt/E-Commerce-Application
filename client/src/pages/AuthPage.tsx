@@ -1,5 +1,5 @@
-import BrandPanel from "../features/components/BrandPanel";
-import AuthForm from "../features/components/AuthForm";
+import BrandPanel from "../features/auth/components/BrandPanel";
+import AuthForm from "../features/auth/components/AuthForm";
 
 const AuthPage = () => {
   return (

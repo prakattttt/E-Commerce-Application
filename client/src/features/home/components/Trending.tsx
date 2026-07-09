@@ -1,20 +1,22 @@
-import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-import ProductCard from "../../components/common/ProductCard";
-import { newArrivalProducts } from "../../components/dummy/dummy";
-import { fadeUp } from "../../animations/index";
+import { trendingProducts } from "../../../components/dummy/dummy";
+import ProductCard from "../../../components/common/ProductCard";
+import { motion } from "framer-motion";
+import { fadeUp } from "../../../animations";
 
-const NewArrivals = () => {
+const Trending = () => {
   return (
     <section className="mx-auto max-w-7xl px-6 py-20">
       {/* Header */}
       <div className="mb-12 flex items-end justify-between">
         <div>
           <p className="text-sm font-semibold uppercase tracking-[0.25em] text-primary">
-            Just In
+            Hot Right Now
           </p>
 
-          <h2 className="mt-2 font-display text-4xl font-bold">New Arrivals</h2>
+          <h2 className="mt-2 font-display text-4xl font-bold">
+            Trending Products
+          </h2>
         </div>
 
         <button className="flex items-center gap-2 font-semibold text-primary transition hover:gap-3">
@@ -24,8 +26,8 @@ const NewArrivals = () => {
       </div>
 
       {/* Products */}
-      <div className="grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-4">
-        {newArrivalProducts.map((product, index) => (
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        {trendingProducts.map((product, index) => (
           <motion.div
             key={product.id}
             custom={index}
@@ -42,4 +44,4 @@ const NewArrivals = () => {
   );
 };
 
-export default NewArrivals;
+export default Trending;

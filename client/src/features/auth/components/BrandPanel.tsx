@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { fadeUp } from "../../animations/index";
+import { fadeUp } from "../../../animations/index";
 import FeaturesList from "./FeaturesList";
 import Testimonial from "./Testimonial";
 

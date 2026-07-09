@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { scaleIn } from "../../animations/index";
+import { scaleIn } from "../../../animations/index";
 
 const Testimonial = () => {
   return (

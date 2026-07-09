@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Lock, Mail, User, Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
-import { fadeUp, scaleIn } from "../../animations";
+import { fadeUp, scaleIn } from "../../../animations";
 
 const AuthForm = () => {
   const [mode, setMode] = useState<"login" | "register">("login");

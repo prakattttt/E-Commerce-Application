@@ -1,9 +1,9 @@
-import HeroSection from "../features/home/HeroSection";
-import Categories from "../features/home/Categories";
-import Trending from "../features/home/Trending";
-import FlashSale from "../features/home/FlashSale";
-import NewArrivals from "../features/home/NewArrivals";
-import Newsletter from "../features/home/NewsLetter";
+import HeroSection from "../features/home/components/HeroSection";
+import Categories from "../features/home/components/Categories";
+import Trending from "../features/home/components/Trending";
+import FlashSale from "../features/home/components/FlashSale";
+import NewArrivals from "../features/home/components/NewArrivals";
+import Newsletter from "../features/home/components/NewsLetter";
 
 const HomePage = () => {
   return (

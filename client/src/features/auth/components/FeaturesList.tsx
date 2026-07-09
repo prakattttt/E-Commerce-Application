@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
-import { fadeUp } from "../../animations/index";
-import { features } from "../auth/data/features";
+import { fadeUp } from "../../../animations/index";
+import { features } from "../data/features";
 
 const FeaturesList = () => {
   return (

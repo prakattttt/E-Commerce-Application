@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
 import { Bolt } from "lucide-react";
-import DiscountCard from "../../components/common/DiscountCard";
-import { flashSaleProducts } from "../../components/dummy/dummy";
-import { fadeUp } from "../../animations/index";
+import DiscountCard from "../../../components/common/DiscountCard";
+import { flashSaleProducts } from "../../../components/dummy/dummy";
+import { fadeUp } from "../../../animations/index";
 
 const FlashSale = () => {
   return (
