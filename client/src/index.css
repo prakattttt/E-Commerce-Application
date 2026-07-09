@@ -29,7 +29,10 @@
   --muted: #efebf8;
   --muted-foreground: #6b7280;
 
+  --success: #2e7d32;
   --error: #d32f2f;
+  --warning: #ed6c02;
+  --info: #0288d1;
 }
 
 @theme inline {
@@ -59,7 +62,10 @@
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
 
+  --color-success: var(--success);
   --color-error: var(--error);
+  --color-warning: var(--warning);
+  --color-info: var(--info);
 }
 
 @theme {
