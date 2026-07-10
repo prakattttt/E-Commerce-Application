@@ -18,6 +18,7 @@ interface AuthState {
   logout: () => Promise<void>;
 }
 
+// local zustland state for auth info
 export const useAuthStore = create<AuthState>((set) => ({
   user: null,
 
@@ -51,6 +52,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       isAuthenticated: !!user,
     }),
 
+  //custom logout
   logout: async () => {
     await logoutUser();
 

@@ -6,12 +6,16 @@ import { User, Mail, Lock } from "lucide-react";
 import Error from "../../../components/common/Error";
 import { toast } from "sonner";
 import { getErrorMessage } from "../../../utils/getErrorMessage";
+import useAuth from "../hooks/useAuth";
 
 interface Props {
   switchMode: () => void;
 }
 
 const RegisterForm = ({ switchMode }: Props) => {
+  const { setUser } = useAuth();
+
+  // use react0hook-form together with zod to handle form and validation
   const {
     register,
     handleSubmit,
@@ -22,7 +26,8 @@ const RegisterForm = ({ switchMode }: Props) => {
 
   const onSubmit = async (data: RegisterFormData) => {
     try {
-      await registerUser(data);
+      const response = await registerUser(data);
+      setUser(response);
       toast.success("User registered successfully");
     } catch (error) {
       toast.error(getErrorMessage(error));
@@ -44,6 +49,7 @@ const RegisterForm = ({ switchMode }: Props) => {
           />
         </div>
 
+        {/* custom error encountered through the zod validation */}
         {errors.name && (
           <p className="text-error text-sm">{errors.name.message}</p>
         )}

@@ -9,14 +9,17 @@ import { motion } from "framer-motion";
 import Error from "../../../components/common/Error";
 import { toast } from "sonner";
 import { getErrorMessage } from "../../../utils/getErrorMessage";
+import useAuth from "../hooks/useAuth";
 
 interface Props {
   switchMode: () => void;
 }
 
 const LoginForm = ({ switchMode }: Props) => {
+  const { login } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
 
+  // use react0hook-form together with zod to handle form and validation
   const {
     register,
     handleSubmit,
@@ -27,8 +30,9 @@ const LoginForm = ({ switchMode }: Props) => {
 
   const onSubmit = async (data: LoginFormData) => {
     try {
-      await loginUser(data);
-      toast.success("User registered successfully");
+      const response = await loginUser(data);
+      login(response);
+      toast.success("User logged in successfully");
     } catch (error) {
       toast.error(getErrorMessage(error));
     }
@@ -53,7 +57,7 @@ const LoginForm = ({ switchMode }: Props) => {
             className="w-full bg-transparent px-3 py-3 outline-none"
           />
         </div>
-
+        {/* custom error encountered through the zod validation */}
         {errors.email && <Error message={errors.email.message!} />}
       </motion.div>
 
