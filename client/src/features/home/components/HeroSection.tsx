@@ -1,4 +1,4 @@
-import { ArrowRight, Bolt } from "lucide-react";
+import { ArrowRight, Zap } from "lucide-react";
 import heroImage from "../../../assets/hero-image.jpg";
 
 const HeroSection = () => {
@@ -18,7 +18,7 @@ const HeroSection = () => {
         <div className="animate-slide-left flex-1">
           {/* Badge */}
           <div className="animate-pop inline-flex items-center gap-2 font-semibold rounded-full border border-primary-foreground/20 bg-primary-foreground/10 px-4 py-2 backdrop-blur">
-            <Bolt size={16} className="text-gold" />
+            <Zap size={16} className="text-gold" />
 
             <span className="text-sm font-medium text-gold">
               New Season — Up to 60% Off

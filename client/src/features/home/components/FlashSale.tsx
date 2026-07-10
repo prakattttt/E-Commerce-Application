@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Bolt } from "lucide-react";
+import { Zap } from "lucide-react";
 import DiscountCard from "../../../components/common/DiscountCard";
 import { flashSaleProducts } from "../../../components/dummy/dummy";
 import { fadeUp } from "../../../animations/index";
@@ -12,7 +12,7 @@ const FlashSale = () => {
         <div className="mb-10 flex flex-col items-start justify-between gap-6 lg:flex-row lg:items-center">
           <div>
             <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-accent px-4 py-2 text-sm font-semibold text-accent-foreground">
-              <Bolt size={16} />
+              <Zap size={16} />
               Flash Sale
             </div>
 
