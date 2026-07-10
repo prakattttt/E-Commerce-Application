@@ -1,28 +1,17 @@
 import { NavLink } from "react-router-dom";
-import { ChevronDownIcon } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import useNav from "../../../hooks/useNav";
+import { menus, moreMenus } from "./menus.data";
+import { useState } from "react";
 
 {
   /*Menu Items*/
 }
 
-const menus = [
-  {
-    name: "Home",
-    path: "/",
-  },
-  {
-    name: "Shop",
-    path: "/shop",
-  },
-  {
-    name: "Profile",
-    path: "/profile",
-  },
-];
-
 const Menus = () => {
   const { isTransparent } = useNav();
+
+  const [moreOpen, setMoreOpen] = useState(false);
   return (
     <ul className="hidden text-sm items-center gap-4 font-medium md:flex">
       {/*Mapping of Menu Items*/}
@@ -49,17 +38,53 @@ const Menus = () => {
       ))}
       {/* Create a seperate List for more menus */}
       <li
-        className={`group flex cursor-pointer items-center transition-all duration-200 ${
-          isTransparent
-            ? "text-white/80 hover:text-white"
-            : "text-foreground hover:text-primary"
-        }`}
+        className="relative"
+        onMouseEnter={() => setMoreOpen(true)}
+        onMouseLeave={() => setMoreOpen(false)}
       >
-        More
-        <ChevronDownIcon
-          size={16}
-          className="ml-1 group-hover:rotate-180 transition-all duration-200"
-        />
+        <button
+          className={`flex items-center transition-colors duration-200 ${
+            isTransparent
+              ? "text-white/80 hover:text-white"
+              : "text-foreground hover:text-primary"
+          }`}
+        >
+          More
+          <ChevronDown
+            size={16}
+            className={`ml-1 transition-transform duration-200 ${
+              moreOpen ? "rotate-180" : ""
+            }`}
+          />
+        </button>
+
+        <div
+          className={`absolute left-0 top-full mt-2 w-72 rounded-xl border border-border bg-background shadow-xl transition-all duration-200 ${
+            moreOpen
+              ? "visible translate-y-0 opacity-100"
+              : "invisible -translate-y-2 opacity-0"
+          }`}
+        >
+          <div className="p-2">
+            {moreMenus.map((menu) => (
+              <NavLink
+                key={menu.name}
+                to={menu.path}
+                onClick={() => setMoreOpen(false)}
+                className={({ isActive }) =>
+                  `block rounded-lg px-4 py-3 transition-colors ${
+                    isActive ? "bg-primary/10" : "hover:bg-muted"
+                  }`
+                }
+              >
+                <p className="text-sm font-semibold">{menu.name}</p>
+                <p className="mt-0.5 text-xs text-muted-foreground">
+                  {menu.description}
+                </p>
+              </NavLink>
+            ))}
+          </div>
+        </div>
       </li>
     </ul>
   );
