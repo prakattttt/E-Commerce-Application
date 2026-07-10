@@ -5,7 +5,7 @@ const HeroSection = () => {
   return (
     <section
       className="
-        relative overflow-hidden
+        relative overflow-hidden pt-14
         bg-[linear-gradient(135deg,#1e1b4b_0%,var(--primary)_40%,#7c3aed_70%,#a855f7_100%)]
         text-primary-foreground
       "

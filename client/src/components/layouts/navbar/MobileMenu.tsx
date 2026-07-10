@@ -17,14 +17,11 @@ const MobileMenu = ({ open }: Props) => {
   const { isAuthenticated, logout } = useAuth();
   return (
     <div
-      className={`
-        md:hidden overflow-hidden transition-all duration-300 ease-in-out border-b border-border bg-card
-        ${
-          open
-            ? "max-h-96 opacity-100 translate-y-0"
-            : "max-h-0 opacity-0 -translate-y-2"
-        }
-      `}
+      className={`fixed top-15 left-0 right-0 z-40 overflow-hidden border-b border-border bg-card transition-all duration-300 ease-in-out md:hidden ${
+        open
+          ? "max-h-96 translate-y-0 opacity-100"
+          : "pointer-events-none max-h-0 -translate-y-2 opacity-0"
+      }`}
     >
       <div className="px-6 py-4">
         {/* Links */}

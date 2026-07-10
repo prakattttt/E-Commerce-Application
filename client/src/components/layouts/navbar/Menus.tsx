@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { ChevronDownIcon } from "lucide-react";
+import useNav from "../../../hooks/useNav";
 
 {
   /*Menu Items*/
@@ -21,6 +22,7 @@ const menus = [
 ];
 
 const Menus = () => {
+  const { isTransparent } = useNav();
   return (
     <ul className="hidden text-sm items-center gap-4 font-medium md:flex">
       {/*Mapping of Menu Items*/}
@@ -31,7 +33,13 @@ const Menus = () => {
             to={menu.path}
             className={({ isActive }) =>
               `transition-colors duration-200 ${
-                isActive ? "text-primary" : "text-foreground hover:text-primary"
+                isActive
+                  ? isTransparent
+                    ? "text-white"
+                    : "text-primary"
+                  : isTransparent
+                    ? "text-white/70 hover:text-white"
+                    : "text-foreground hover:text-primary"
               }`
             }
           >
@@ -40,9 +48,18 @@ const Menus = () => {
         </li>
       ))}
       {/* Create a seperate List for more menus */}
-      <li className="group flex cursor-pointer items-center hover:text-primary transition-all duration-200">
+      <li
+        className={`group flex cursor-pointer items-center transition-all duration-200 ${
+          isTransparent
+            ? "text-white/80 hover:text-white"
+            : "text-foreground hover:text-primary"
+        }`}
+      >
         More
-        <ChevronDownIcon size={16} className="ml-1 group-hover:rotate-180 transition-all duration-200"/>
+        <ChevronDownIcon
+          size={16}
+          className="ml-1 group-hover:rotate-180 transition-all duration-200"
+        />
       </li>
     </ul>
   );

@@ -6,15 +6,25 @@ import NavSearch from "./NavSearch";
 import MobileMenu from "./MobileMenu";
 import AuthButton from "./AuthButton";
 import useAuth from "../../../features/auth/hooks/useAuth";
+import useNav from "../../../hooks/useNav";
 
 const Navbar = () => {
   const { isAuthenticated, logout } = useAuth();
 
+  const { isTransparent } = useNav();
   const [open, setOpen] = useState(false);
+
+  const buttonCondition = isTransparent ? "text-card" : "text-foreground";
 
   return (
     <>
-      <nav className="h-14 w-full border-b border-border bg-card animate-navbar">
+      <nav
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration- h-15 ${
+          isTransparent
+            ? "bg-transparent"
+            : "bg-background/90 backdrop-blur-xl border-b border-border shadow-sm"
+        }`}
+      >
         <div className="mx-auto flex max-w-7xl items-center justify-between md:justify-around px-2 py-3">
           {/* Left */}
           <div className="flex items-center gap-8">
@@ -36,12 +46,26 @@ const Navbar = () => {
           <div className="hidden md:flex items-center gap-2">
             <NavSearch />
 
-            <button className="rounded-full bg-card p-1.5 hover:bg-secondary transition-colors">
-              <Heart size={20} />
+            <button
+              className={`rounded-full p-1.5 transition-colors ${
+                isTransparent
+                  ? "backdrop-blur-md hover:bg-white/20"
+                  : "bg-card hover:bg-secondary"
+              }`}
+            >
+              <Heart size={20} className={buttonCondition} />
             </button>
 
-            <button className="relative rounded-full bg-card p-1.5 hover:bg-secondary transition-colors">
-              <ShoppingCart size={20} />
+            <button
+              className={`rounded-full p-1.5 transition-colors ${
+                isTransparent
+                  ? "backdrop-blur-md hover:bg-white/20"
+                  : "bg-card hover:bg-secondary"
+              }`}
+            >
+              <ShoppingCart
+                className={`transition-colors ${buttonCondition}`}
+              />
               <span className="absolute -right-1 -top-1 flex h-4.5 w-4.5 items-center justify-center rounded-full bg-accent text-[10px] font-medium text-accent-foreground">
                 2
               </span>
@@ -52,12 +76,30 @@ const Navbar = () => {
 
           {/* Mobile Right */}
           <div className="flex md:hidden items-center gap-2">
-            <button className="rounded-full bg-card p-1.5 hover:bg-secondary transition">
-              <Heart size={20} />
+            <button
+              className={`rounded-full p-1.5 transition-colors ${
+                isTransparent
+                  ? "backdrop-blur-md hover:bg-white/20"
+                  : "hover:bg-secondary"
+              }`}
+            >
+              <Heart
+                size={20}
+                className={`${isTransparent ? "text-card" : "text-foreground"}`}
+              />
             </button>
 
-            <button className="relative rounded-full bg-card p-1.5 hover:bg-secondary transition">
-              <ShoppingCart size={20} />
+            <button
+              className={`rounded-full p-1.5 transition-colors ${
+                isTransparent
+                  ? "backdrop-blur-md hover:bg-white/20"
+                  : "hover:bg-secondary"
+              }`}
+            >
+              <ShoppingCart
+                size={20}
+                className={`${isTransparent ? "text-card" : "text-foreground"}`}
+              />
               <span className="absolute -right-1 -top-1 flex h-4.5 w-4.5 items-center justify-center rounded-full bg-accent text-[10px] font-medium text-accent-foreground">
                 2
               </span>
@@ -66,9 +108,13 @@ const Navbar = () => {
             {/* Hamburger */}
             <button
               onClick={() => setOpen((prev) => !prev)}
-              className="rounded-full bg-card p-2 hover:bg-secondary transition"
+              className="rounded-full p-2 transition hover:bg-white/20"
             >
-              {open ? <X size={20} /> : <Menu size={20} />}
+              {open ? (
+                <X size={20} className={buttonCondition} />
+              ) : (
+                <Menu size={20} className={buttonCondition} />
+              )}
             </button>
           </div>
         </div>

@@ -1,12 +1,15 @@
 import { Search } from "lucide-react";
+import useNav from "../../../hooks/useNav";
 
 const NavSearch = () => {
+  const { isTransparent } = useNav();
   return (
     <div className="relative hidden w-64 md:block">
       <div className="absolute top-1/2 right-0 -translate-y-1/2">
         <Search
           size={16}
-          className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-muted-foreground"
+          className={`pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 ${isTransparent ? 
+            "text-white-70" : "text-muted-foreground"}`}
         />
 
         <input
