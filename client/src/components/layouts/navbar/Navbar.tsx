@@ -50,17 +50,17 @@ const Navbar = () => {
               className={`rounded-full p-1.5 transition-colors ${
                 isTransparent
                   ? "backdrop-blur-md hover:bg-white/20"
-                  : "bg-card hover:bg-secondary"
+                  : "hover:bg-secondary"
               }`}
             >
               <Heart size={20} className={buttonCondition} />
             </button>
 
             <button
-              className={`rounded-full p-1.5 transition-colors ${
+              className={`relative rounded-full p-1.5 transition-colors ${
                 isTransparent
                   ? "backdrop-blur-md hover:bg-white/20"
-                  : "bg-card hover:bg-secondary"
+                  : "hover:bg-secondary"
               }`}
             >
               <ShoppingCart

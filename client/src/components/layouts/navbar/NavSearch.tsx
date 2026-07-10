@@ -9,13 +9,15 @@ const NavSearch = () => {
         <Search
           size={16}
           className={`pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 ${isTransparent ? 
-            "text-white-70" : "text-muted-foreground"}`}
+            "text-black/70" : "text-muted-foreground"}`}
         />
 
         <input
           type="search"
           placeholder="Search products..."
-          className="h-9 w-44 rounded-full border border-border bg-card py-1.5 pr-4 pl-9 text-sm text-foreground placeholder:text-muted-foreground transition-all duration-300 ease-in-out focus:w-64 focus:outline-none focus:ring-0 focus:border-muted-foreground"
+          className={`h-9 w-44 rounded-full border border-border bg-card py-1.5 pr-4 pl-9 text-sm text-foreground transition-all duration-300 ease-in-out focus:w-64 focus:outline-none focus:ring-0 focus:border-muted-foreground ${isTransparent ?
+            " placeholder:text-black/80" : "placeholder:text-muted-foreground"
+          }`}
         />
       </div>
     </div>
