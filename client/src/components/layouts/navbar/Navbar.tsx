@@ -22,7 +22,7 @@ const Navbar = () => {
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration- h-15 ${
           isTransparent
             ? "bg-transparent"
-            : "bg-background/90 backdrop-blur-xl border-b border-border shadow-sm"
+            : "bg-background/90 backdrop-blur-xl"
         }`}
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between md:justify-around px-2 py-3">
@@ -90,7 +90,7 @@ const Navbar = () => {
             </button>
 
             <button
-              className={`rounded-full p-1.5 transition-colors ${
+              className={`relative rounded-full p-1.5 transition-colors ${
                 isTransparent
                   ? "backdrop-blur-md hover:bg-white/20"
                   : "hover:bg-secondary"
