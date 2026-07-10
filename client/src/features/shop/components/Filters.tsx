@@ -1,5 +1,10 @@
+import { motion } from "framer-motion";
+import { fadeUp } from "../../../animations";
+
+// List of categories displayed in the filters panel.
 const categories = ["All", "Electronics", "Fashion", "Shoes", "Accessories"];
 
+// List of price range filter options
 const prices = [
   "All Prices",
   "Under $100",
@@ -10,49 +15,65 @@ const prices = [
 
 const Filters = () => {
   return (
-    <aside className="sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto scrollbar-hide rounded-3xl shadow-xl border border-border bg-card p-6">
-      <h2 className="mb-6 text-xl font-semibold">Filters</h2>
+    // Aside element with animation and sticky positioning for the filter sidebar.
+    <motion.aside
+      variants={fadeUp}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
+      className="sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto rounded-3xl border border-border bg-card p-6 shadow-xl scrollbar-hide"
+    >
+      <motion.h2
+        variants={fadeUp}
+        custom={0}
+        className="mb-6 text-xl font-semibold"
+      >
+        Filters
+      </motion.h2>
 
       <div className="space-y-8">
-        <div>
+        {/* Category filter section */}
+        <motion.div variants={fadeUp} custom={1}>
           <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
             Category
           </h3>
 
           <div className="space-y-2">
             {categories.map((category) => (
-              <button
-                key={category}
-                className="w-full rounded-xl px-4 py-2 text-left text-sm transition hover:bg-secondary"
-              >
+              <button className="w-full rounded-xl px-4 py-2 text-left text-sm transition hover:bg-secondary">
                 {category}
               </button>
             ))}
           </div>
-        </div>
+        </motion.div>
 
-        <div>
+        {/* Price filter section */}
+        <motion.div variants={fadeUp} custom={2}>
           <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
             Price
           </h3>
 
           <div className="space-y-2">
             {prices.map((price) => (
-              <button
-                key={price}
-                className="w-full rounded-xl px-4 py-2 text-left text-sm transition hover:bg-secondary"
-              >
+              <button className="w-full rounded-xl px-4 py-2 text-left text-sm transition hover:bg-secondary">
                 {price}
               </button>
             ))}
           </div>
-        </div>
-        <button className="w-full rounded-xl bg-primary py-2 font-medium text-primary-foreground transition hover:opacity-90">
-          {" "}
-          Clear Filters{" "}
-        </button>
+        </motion.div>
+
+        {/* Button to clear the selected filters. */}
+        <motion.button
+          variants={fadeUp}
+          custom={8}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.97 }}
+          className="w-full rounded-xl bg-primary py-2 font-medium text-primary-foreground"
+        >
+          Clear Filters
+        </motion.button>
       </div>
-    </aside>
+    </motion.aside>
   );
 };
 
