@@ -4,10 +4,6 @@ import useNav from "../../../hooks/useNav";
 import { menus, moreMenus } from "./menus.data";
 import { useState } from "react";
 
-{
-  /*Menu Items*/
-}
-
 const Menus = () => {
   const { isTransparent } = useNav();
 
