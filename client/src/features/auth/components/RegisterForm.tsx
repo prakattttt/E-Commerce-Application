@@ -1,12 +1,15 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerSchema, type RegisterFormData } from "../schemas/auth.schema";
 import { registerUser } from "../api/auth.api";
-import { User, Mail, Lock } from "lucide-react";
+import { User, Mail, Lock, Eye, EyeOff } from "lucide-react";
 import Error from "../../../components/common/Error";
 import { toast } from "sonner";
 import { getErrorMessage } from "../../../utils/getErrorMessage";
 import useAuth from "../hooks/useAuth";
+import { motion } from "framer-motion";
+import { fadeUp } from "../../../animations";
 
 interface Props {
   switchMode: () => void;
@@ -15,7 +18,9 @@ interface Props {
 const RegisterForm = ({ switchMode }: Props) => {
   const { setUser } = useAuth();
 
-  // use react0hook-form together with zod to handle form and validation
+  const [showPassword, setShowPassword] = useState(false);
+
+  // use react-hook-form together with zod to handle form and validation
   const {
     register,
     handleSubmit,
@@ -36,11 +41,16 @@ const RegisterForm = ({ switchMode }: Props) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-      <div>
+      <motion.div
+        variants={fadeUp}
+        initial="hidden"
+        animate="visible"
+        custom={1}
+      >
         <label className="mb-2 block text-sm font-medium">Full name</label>
 
         <div className="flex items-center rounded-xl border border-border bg-background px-4">
-          <User size={18} />
+          <User size={18} className="text-muted-foreground" />
 
           <input
             {...register("name")}
@@ -49,17 +59,19 @@ const RegisterForm = ({ switchMode }: Props) => {
           />
         </div>
 
-        {/* custom error encountered through the zod validation */}
-        {errors.name && (
-          <p className="text-error text-sm">{errors.name.message}</p>
-        )}
-      </div>
+        {errors.name && <Error message={errors.name.message!} />}
+      </motion.div>
 
-      <div>
+      <motion.div
+        variants={fadeUp}
+        initial="hidden"
+        animate="visible"
+        custom={2}
+      >
         <label className="mb-2 block text-sm font-medium">Email</label>
 
         <div className="flex items-center rounded-xl border border-border bg-background px-4">
-          <Mail size={18} />
+          <Mail size={18} className="text-muted-foreground" />
 
           <input
             {...register("email")}
@@ -69,38 +81,65 @@ const RegisterForm = ({ switchMode }: Props) => {
         </div>
 
         {errors.email && <Error message={errors.email.message!} />}
-      </div>
+      </motion.div>
 
-      <div>
+      <motion.div
+        variants={fadeUp}
+        initial="hidden"
+        animate="visible"
+        custom={3}
+      >
         <label className="mb-2 block text-sm font-medium">Password</label>
 
         <div className="flex items-center rounded-xl border border-border bg-background px-4">
-          <Lock size={18} />
+          <Lock size={18} className="text-muted-foreground" />
 
           <input
-            type="password"
+            type={showPassword ? "text" : "password"}
             {...register("password")}
+            placeholder="••••••••"
             className="w-full bg-transparent px-3 py-3 outline-none"
           />
+
+          <button
+            type="button"
+            onClick={() => setShowPassword((prev) => !prev)}
+          >
+            {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+          </button>
         </div>
 
         {errors.password && <Error message={errors.password.message!} />}
-      </div>
+      </motion.div>
 
-      <button className="w-full rounded-xl bg-primary py-3 font-semibold text-primary-foreground">
-        Create account
-      </button>
-
-      <p className="text-center text-sm">
-        Already have an account?
-        <button
-          type="button"
-          onClick={switchMode}
-          className="ml-2 text-primary font-semibold"
-        >
-          Sign in
+      <motion.div
+        variants={fadeUp}
+        initial="hidden"
+        animate="visible"
+        custom={4}
+      >
+        <button className="w-full rounded-xl bg-primary py-3 font-semibold text-primary-foreground">
+          Create account
         </button>
-      </p>
+      </motion.div>
+
+      <motion.div
+        variants={fadeUp}
+        initial="hidden"
+        animate="visible"
+        custom={5}
+      >
+        <p className="text-center text-sm">
+          Already have an account?
+          <button
+            type="button"
+            onClick={switchMode}
+            className="ml-2 font-semibold text-primary hover:underline"
+          >
+            Sign in
+          </button>
+        </p>
+      </motion.div>
     </form>
   );
 };
