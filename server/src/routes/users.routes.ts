@@ -11,7 +11,19 @@ import {
 
 import { protect } from "../middlewares/authentication.js";
 
-const router:Router = Router();
+const router: Router = Router();
+
+/*
+    User Authentication & Profile Routes
+
+    POST    /api/users/register
+    POST    /api/users/login
+    POST    /api/users/logout
+
+    GET     /api/users/me
+    PATCH   /api/users/update
+    DELETE  /api/users/delete
+*/
 
 router.post("/register", registerUser);
 

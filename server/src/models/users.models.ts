@@ -10,10 +10,12 @@ export interface IUser extends Document {
     publicId: string;
   };
 
-  role: "user" | "admin";
+  role: UserRole;
 
   comparePassword(password: string): Promise<boolean>;
 }
+
+export type UserRole = "user" | "admin";
 
 const userSchema = new Schema<IUser>(
   {

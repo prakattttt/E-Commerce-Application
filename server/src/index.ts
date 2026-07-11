@@ -11,6 +11,8 @@ import connectToDb from "./config/db.js";
 import env from "./config/env.js";
 
 import userRoutes from "./routes/users.routes.js";
+import productRoutes from "./routes/products.routes.js";
+import adminRoutes from "./routes/admin.routes.js";
 
 import { errorHandler, notFoundHandler } from "./middlewares/errorHandler.js";
 
@@ -57,6 +59,8 @@ app.get("/", (_req, res) => {
 
 // API Routes
 app.use("/api/users", userRoutes);
+app.use("/api/products", productRoutes);
+app.use("/api/admin", adminRoutes);
 
 // 404 handler
 app.use(notFoundHandler);
