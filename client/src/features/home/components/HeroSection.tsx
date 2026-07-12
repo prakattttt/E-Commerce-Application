@@ -1,5 +1,6 @@
 import { ArrowRight, Zap } from "lucide-react";
 import heroImage from "../../../assets/hero-image.jpg";
+import { Link } from "react-router-dom";
 
 const HeroSection = () => {
   return (
@@ -43,14 +44,14 @@ const HeroSection = () => {
 
           {/* Buttons */}
           <div className="mt-10 flex flex-wrap gap-4">
-            <button className="flex items-center gap-2 rounded-xl bg-card px-8 py-3 font-semibold text-primary transition duration-300 hover:scale-105">
+            <Link to={"/shop"} className="flex items-center gap-2 rounded-xl bg-card px-8 py-3 font-semibold text-primary transition duration-300 hover:scale-105">
               Shop Now
               <ArrowRight size={18} />
-            </button>
+            </Link>
 
-            <button className="rounded-xl border border-primary-foreground/20 bg-primary-foregorund/5 px-8 py-3 font-semibold text-primary-foreground backdrop-blur transition hover:bg-primary-foreground/5">
+            <Link to={"/about"} className="rounded-xl border border-primary-foreground/20 bg-primary-foregorund/5 px-8 py-3 font-semibold text-primary-foreground backdrop-blur transition hover:bg-primary-foreground/5">
               Explore Deals
-            </button>
+            </Link>
           </div>
 
           {/* Stats */}

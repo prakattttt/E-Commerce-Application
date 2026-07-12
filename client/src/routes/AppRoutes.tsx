@@ -6,10 +6,12 @@ import HomePage from "../pages/HomePage";
 import Shop from "../pages/Shop";
 import Profile from "../pages/Profile";
 import AuthPage from "../pages/AuthPage";
+import ErrorPage from "../pages/ErrorPage";
 
 const AppRoutes = () => {
   return (
     <Routes>
+      <Route path="*" element={<ErrorPage/>} />
       <Route element={<MainLayout />}>
         <Route index element={<HomePage />} />
         <Route path="shop" element={<Shop />} />
