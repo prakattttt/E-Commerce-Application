@@ -19,14 +19,18 @@ import { getAllProducts } from "../../../api/products.api";
 //   ...newArrivalProducts,
 // ];
 
-const ProductsGrid = () => {
+type Props = {
+  selectedCategory: string;
+  selectedPrice: string;
+};
+
+const ProductsGrid = ({ selectedCategory, selectedPrice }: Props) => {
   const [products, setProducts] = useState<IProduct[]>([]);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const data = await getAllProducts();
-        console.log(data.products);
         setProducts(data.products);
       } catch (error) {
         getErrorMessage(error);
@@ -34,8 +38,8 @@ const ProductsGrid = () => {
     };
 
     fetchProducts();
-  }, []);
-  
+  }, [selectedCategory, selectedPrice]);
+
   return (
     <section className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
       {products?.map((product, index) => (
