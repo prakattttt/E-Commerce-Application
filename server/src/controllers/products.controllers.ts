@@ -4,11 +4,24 @@ import type { RequestHandler } from "express";
 import * as ProductService from "../services/products.services.js";
 import AppError from "../utils/AppError.js";
 
+export type ProductFilters = {
+  category?: string;
+  price?: string;
+  sort?: string;
+};
+
 export const getProducts: RequestHandler = expressAsyncHandler(
   async (req, res) => {
     const skip = Number(req.query.skip) || 0;
 
-    const products = await ProductService.getProducts(skip);
+    const category = req.query.category as string;
+    const price = req.query.price as string;
+
+    const products = await ProductService.getProducts({
+      skip,
+      category,
+      price,
+    });
 
     res.status(200).json({
       success: true,
@@ -20,10 +33,10 @@ export const getProducts: RequestHandler = expressAsyncHandler(
 
 export const getProductBySlug: RequestHandler = expressAsyncHandler(
   async (req, res) => {
-    const slug = (req.params.slug) as string;
+    const slug = req.params.slug as string;
 
     if (!slug) {
-        throw new AppError("Product slug is required", 400);
+      throw new AppError("Product slug is required", 400);
     }
 
     const product = await ProductService.getProductBySlug(slug);

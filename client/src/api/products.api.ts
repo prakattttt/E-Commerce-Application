@@ -1,7 +1,14 @@
 import api from "./axios";
 
-export const getAllProducts = async () => {
-  const response = await api.get("/products");
+export interface ProductFilters {
+  category?: string;
+  price?: string;
+};
 
-  return response.data;
+export const getAllProducts = async (filters: ProductFilters = {}) => {
+  const { data } = await api.get("/products", {
+    params: filters,
+  });
+
+  return data;
 };

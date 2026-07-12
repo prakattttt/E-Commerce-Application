@@ -30,7 +30,10 @@ const ProductsGrid = ({ selectedCategory, selectedPrice }: Props) => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const data = await getAllProducts();
+        const data = await getAllProducts({
+          category: selectedCategory,
+          price: selectedPrice,
+        });
         setProducts(data.products);
       } catch (error) {
         getErrorMessage(error);
