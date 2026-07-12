@@ -1,26 +1,46 @@
 import { motion } from "framer-motion";
 
 import ProductCard from "../../../components/common/ProductCard";
-import {
-  trendingProducts,
-  flashSaleProducts,
-  newArrivalProducts,
-} from "../../../components/dummy/dummy";
+// import {
+//   trendingProducts,
+//   flashSaleProducts,
+//   newArrivalProducts,
+// } from "../../../components/dummy/dummy";
 import { fadeUp } from "../../../animations";
+import { useEffect, useState } from "react";
+import type { IProduct } from "../types/products.types";
+import { getErrorMessage } from "../../../utils/getErrorMessage";
+import { getAllProducts } from "../../../api/products.api";
 
 // Combine all dummy product collections into a single list for display.
-const products = [
-  ...trendingProducts,
-  ...flashSaleProducts,
-  ...newArrivalProducts,
-];
+// const products = [
+//   ...trendingProducts,
+//   ...flashSaleProducts,
+//   ...newArrivalProducts,
+// ];
 
 const ProductsGrid = () => {
+  const [products, setProducts] = useState<IProduct[]>([]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const data = await getAllProducts();
+        console.log(data.products);
+        setProducts(data.products);
+      } catch (error) {
+        getErrorMessage(error);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+  
   return (
     <section className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
-      {products.map((product, index) => (
+      {products?.map((product, index) => (
         <motion.div
-          key={`${product.id}-${product.name}`}
+          key={product._id}
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"

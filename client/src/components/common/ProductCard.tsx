@@ -1,13 +1,13 @@
 import { Heart, Star } from "lucide-react";
-import type { Product } from "../../types/product.types";
+import type { IProduct } from "../../features/shop/types/products.types";
 
-function ProductCard({ product }: { product: Product }) {
+function ProductCard({ product }: { product: IProduct }) {
   return (
     <div className="group overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-shadow duration-300 hover:shadow-xl">
       {/* Image */}
       <div className="relative aspect-square overflow-hidden bg-muted">
         <img
-          src={product.image}
+          src={product.imageCover.url}
           alt={product.name}
           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
         />
@@ -24,7 +24,7 @@ function ProductCard({ product }: { product: Product }) {
           <Heart size={16} />
         </button>
         Out of Stock
-        {!product.inStock && (
+        {product.stock <= 0 && (
           <div className="absolute inset-0 flex items-center justify-center bg-background/70">
             <span className="rounded-full bg-foreground p-3 text-xs font-semibold text-background">
               Out of Stock
