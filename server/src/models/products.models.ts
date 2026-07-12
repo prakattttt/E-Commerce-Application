@@ -1,4 +1,4 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema, Types } from "mongoose";
 import slugify from "slugify";
 
 export interface IProductImage {
@@ -7,6 +7,8 @@ export interface IProductImage {
 }
 
 export interface IProduct {
+  _id: Types.ObjectId;
+
   name: string;
   slug: string;
 
@@ -22,8 +24,12 @@ export interface IProduct {
   category: string;
 
   imageCover: IProductImage;
-
   images: IProductImage[];
+
+  rating: number;
+  reviews: number;
+
+  badge?: string;
 
   createdAt: Date;
   updatedAt: Date;
@@ -41,6 +47,11 @@ export interface CreateProductDTO {
   brand: string;
 
   category: string;
+
+  rating?: number;
+  reviews?: number;
+
+  badge?: string;
 }
 
 const imageSchema = new Schema<IProductImage>(
@@ -122,6 +133,25 @@ const productSchema = new Schema<IProduct>(
     images: {
       type: [imageSchema],
       default: [],
+    },
+
+    rating: {
+      type: Number,
+      default: 0,
+      min: 0,
+      max: 5,
+    },
+
+    reviews: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
+
+    badge: {
+      type: String,
+      trim: true,
+      default: "",
     },
   },
   {
