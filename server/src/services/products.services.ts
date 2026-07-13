@@ -4,14 +4,54 @@ interface GetProductsOptions {
   skip?: number;
   category?: string;
   price?: string;
+  sort?: string;
 }
 
 export const getProducts = async ({
   skip = 0,
   category,
   price,
+  sort,
 }: GetProductsOptions) => {
   const query: Record<string, unknown> = {};
+
+  /* Sorting */
+
+  let sortOption: Record<string, 1 | -1> = {
+    createdAt: -1,
+  };
+
+  switch (sort) {
+    case "Most-Popular":
+      sortOption = {
+        reviews: -1,
+      };
+      break;
+
+    case "Top-Rated":
+      sortOption = {
+        rating: -1,
+      };
+      break;
+
+    case "L-H":
+      sortOption = {
+        price: 1,
+      };
+      break;
+
+    case "H-L":
+      sortOption = {
+        price: -1,
+      };
+      break;
+
+    case "Newest":
+      sortOption = {
+        createdAt: -1,
+      };
+      break;
+  }
 
   /* Category Filter */
 
@@ -49,7 +89,7 @@ export const getProducts = async ({
       break;
   }
 
-  return Product.find(query).sort({ createdAt: -1 }).skip(skip).limit(12);
+  return Product.find(query).sort(sortOption).skip(skip).limit(12);
 };
 
 export const getProductBySlug = async (slug: string) => {

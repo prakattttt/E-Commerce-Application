@@ -1,15 +1,22 @@
 import { motion } from "framer-motion";
 import { fadeUp } from "../../../animations";
+import type { TSort } from "../types/filter.types";
+import type React from "react";
 
-const options = [
-  "Most Popular",
-  "Top Rated",
-  "Newest",
-  "Price: Low To High",
-  "Price: High To Low",
+const options: { label: string; value: TSort }[] = [
+  { label: "Most Popular", value: "Most-Popular" },
+  { label: "Top Rated", value: "Top-Rated" },
+  { label: "Newest", value: "Newest" },
+  { label: "Price: Low To High", value: "L-H" },
+  { label: "Price: High To Low", value: "H-L" },
 ];
 
-const ShopHeader = () => {
+interface Props {
+  selectedSort: TSort;
+  setSelectedSort: React.Dispatch<React.SetStateAction<TSort>>;
+}
+
+const ShopHeader = ({ selectedSort, setSelectedSort }: Props) => {
   return (
     <motion.div
       variants={fadeUp}
@@ -34,11 +41,15 @@ const ShopHeader = () => {
       >
         {/* Sort order select menu for product listings. */}
         <motion.select
+          value={selectedSort}
+          onChange={(e) => setSelectedSort(e.target.value as TSort)}
           whileFocus={{ scale: 1.02 }}
           className="rounded-xl border border-border border-ring bg-card px-4 py-2.5 text-sm text-foreground outline-none transition"
         >
           {options.map((option) => (
-            <option key={option}>{option}</option>
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
           ))}
         </motion.select>
       </motion.div>

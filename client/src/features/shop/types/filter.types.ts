@@ -9,3 +9,6 @@ export type TCategory = "All" | "Electronics" | "Fashion" | "Shoes" | "Accessori
     Premium -> Premium
 */
 export type TPrice = "All" | "P1" | "P2" | "P3" | "Premium"; 
+
+// Type for sorting based on option
+export type TSort = "Newest" | "Most-Popular" | "Fashion" | "Top-Rated" | "H-L" | "L-H";

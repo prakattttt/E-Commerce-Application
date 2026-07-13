@@ -11,7 +11,9 @@ export const createProduct = async (data: CreateProductDTO) => {
 };
 
 export const getAllProducts = async () => {
-  return Product.find().populate("category", "name").sort({
+  return Product.find()
+  // .populate("category", "name")
+  .sort({
     createdAt: -1,
   });
 };

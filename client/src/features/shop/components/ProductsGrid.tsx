@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import type { IProduct } from "../types/products.types";
 import { getErrorMessage } from "../../../utils/getErrorMessage";
 import { getAllProducts } from "../../../api/products.api";
+import type { TCategory, TPrice, TSort } from "../types/filter.types";
 
 // Combine all dummy product collections into a single list for display.
 // const products = [
@@ -20,11 +21,12 @@ import { getAllProducts } from "../../../api/products.api";
 // ];
 
 type Props = {
-  selectedCategory: string;
-  selectedPrice: string;
+  selectedCategory: TCategory;
+  selectedPrice: TPrice;
+  selectedSort: TSort;
 };
 
-const ProductsGrid = ({ selectedCategory, selectedPrice }: Props) => {
+const ProductsGrid = ({ selectedCategory, selectedPrice, selectedSort }: Props) => {
   const [products, setProducts] = useState<IProduct[]>([]);
 
   useEffect(() => {
@@ -33,7 +35,9 @@ const ProductsGrid = ({ selectedCategory, selectedPrice }: Props) => {
         const data = await getAllProducts({
           category: selectedCategory,
           price: selectedPrice,
+          sort: selectedSort
         });
+        console.log(selectedSort)
         setProducts(data.products);
       } catch (error) {
         getErrorMessage(error);
@@ -41,7 +45,7 @@ const ProductsGrid = ({ selectedCategory, selectedPrice }: Props) => {
     };
 
     fetchProducts();
-  }, [selectedCategory, selectedPrice]);
+  }, [selectedCategory, selectedPrice, selectedSort]);
 
   return (
     <section className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">

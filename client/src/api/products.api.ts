@@ -3,6 +3,7 @@ import api from "./axios";
 export interface ProductFilters {
   category?: string;
   price?: string;
+  sort?: string;
 };
 
 export const getAllProducts = async (filters: ProductFilters = {}) => {
