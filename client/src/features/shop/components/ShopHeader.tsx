@@ -4,9 +4,9 @@ import type { TSort } from "../types/filter.types";
 import type React from "react";
 
 const options: { label: string; value: TSort }[] = [
+  { label: "Newest", value: "Newest" },
   { label: "Most Popular", value: "Most-Popular" },
   { label: "Top Rated", value: "Top-Rated" },
-  { label: "Newest", value: "Newest" },
   { label: "Price: Low To High", value: "L-H" },
   { label: "Price: High To Low", value: "H-L" },
 ];

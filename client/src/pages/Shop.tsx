@@ -11,7 +11,7 @@ import type {
 const Shop = () => {
   const [selectedCategory, setSelectedCategory] = useState<TCategory>("All");
   const [selectedPrice, setSelectedPrice] = useState<TPrice>("All");
-  const [selectedSort, setSelectedSort] = useState<TSort>("Most-Popular");
+  const [selectedSort, setSelectedSort] = useState<TSort>("Newest");
 
   return (
     <section className="min-h-screen bg-background pt-24 pb-10">
