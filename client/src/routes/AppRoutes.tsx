@@ -7,6 +7,7 @@ import Shop from "../pages/Shop";
 import Profile from "../pages/Profile";
 import AuthPage from "../pages/AuthPage";
 import ErrorPage from "../pages/ErrorPage";
+import AboutPage from "../pages/AboutPage";
 
 const AppRoutes = () => {
   return (
@@ -14,6 +15,7 @@ const AppRoutes = () => {
       <Route path="*" element={<ErrorPage/>} />
       <Route element={<MainLayout />}>
         <Route index element={<HomePage />} />
+        <Route path="about" element={<AboutPage />} />
         <Route path="shop" element={<Shop />} />
         <Route path="profile" element={<Profile />} />
         <Route path="auth" element={<AuthPage />} />
