@@ -7,9 +7,10 @@ import AboutCTA from "../features/about/components/AboutCTA";
 
 const About = () => {
   return (
-    <main className="bg-background pt-20">
-      <div className="mx-auto px-4 sm:px-6 max-w-7xl">
-        <AboutHero />
+    <main className="bg-background pt-14">
+      <AboutHero />
+
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <AboutStats />
         <AboutStory />
         <AboutValues />
