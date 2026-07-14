@@ -21,7 +21,7 @@ export interface IProduct {
 
   brand: string;
 
-  category: string;
+  category: mongoose.Types.ObjectId;
 
   imageCover: IProductImage;
   images: IProductImage[];
@@ -120,9 +120,10 @@ const productSchema = new Schema<IProduct>(
     },
 
     category: {
-      type: String,
-      // ref: "Category",
+      type: Schema.Types.ObjectId,
+      ref: "Category",
       required: true,
+      index: true,
     },
 
     imageCover: {
