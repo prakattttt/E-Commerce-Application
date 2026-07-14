@@ -8,6 +8,8 @@ import {
   deleteProduct,
 } from "../controllers/admin.controllers.js";
 
+import * as CategoryController from "../controllers/categories.controllers.js";
+
 import { protect } from "../middlewares/authentication.js";
 import { authorize } from "../middlewares/authorization.js";
 
@@ -36,5 +38,26 @@ router.get("/products/:id", getProductById);
 router.patch("/products/:id", updateProduct);
 
 router.delete("/products/:id", deleteProduct);
+
+router.post(
+  "/categories",
+  protect,
+  authorize("admin"),
+  CategoryController.createCategory,
+);
+
+router.patch(
+  "/categories/:slug",
+  protect,
+  authorize("admin"),
+  CategoryController.updateCategory,
+);
+
+router.delete(
+  "/categories/:slug",
+  protect,
+  authorize("admin"),
+  CategoryController.deleteCategory,
+);
 
 export default router;
