@@ -1,24 +1,12 @@
 import { motion } from "framer-motion";
 
 import ProductCard from "../../../components/common/ProductCard";
-// import {
-//   trendingProducts,
-//   flashSaleProducts,
-//   newArrivalProducts,
-// } from "../../../components/dummy/dummy";
 import { fadeUp } from "../../../animations";
 import { useEffect, useState } from "react";
 import type { IProduct } from "../types/products.types";
 import { getErrorMessage } from "../../../utils/getErrorMessage";
 import { getAllProducts } from "../../../api/products.api";
 import type { TCategory, TPrice, TSort } from "../types/filter.types";
-
-// Combine all dummy product collections into a single list for display.
-// const products = [
-//   ...trendingProducts,
-//   ...flashSaleProducts,
-//   ...newArrivalProducts,
-// ];
 
 type Props = {
   selectedCategory: TCategory;
