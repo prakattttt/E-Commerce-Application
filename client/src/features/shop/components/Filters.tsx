@@ -1,14 +1,10 @@
 import { motion } from "framer-motion";
 import { fadeUp } from "../../../animations";
-import type { TCategory, TPrice } from "../types/filter.types";
-
-const categories: TCategory[] = [
-  "All",
-  "Electronics",
-  "Fashion",
-  "Shoes",
-  "Accessories",
-];
+import type { TPrice } from "../types/filter.types";
+import { useState, useEffect } from "react";
+import type { ICategory } from "../types/categories.types";
+import { getErrorMessage } from "../../../utils/getErrorMessage";
+import { getCategories } from "../api/categories.api";
 
 const prices: { value: TPrice; label: string }[] = [
   { value: "All", label: "All Prices" },
@@ -19,8 +15,8 @@ const prices: { value: TPrice; label: string }[] = [
 ];
 
 interface Props {
-  selectedCategory: TCategory;
-  setSelectedCategory: React.Dispatch<React.SetStateAction<TCategory>>;
+  selectedCategory: string;
+  setSelectedCategory: React.Dispatch<React.SetStateAction<string>>;
   selectedPrice: TPrice;
   setSelectedPrice: React.Dispatch<React.SetStateAction<TPrice>>;
 }
@@ -31,6 +27,27 @@ const Filters = ({
   selectedPrice,
   setSelectedPrice,
 }: Props) => {
+  const [categories, setCategories] = useState<ICategory[]>([]);
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const data = await getCategories();
+
+        setCategories([
+          {
+            _id: "all",
+            name: "All",
+            slug: "all",
+          },
+          ...data.categories,
+        ]);
+      } catch (error) {
+        getErrorMessage(error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
   return (
     <>
       {/* Mobile Filters */}
@@ -44,16 +61,16 @@ const Filters = ({
           <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
             {categories.map((category) => (
               <button
-                key={category}
-                onClick={() => setSelectedCategory(category)}
+                key={category._id}
+                onClick={() => setSelectedCategory(category.slug as string)}
                 className={`whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition
                   ${
-                    selectedCategory === category
+                    selectedCategory === category.slug
                       ? "bg-primary text-primary-foreground"
                       : "bg-card border border-border hover:bg-secondary"
                   }`}
               >
-                {category}
+                {category.name}
               </button>
             ))}
           </div>
@@ -110,16 +127,16 @@ const Filters = ({
             <div className="space-y-1">
               {categories.map((category) => (
                 <button
-                  key={category}
-                  onClick={() => setSelectedCategory(category)}
+                  key={category._id}
+                  onClick={() => setSelectedCategory(category.slug as string)}
                   className={`w-full rounded-full px-4 py-2 text-left text-sm transition-all
                     ${
-                      selectedCategory === category
+                      selectedCategory === category.slug
                         ? "bg-primary text-primary-foreground"
                         : "hover:bg-secondary"
                     }`}
                 >
-                  {category}
+                  {category.name}
                 </button>
               ))}
             </div>

@@ -1,3 +1,5 @@
+import type { ICategory } from "./categories.types";
+
 export interface IProductImage {
   url: string;
   publicId: string;
@@ -18,7 +20,7 @@ export interface IProduct {
 
   brand: string;
 
-  category: string;
+  category: ICategory;
 
   imageCover: IProductImage;
 

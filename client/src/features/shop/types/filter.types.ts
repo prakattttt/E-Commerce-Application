@@ -1,5 +1,4 @@
 // Type for each individual categories
-export type TCategory = "All" | "Electronics" | "Fashion" | "Shoes" | "Accessories";
 
 /* Type for each price range:
     All -> All
