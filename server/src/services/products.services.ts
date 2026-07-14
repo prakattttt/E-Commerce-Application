@@ -1,4 +1,5 @@
 import { Product } from "../models/products.models.js";
+import { Category } from "../models/categories.models.js";
 
 interface GetProductsOptions {
   skip?: number;
@@ -23,49 +24,43 @@ export const getProducts = async ({
 
   switch (sort) {
     case "Most-Popular":
-      sortOption = {
-        reviews: -1,
-      };
+      sortOption = { reviews: -1 };
       break;
 
     case "Top-Rated":
-      sortOption = {
-        rating: -1,
-      };
+      sortOption = { rating: -1 };
       break;
 
     case "L-H":
-      sortOption = {
-        price: 1,
-      };
+      sortOption = { price: 1 };
       break;
 
     case "H-L":
-      sortOption = {
-        price: -1,
-      };
+      sortOption = { price: -1 };
       break;
 
     case "Newest":
-      sortOption = {
-        createdAt: -1,
-      };
+      sortOption = { createdAt: -1 };
       break;
   }
 
-  /* Category Filter */
+  /* Category */
 
-  if (category && category !== "All") {
-    query.category = category;
+  if (category && category !== "all") {
+    const categoryDoc = await Category.findOne({
+      slug: category,
+    });
+
+    if (categoryDoc) {
+      query.category = categoryDoc._id;
+    }
   }
 
-  /* Price Filter */
+  /* Price */
 
   switch (price) {
     case "P1":
-      query.price = {
-        $lt: 100,
-      };
+      query.price = { $lt: 100 };
       break;
 
     case "P2":
@@ -89,19 +84,9 @@ export const getProducts = async ({
       break;
   }
 
-  return Product.find(query).sort(sortOption).skip(skip).limit(12);
-};
-
-export const getProductBySlug = async (slug: string) => {
-  return Product.findOne({
-    slug,
-  });
-};
-
-export const getFeaturedProducts = async () => {
-  return Product.find()
-    .sort({
-      rating: -1,
-    })
-    .limit(8);
+  return Product.find(query)
+    .populate("category")
+    .sort(sortOption)
+    .skip(skip)
+    .limit(12);
 };
