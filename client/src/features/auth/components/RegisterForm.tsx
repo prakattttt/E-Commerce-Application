@@ -16,7 +16,7 @@ interface Props {
 }
 
 const RegisterForm = ({ switchMode }: Props) => {
-  const { setUser } = useAuth();
+  const { login } = useAuth();
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -32,7 +32,7 @@ const RegisterForm = ({ switchMode }: Props) => {
   const onSubmit = async (data: RegisterFormData) => {
     try {
       const response = await registerUser(data);
-      setUser(response);
+      login(response);
       toast.success("User registered successfully");
     } catch (error) {
       toast.error(getErrorMessage(error));
