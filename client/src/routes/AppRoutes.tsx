@@ -12,6 +12,8 @@ import ErrorPage from "../pages/ErrorPage";
 
 import AdminHome from "../pages/admin/AdminHome";
 
+import ProtectAdmin from "../utils/ProtectAdmin";
+
 const AppRoutes = () => {
   return (
     <Routes>
@@ -29,16 +31,17 @@ const AppRoutes = () => {
       </Route>
 
       {/* Admin */}
-      <Route path="/admin" element={<AdminLayout />}>
-        <Route index element={<AdminHome />} />
+      <Route element={<ProtectAdmin />}>
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<AdminHome />} />
 
-        {/* future */}
-        {/* <Route path="products" element={<AdminProducts />} /> */}
-        {/* <Route path="categories" element={<AdminCategories />} /> */}
-        {/* <Route path="orders" element={<AdminOrders />} /> */}
-        {/* <Route path="users" element={<AdminUsers />} /> */}
+          {/* future */}
+          {/* <Route path="products" element={<AdminProducts />} /> */}
+          {/* <Route path="categories" element={<AdminCategories />} /> */}
+          {/* <Route path="orders" element={<AdminOrders />} /> */}
+          {/* <Route path="users" element={<AdminUsers />} /> */}
+        </Route>
       </Route>
-
       {/* 404 */}
       <Route path="*" element={<ErrorPage />} />
     </Routes>
