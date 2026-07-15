@@ -1,96 +1,89 @@
-import { Link, useLocation } from "react-router-dom";
 import {
-  ArrowLeft,
   LayoutDashboard,
   Package,
   Tags,
   ShoppingCart,
   Users,
+  ArrowLeft,
 } from "lucide-react";
 
-const navItems = [
+import { Link, NavLink } from "react-router-dom";
+
+const links = [
   {
-    label: "Dashboard",
+    name: "Dashboard",
     path: "/admin",
     icon: LayoutDashboard,
   },
   {
-    label: "Products",
+    name: "Products",
     path: "/admin/products",
     icon: Package,
   },
   {
-    label: "Categories",
+    name: "Categories",
     path: "/admin/categories",
     icon: Tags,
   },
   {
-    label: "Orders",
+    name: "Orders",
     path: "/admin/orders",
     icon: ShoppingCart,
   },
   {
-    label: "Users",
+    name: "Users",
     path: "/admin/users",
     icon: Users,
   },
 ];
 
 const AdminSidebar = () => {
-  const location = useLocation();
-
   return (
-    <aside className="sticky top-0 hidden h-screen w-72 flex-col border-r border-border bg-card px-6 py-8 lg:flex">
-      {/* Logo */}
-      <div className="mb-10">
-        <Link to="/" className="inline-block">
-          <h1 className="font-display text-3xl font-bold">
-            <span className="text-primary">Shop</span>
-            <span className="text-accent">Sphere</span>
-          </h1>
-        </Link>
+    <aside className="fixed left-0 top-0 hidden h-screen w-72 border-r border-border bg-card lg:flex lg:flex-col">
+      <div className="border-b border-border p-8">
+        <h1 className="font-display text-3xl font-bold">
+          <span className="text-primary">Shop</span>
+          <span className="text-accent">Sphere</span>
+        </h1>
 
-        <span className="mt-3 inline-flex rounded-full bg-secondary px-3 py-1 text-xs font-semibold text-secondary-foreground">
-          Admin Panel
-        </span>
+        <p className="mt-2 text-sm text-muted-foreground">Admin Dashboard</p>
       </div>
 
-      {/* Navigation */}
-      <nav className="flex flex-1 flex-col gap-2">
-        {navItems.map((item) => {
-          const Icon = item.icon;
-
-          const active =
-            location.pathname === item.path ||
-            (item.path === "/admin" && location.pathname === "/admin");
+      <nav className="flex flex-1 flex-col gap-2 p-6">
+        {links.map((link) => {
+          const Icon = link.icon;
 
           return (
-            <Link
-              key={item.path}
-              to={item.path}
-              className={`flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium transition-all duration-200
-              ${
-                active
-                  ? "bg-primary text-primary-foreground shadow-lg"
-                  : "text-muted-foreground hover:bg-secondary hover:text-foreground"
-              }`}
+            <NavLink
+              key={link.path}
+              to={link.path}
+              end={link.path === "/admin"}
+              className={({ isActive }) =>
+                `flex items-center gap-3 rounded-xl px-4 py-3 transition
+                ${
+                  isActive
+                    ? "bg-primary text-primary-foreground"
+                    : "hover:bg-secondary"
+                }`
+              }
             >
               <Icon size={20} />
 
-              {item.label}
-            </Link>
+              {link.name}
+            </NavLink>
           );
         })}
       </nav>
 
-      {/* Back to Store */}
-      <Link
-        to="/"
-        className="mt-6 flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium text-muted-foreground transition hover:bg-secondary hover:text-foreground"
-      >
-        <ArrowLeft size={18} />
-        Back to Store
-      </Link>
+      <div className="border-t border-border p-6">
+        <Link
+          to="/"
+          className="flex items-center gap-3 rounded-xl px-4 py-3 hover:bg-secondary"
+        >
+          <ArrowLeft size={18} />
+          Back to Store
+        </Link>
+      </div>
     </aside>
   );
 };
