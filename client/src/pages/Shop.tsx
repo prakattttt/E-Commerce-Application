@@ -3,13 +3,12 @@ import ProductsGrid from "../features/shop/components/ProductsGrid";
 import Filters from "../features/shop/components/Filters";
 import { useState } from "react";
 import type {
-  TCategory,
   TPrice,
   TSort,
 } from "../features/shop/types/filter.types";
 
 const Shop = () => {
-  const [selectedCategory, setSelectedCategory] = useState<TCategory>("All");
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [selectedPrice, setSelectedPrice] = useState<TPrice>("All");
   const [selectedSort, setSelectedSort] = useState<TSort>("Newest");
 
