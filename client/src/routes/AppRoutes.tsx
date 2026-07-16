@@ -11,6 +11,8 @@ import AboutPage from "../pages/AboutPage";
 import ErrorPage from "../pages/ErrorPage";
 import AdminProducts from "../pages/admin/AdminProducts";
 import AdminCategories from "../pages/admin/AdminCategories";
+import AdminOrders from "../pages/admin/AdminOrders";
+import AdminUsers from "../pages/admin/AdminUsers";
 
 import AdminHome from "../pages/admin/AdminDashboard";
 
@@ -40,8 +42,8 @@ const AppRoutes = () => {
           {/* future */}
           <Route path="products" element={<AdminProducts />} />
           <Route path="categories" element={<AdminCategories />} />
-          {/* <Route path="orders" element={<AdminOrders />} /> */}
-          {/* <Route path="users" element={<AdminUsers />} /> */}
+          <Route path="orders" element={<AdminOrders />} />
+          <Route path="users" element={<AdminUsers />} />
         </Route>
       </Route>
       {/* 404 */}
