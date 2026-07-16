@@ -10,7 +10,7 @@ import AuthPage from "../pages/AuthPage";
 import AboutPage from "../pages/AboutPage";
 import ErrorPage from "../pages/ErrorPage";
 
-import AdminHome from "../pages/admin/AdminHome";
+import AdminHome from "../pages/admin/AdminDashboard";
 
 import ProtectAdmin from "../utils/ProtectAdmin";
 
