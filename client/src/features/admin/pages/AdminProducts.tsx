@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Plus, Search, Pencil, Trash2 } from "lucide-react";
+import { Plus, Search } from "lucide-react";
 import { Link } from "react-router-dom";
 
 import { fadeUp } from "../../../animations";
@@ -58,63 +58,62 @@ const AdminProducts = () => {
 
       {/* Products Table */}
       <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
-        <div className="overflow-x-auto">
-          <table className="min-w-full">
-            <thead className="bg-secondary">
-              <tr className="text-left text-sm font-semibold">
-                <th className="px-6 py-4">Image</th>
-                <th className="px-6 py-4">Product</th>
-                <th className="px-6 py-4">Category</th>
-                <th className="px-6 py-4">Price</th>
-                <th className="px-6 py-4">Stock</th>
-                <th className="px-6 py-4">Status</th>
-                <th className="px-6 py-4">Actions</th>
-              </tr>
-            </thead>
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          {[1, 2, 3, 4].map((item) => (
+            <motion.div
+              key={item}
+              variants={fadeUp}
+              className="rounded-2xl border border-border bg-card p-5 shadow-sm"
+            >
+              <div className="flex gap-4">
+                <div className="h-20 w-20 rounded-xl bg-secondary" />
 
-            <tbody>
-              {[1, 2, 3, 4, 5].map((item) => (
-                <tr
-                  key={item}
-                  className="border-t border-border hover:bg-secondary/40"
-                >
-                  <td className="px-6 py-4">
-                    <div className="h-14 w-14 rounded-xl bg-secondary" />
-                  </td>
+                <div className="flex-1">
+                  <h2 className="font-semibold">iPhone 16 Pro</h2>
 
-                  <td className="px-6 py-4">
-                    <div className="font-medium">iPhone 16 Pro</div>
+                  <p className="text-sm text-muted-foreground">Apple</p>
+                </div>
+              </div>
 
-                    <div className="text-sm text-muted-foreground">Apple</div>
-                  </td>
+              <div className="mt-5 space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Category</span>
 
-                  <td className="px-6 py-4">Electronics</td>
+                  <span>Electronics</span>
+                </div>
 
-                  <td className="px-6 py-4 font-medium">$999</td>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Price</span>
 
-                  <td className="px-6 py-4">24</td>
+                  <span className="font-semibold">$999</span>
+                </div>
 
-                  <td className="px-6 py-4">
-                    <span className="rounded-full bg-success/15 px-3 py-1 text-sm font-medium text-success">
-                      In Stock
-                    </span>
-                  </td>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Stock</span>
 
-                  <td className="px-6 py-4">
-                    <div className="flex gap-2">
-                      <button className="rounded-lg p-2 transition hover:bg-secondary">
-                        <Pencil size={18} />
-                      </button>
+                  <span>24</span>
+                </div>
 
-                      <button className="rounded-lg p-2 text-error transition hover:bg-error/10">
-                        <Trash2 size={18} />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Status</span>
+
+                  <span className="rounded-full bg-success/15 px-3 py-1 text-success text-xs">
+                    In Stock
+                  </span>
+                </div>
+              </div>
+
+              <div className="mt-6 flex gap-2">
+                <button className="flex-1 rounded-xl bg-secondary py-2 hover:bg-secondary-foreground hover:text-white transition">
+                  Edit
+                </button>
+
+                <button className="rounded-xl bg-error/10 px-4 text-error hover:bg-error hover:text-white transition">
+                  Delete
+                </button>
+              </div>
+            </motion.div>
+          ))}
         </div>
       </div>
     </motion.section>

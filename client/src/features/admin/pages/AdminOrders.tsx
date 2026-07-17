@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Search, Eye } from "lucide-react";
+import { Search, Eye, Package, User, Calendar, CreditCard } from "lucide-react";
 
 import { fadeUp } from "../../../animations";
 
@@ -9,18 +9,28 @@ const orders = [
     customer: "John Doe",
     total: "$299",
     status: "Delivered",
+    date: "12 Jul 2026",
   },
   {
     id: "#1002",
     customer: "Jane Smith",
     total: "$129",
     status: "Pending",
+    date: "14 Jul 2026",
   },
   {
     id: "#1003",
     customer: "Alex Johnson",
     total: "$89",
     status: "Cancelled",
+    date: "15 Jul 2026",
+  },
+  {
+    id: "#1004",
+    customer: "Emily Wilson",
+    total: "$549",
+    status: "Delivered",
+    date: "16 Jul 2026",
   },
 ];
 
@@ -32,6 +42,7 @@ const AdminOrders = () => {
       animate="visible"
       className="space-y-8"
     >
+      {/* ================= Header ================= */}
       <div>
         <h1 className="font-display text-3xl font-bold">Orders</h1>
 
@@ -40,6 +51,7 @@ const AdminOrders = () => {
         </p>
       </div>
 
+      {/* ================= Search ================= */}
       <div className="relative max-w-md">
         <Search
           size={18}
@@ -47,50 +59,73 @@ const AdminOrders = () => {
         />
 
         <input
-          placeholder="Search order..."
+          type="text"
+          placeholder="Search orders..."
           className="w-full rounded-xl border border-border bg-card py-3 pl-11 pr-4 outline-none transition focus:border-primary"
         />
       </div>
 
-      <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
-        <table className="min-w-full">
-          <thead className="bg-secondary">
-            <tr className="text-left text-sm font-semibold">
-              <th className="px-6 py-4">Order ID</th>
-              <th className="px-6 py-4">Customer</th>
-              <th className="px-6 py-4">Total</th>
-              <th className="px-6 py-4">Status</th>
-              <th className="px-6 py-4">Action</th>
-            </tr>
-          </thead>
+      {/* ================= Orders ================= */}
+      <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+        {orders.map((order, index) => (
+          <motion.div
+            key={order.id}
+            variants={fadeUp}
+            custom={index}
+            initial="hidden"
+            animate="visible"
+            className="rounded-2xl border border-border bg-card p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
+          >
+            {/* Icon */}
+            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-secondary text-primary">
+              <Package size={30} />
+            </div>
 
-          <tbody>
-            {orders.map((order) => (
-              <tr
-                key={order.id}
-                className="border-t border-border hover:bg-secondary/40"
+            {/* Order ID */}
+            <h2 className="mt-5 font-display text-xl font-bold">{order.id}</h2>
+
+            {/* Customer */}
+            <div className="mt-4 flex items-center gap-2 text-sm text-muted-foreground">
+              <User size={16} />
+              {order.customer}
+            </div>
+
+            {/* Date */}
+            <div className="mt-3 flex items-center gap-2 text-sm text-muted-foreground">
+              <Calendar size={16} />
+              {order.date}
+            </div>
+
+            {/* Total */}
+            <div className="mt-3 flex items-center gap-2 text-sm text-muted-foreground">
+              <CreditCard size={16} />
+              {order.total}
+            </div>
+
+            {/* Status */}
+            <div className="mt-6">
+              <span
+                className={`rounded-full px-4 py-2 text-sm font-medium ${
+                  order.status === "Delivered"
+                    ? "bg-success/15 text-success"
+                    : order.status === "Pending"
+                      ? "bg-warning/15 text-warning"
+                      : "bg-error/15 text-error"
+                }`}
               >
-                <td className="px-6 py-4">{order.id}</td>
+                {order.status}
+              </span>
+            </div>
 
-                <td className="px-6 py-4">{order.customer}</td>
-
-                <td className="px-6 py-4">{order.total}</td>
-
-                <td className="px-6 py-4">
-                  <span className="rounded-full bg-secondary px-3 py-1 text-sm">
-                    {order.status}
-                  </span>
-                </td>
-
-                <td className="px-6 py-4">
-                  <button className="rounded-lg p-2 hover:bg-secondary">
-                    <Eye size={18} />
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+            {/* Actions */}
+            <div className="mt-6 flex gap-3">
+              <button className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-border py-3 transition hover:bg-secondary">
+                <Eye size={18} />
+                View Details
+              </button>
+            </div>
+          </motion.div>
+        ))}
       </div>
     </motion.section>
   );
