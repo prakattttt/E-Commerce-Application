@@ -15,63 +15,21 @@ import { getDashboard } from "../api/admin.api";
 import { getErrorMessage } from "../../../utils/getErrorMessage";
 
 const AdminDashboard = () => {
-  const [stats, setStats] = useState([
-    {
-      title: "Products",
-      value: 0,
-      icon: Package,
-      color: "text-primary",
-    },
-    {
-      title: "Categories",
-      value: 0,
-      icon: Tags,
-      color: "text-accent",
-    },
-    {
-      title: "Orders",
-      value: 0,
-      icon: ShoppingCart,
-      color: "text-success",
-    },
-    {
-      title: "Users",
-      value: 0,
-      icon: Users,
-      color: "text-info",
-    },
-  ]);
+  const [dashboard, setDashboard] = useState({
+    products: 0,
+    categories: 0,
+    users: 0,
+    orders: 0,
+  });
+
   useEffect(() => {
     const run = async () => {
       try {
-        const { products, categories, users } = await getDashboard();
-
-        setStats([
-          {
-            title: "Products",
-            value: products,
-            icon: Package,
-            color: "text-primary",
-          },
-          {
-            title: "Categories",
-            value: categories,
-            icon: Tags,
-            color: "text-accent",
-          },
-          {
-            title: "Orders",
-            value: 0,
-            icon: ShoppingCart,
-            color: "text-success",
-          },
-          {
-            title: "Users",
-            value: users,
-            icon: Users,
-            color: "text-info",
-          },
-        ]);
+        const data = await getDashboard();
+        setDashboard({
+          ...data,
+          orders: 0,
+        });
       } catch (error) {
         getErrorMessage(error);
       }
@@ -79,6 +37,33 @@ const AdminDashboard = () => {
 
     run();
   }, []);
+
+  const stats = [
+    {
+      title: "Products",
+      value: dashboard.products,
+      icon: Package,
+      color: "text-primary",
+    },
+    {
+      title: "Categories",
+      value: dashboard.categories,
+      icon: Tags,
+      color: "text-accent",
+    },
+    {
+      title: "Orders",
+      value: dashboard.orders,
+      icon: ShoppingCart,
+      color: "text-success",
+    },
+    {
+      title: "Users",
+      value: dashboard.users,
+      icon: Users,
+      color: "text-info",
+    },
+  ];
   return (
     <div className="space-y-8">
       {/* Dashboard Heading */}
