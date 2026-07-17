@@ -6,6 +6,7 @@ import {
   getProductById,
   updateProduct,
   deleteProduct,
+  getDashboard,
 } from "../controllers/admin.controllers.js";
 
 import * as CategoryController from "../controllers/categories.controllers.js";
@@ -34,6 +35,8 @@ router.post("/products", createProduct);
 router.get("/products", getAllProducts);
 
 router.get("/products/:id", getProductById);
+
+router.get("/dashboard", getDashboard);
 
 router.patch("/products/:id", updateProduct);
 

@@ -2,6 +2,7 @@ import { Product } from "../models/products.models.js";
 import type { CreateProductDTO } from "../models/products.models.js";
 import { Category } from "../models/categories.models.js";
 import AppError from "../utils/AppError.js";
+import { User } from "../models/users.models.js";
 
 export const createProduct = async (data: CreateProductDTO) => {
   const category = await Category.findById(data.category);
@@ -34,4 +35,18 @@ export const updateProduct = async (
 
 export const deleteProduct = async (id: string) => {
   return Product.findByIdAndDelete(id);
+};
+
+export const getDashboard = async () => {
+  const [products, users, categories] = await Promise.all([
+    Product.countDocuments(),
+    User.countDocuments(),
+    Category.countDocuments(),
+  ]);
+
+  return {
+    products,
+    users,
+    categories,
+  };
 };

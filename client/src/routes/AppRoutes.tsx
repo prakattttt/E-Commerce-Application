@@ -9,12 +9,12 @@ import Profile from "../pages/Profile";
 import AuthPage from "../pages/AuthPage";
 import AboutPage from "../pages/AboutPage";
 import ErrorPage from "../pages/ErrorPage";
-import AdminProducts from "../pages/admin/AdminProducts";
-import AdminCategories from "../pages/admin/AdminCategories";
-import AdminOrders from "../pages/admin/AdminOrders";
-import AdminUsers from "../pages/admin/AdminUsers";
+import AdminProducts from "../features/admin/pages/AdminProducts";
+import AdminCategories from "../features/admin/pages/AdminCategories";
+import AdminOrders from "../features/admin/pages/AdminOrders";
+import AdminUsers from "../features/admin/pages/AdminUsers";
 
-import AdminHome from "../pages/admin/AdminDashboard";
+import AdminHome from "../features/admin/pages/AdminDashboard";
 
 import ProtectAdmin from "../utils/ProtectAdmin";
 

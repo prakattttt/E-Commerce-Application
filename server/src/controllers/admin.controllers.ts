@@ -94,3 +94,16 @@ export const deleteProduct: RequestHandler = expressAsyncHandler(
     });
   },
 );
+
+
+export const getDashboard: RequestHandler = expressAsyncHandler(
+  async (_req, res) => {
+    const { products, categories, users } = await AdminService.getDashboard();
+    res.status(200).json({
+      success: true,
+      products, 
+      categories,
+      users
+    });
+  },
+);
