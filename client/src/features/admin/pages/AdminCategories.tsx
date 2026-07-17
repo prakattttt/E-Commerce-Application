@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { Plus, Pencil, Trash2, Search } from "lucide-react";
 import { Link } from "react-router-dom";
 
-import { fadeUp } from "../../animations";
+import { fadeUp } from "../../../animations";
 
 const categories = [
   {

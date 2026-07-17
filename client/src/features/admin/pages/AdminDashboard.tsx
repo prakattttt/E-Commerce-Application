@@ -9,36 +9,76 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
-import { fadeUp } from "../../animations";
-
-const stats = [
-  {
-    title: "Products",
-    value: 12,
-    icon: Package,
-    color: "text-primary",
-  },
-  {
-    title: "Categories",
-    value: 4,
-    icon: Tags,
-    color: "text-accent",
-  },
-  {
-    title: "Orders",
-    value: 0,
-    icon: ShoppingCart,
-    color: "text-success",
-  },
-  {
-    title: "Users",
-    value: 1,
-    icon: Users,
-    color: "text-info",
-  },
-];
+import { fadeUp } from "../../../animations";
+import { useState, useEffect } from "react";
+import { getDashboard } from "../api/admin.api";
+import { getErrorMessage } from "../../../utils/getErrorMessage";
 
 const AdminDashboard = () => {
+  const [stats, setStats] = useState([
+    {
+      title: "Products",
+      value: 0,
+      icon: Package,
+      color: "text-primary",
+    },
+    {
+      title: "Categories",
+      value: 0,
+      icon: Tags,
+      color: "text-accent",
+    },
+    {
+      title: "Orders",
+      value: 0,
+      icon: ShoppingCart,
+      color: "text-success",
+    },
+    {
+      title: "Users",
+      value: 0,
+      icon: Users,
+      color: "text-info",
+    },
+  ]);
+  useEffect(() => {
+    const run = async () => {
+      try {
+        const { products, categories, users } = await getDashboard();
+
+        setStats([
+          {
+            title: "Products",
+            value: products,
+            icon: Package,
+            color: "text-primary",
+          },
+          {
+            title: "Categories",
+            value: categories,
+            icon: Tags,
+            color: "text-accent",
+          },
+          {
+            title: "Orders",
+            value: 0,
+            icon: ShoppingCart,
+            color: "text-success",
+          },
+          {
+            title: "Users",
+            value: users,
+            icon: Users,
+            color: "text-info",
+          },
+        ]);
+      } catch (error) {
+        getErrorMessage(error);
+      }
+    };
+
+    run();
+  }, []);
   return (
     <div className="space-y-8">
       {/* Dashboard Heading */}

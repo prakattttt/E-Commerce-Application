@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Search, Shield, Trash2 } from "lucide-react";
 
-import { fadeUp } from "../../animations";
+import { fadeUp } from "../../../animations";
 
 const users = [
   {

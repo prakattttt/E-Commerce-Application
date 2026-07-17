@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Search, Eye } from "lucide-react";
 
-import { fadeUp } from "../../animations";
+import { fadeUp } from "../../../animations";
 
 const orders = [
   {

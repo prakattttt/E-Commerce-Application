@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { Plus, Search, Pencil, Trash2 } from "lucide-react";
 import { Link } from "react-router-dom";
 
-import { fadeUp } from "../../animations";
+import { fadeUp } from "../../../animations";
 
 const AdminProducts = () => {
   return (
