@@ -38,7 +38,7 @@ export const getAllProducts = async ({
 
   return Product.find(query)
     .populate("category")
-    .sort({createdAt: -1})
+    .sort({ createdAt: -1 })
     .skip(skip)
     .limit(12);
 };
@@ -73,4 +73,8 @@ export const getDashboard = async () => {
     users,
     categories,
   };
+};
+
+export const getAllUsers = async (skip = 0) => {
+  return User.find().select("name email avatar role createdAt").skip(skip).limit(12);
 };

@@ -11,8 +11,13 @@ export const getDashboard = async () => {
 
 export const getProducts = async (filters: ProductFilters = {}) => {
   const { data } = await api.get("/admin/products", {
-    params: filters
+    params: filters,
   });
-  
+
   return data;
+};
+
+export const getUsers = async () => {
+  const response = await api.get("/admin/users");
+  return response.data;
 };
