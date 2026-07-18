@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Plus, Search, Pencil, Trash2 } from "lucide-react";
+import { Plus, Search, Pencil, Trash2, StarIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 
@@ -201,8 +201,8 @@ const AdminProducts = () => {
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Rating</span>
 
-                  <span>
-                    ⭐ {product.rating} ({product.reviews})
+                  <span className="flex items-center gap-1">
+                    <StarIcon size={18} className="fill-gold text-gold" /> {product.rating} ({product.reviews})
                   </span>
                 </div>
 
@@ -222,17 +222,17 @@ const AdminProducts = () => {
               </div>
 
               {/* Actions */}
-            <div className="mt-6 flex gap-3">
-              <button className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-border py-3 transition-all duration-200 hover:bg-secondary hover:text-white">
-                <Pencil size={18} />
-                Edit
-              </button>
+              <div className="mt-6 flex gap-3">
+                <button className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-border py-3 transition-all duration-200 hover:bg-secondary">
+                  <Pencil size={18} />
+                  Edit
+                </button>
 
-              <button className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-error/10 py-3 text-error transition-all duration-200 hover:bg-error hover:text-white">
-                <Trash2 size={18} />
-                Delete
-              </button>
-            </div>
+                <button className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-error/10 py-3 text-error transition-all duration-200 hover:bg-error hover:text-white">
+                  <Trash2 size={18} />
+                  Delete
+                </button>
+              </div>
             </motion.div>
           ))}
         </div>
