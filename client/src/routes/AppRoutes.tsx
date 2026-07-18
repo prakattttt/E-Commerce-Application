@@ -13,6 +13,8 @@ import AdminProducts from "../features/admin/pages/AdminProducts";
 import AdminCategories from "../features/admin/pages/AdminCategories";
 import AdminOrders from "../features/admin/pages/AdminOrders";
 import AdminUsers from "../features/admin/pages/AdminUsers";
+import NewProduct from "../features/admin/pages/NewProduct";
+import NewCategory from "../features/admin/pages/NewCategory"
 
 import AdminHome from "../features/admin/pages/AdminDashboard";
 
@@ -41,7 +43,9 @@ const AppRoutes = () => {
 
           {/* future */}
           <Route path="products" element={<AdminProducts />} />
+          <Route path="products/new" element={<NewProduct />} />
           <Route path="categories" element={<AdminCategories />} />
+          <Route path="categories/new" element={<NewCategory />} />
           <Route path="orders" element={<AdminOrders />} />
           <Route path="users" element={<AdminUsers />} />
         </Route>
