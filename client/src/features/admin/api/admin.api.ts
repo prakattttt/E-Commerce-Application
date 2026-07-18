@@ -21,3 +21,8 @@ export const getUsers = async () => {
   const response = await api.get("/admin/users");
   return response.data;
 };
+
+export const getCategories = async () => {
+  const response = await api.get("/admin/categories");
+  return response.data;
+};

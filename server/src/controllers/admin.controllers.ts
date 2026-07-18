@@ -24,7 +24,7 @@ export const getAllProducts: RequestHandler = expressAsyncHandler(
   async (req, res) => {
     const skip = Number(req.query.skip) || 0;
     const category = req.query.category as string;
-    const products = await AdminService.getAllProducts({skip, category});
+    const products = await AdminService.getAllProducts({ skip, category });
 
     res.status(200).json({
       success: true,
@@ -117,6 +117,18 @@ export const getAllUsers: RequestHandler = expressAsyncHandler(
     res.status(200).json({
       success: true,
       users,
+    });
+  },
+);
+
+export const getCategories: RequestHandler = expressAsyncHandler(
+  async (req, res) => {
+    const skip = Number(req.query.skip) || 0;
+    const categories = await AdminService.getCategories(skip);
+
+    res.status(200).json({
+      success: true,
+      categories,
     });
   },
 );

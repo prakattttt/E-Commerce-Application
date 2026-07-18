@@ -1,37 +1,27 @@
 import { motion } from "framer-motion";
 import { Plus, Pencil, Trash2, Search, Package } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 import { fadeUp } from "../../../animations";
-
-const categories = [
-  {
-    _id: "1",
-    name: "Electronics",
-    slug: "electronics",
-    products: 18,
-  },
-  {
-    _id: "2",
-    name: "Fashion",
-    slug: "fashion",
-    products: 24,
-  },
-  {
-    _id: "3",
-    name: "Shoes",
-    slug: "shoes",
-    products: 12,
-  },
-  {
-    _id: "4",
-    name: "Accessories",
-    slug: "accessories",
-    products: 9,
-  },
-];
+import { getCategories } from "../api/admin.api";
+import { getErrorMessage } from "../../../utils/getErrorMessage";
+import type { ICategoryPlus } from "../types/categories.types";
 
 const AdminCategories = () => {
+  const [categories, setCategories] = useState<ICategoryPlus[]>([]);
+  useEffect(() => {
+    const run = async () => {
+      try {
+        const response = await getCategories();
+        setCategories(response.categories);
+      } catch (error) {
+        getErrorMessage(error);
+      }
+    };
+
+    run();
+  }, []);
   return (
     <motion.section
       variants={fadeUp}
@@ -100,7 +90,7 @@ const AdminCategories = () => {
             <div className="mt-6 rounded-xl bg-secondary p-4">
               <p className="text-sm text-muted-foreground">Products</p>
 
-              <h3 className="mt-1 text-2xl font-bold">{category.products}</h3>
+              <h3 className="mt-1 text-2xl font-bold">{category.productCount}</h3>
             </div>
 
             {/* Actions */}

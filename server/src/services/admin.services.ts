@@ -47,6 +47,40 @@ export const getProductById = async (id: string) => {
   return Product.findById(id).populate("category", "name slug");
 };
 
+export const getCategories = async (skip = 0) => {
+  return Category.aggregate([
+    {
+      $lookup: {
+        from: "products", 
+        localField: "_id",
+        foreignField: "category",
+        as: "products",
+      },
+    },
+    {
+      $addFields: {
+        productCount: { $size: "$products" },
+      },
+    },
+    {
+      $project: {
+        products: 0,
+      },
+    },
+    {
+      $sort: {
+        name: 1,
+      },
+    },
+    {
+      $skip: skip,
+    },
+    {
+      $limit: 12,
+    },
+  ]);
+};
+
 export const updateProduct = async (
   id: string,
   updateData: Partial<CreateProductDTO>,
@@ -76,5 +110,8 @@ export const getDashboard = async () => {
 };
 
 export const getAllUsers = async (skip = 0) => {
-  return User.find().select("name email avatar role createdAt").skip(skip).limit(12);
+  return User.find()
+    .select("name email avatar role createdAt")
+    .skip(skip)
+    .limit(12);
 };
