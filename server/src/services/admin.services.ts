@@ -4,6 +4,11 @@ import { Category } from "../models/categories.models.js";
 import AppError from "../utils/AppError.js";
 import { User } from "../models/users.models.js";
 
+interface GetAllProductsOptions {
+  skip?: number;
+  category?: string;
+}
+
 export const createProduct = async (data: CreateProductDTO) => {
   const category = await Category.findById(data.category);
 
@@ -13,10 +18,29 @@ export const createProduct = async (data: CreateProductDTO) => {
   return Product.create(data);
 };
 
-export const getAllProducts = async () => {
-  return Product.find().populate("category", "name slug").sort({
-    createdAt: -1,
-  });
+export const getAllProducts = async ({
+  skip = 0,
+  category,
+}: GetAllProductsOptions) => {
+  const query: Record<string, unknown> = {};
+
+  /* Category */
+
+  if (category && category !== "all") {
+    const categoryDoc = await Category.findOne({
+      slug: category,
+    });
+
+    if (categoryDoc) {
+      query.category = categoryDoc._id;
+    }
+  }
+
+  return Product.find(query)
+    .populate("category")
+    .sort({createdAt: -1})
+    .skip(skip)
+    .limit(12);
 };
 
 export const getProductById = async (id: string) => {

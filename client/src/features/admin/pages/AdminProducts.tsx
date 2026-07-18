@@ -18,20 +18,16 @@ const AdminProducts = () => {
   const [loading, setLoading] = useState(true);
 
   const [categories, setCategories] = useState<ICategory[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState("all");
 
   // Search text.
   const [search, setSearch] = useState("");
 
-  /* Fetch all products when the page loads. */
+  // Fetch categories once
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchCategories = async () => {
       try {
-        const [productsData, categoriesData] = await Promise.all([
-          getProducts(),
-          getCategories(),
-        ]);
-
-        setProducts(productsData.products);
+        const data = await getCategories();
 
         setCategories([
           {
@@ -39,8 +35,26 @@ const AdminProducts = () => {
             name: "All",
             slug: "all",
           },
-          ...categoriesData.categories,
+          ...data.categories,
         ]);
+      } catch (error) {
+        getErrorMessage(error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+
+        const data = await getProducts(
+          selectedCategory === "all" ? {} : { category: selectedCategory },
+        );
+
+        setProducts(data.products);
       } catch (error) {
         getErrorMessage(error);
       } finally {
@@ -48,8 +62,8 @@ const AdminProducts = () => {
       }
     };
 
-    fetchData();
-  }, []);
+    fetchProducts();
+  }, [selectedCategory]);
 
   /* Filter products according to search text. */
   const filteredProducts = products.filter((product) => {
@@ -102,9 +116,15 @@ const AdminProducts = () => {
           />
         </div>
 
-        <select className="rounded-xl border border-border bg-card px-4 py-3 outline-none focus:border-primary">
+        <select
+          value={selectedCategory}
+          onChange={(e) => setSelectedCategory(e.target.value)}
+          className="rounded-xl border border-border bg-card px-4 py-3 outline-none focus:border-primary"
+        >
           {categories.map((category) => (
-            <option key={category._id}>{category.name}</option>
+            <option key={category._id} value={category.slug}>
+              {category.name}
+            </option>
           ))}
         </select>
       </div>

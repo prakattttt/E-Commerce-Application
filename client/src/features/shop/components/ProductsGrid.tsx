@@ -5,7 +5,7 @@ import { fadeUp } from "../../../animations";
 import { useEffect, useState } from "react";
 import type { IProduct } from "../types/products.types";
 import { getErrorMessage } from "../../../utils/getErrorMessage";
-import { getAllProducts } from "../../../api/products.api";
+import { getAllProducts } from "../api/products.api";
 import type { TPrice, TSort } from "../types/filter.types";
 
 type Props = {
