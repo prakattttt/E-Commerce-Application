@@ -105,12 +105,12 @@ const AdminCategories = () => {
 
             {/* Actions */}
             <div className="mt-6 flex gap-3">
-              <button className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-border py-3 transition hover:bg-secondary">
+              <button className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-border py-3 transition-all duration-200 hover:bg-secondary">
                 <Pencil size={18} />
                 Edit
               </button>
 
-              <button className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-error/10 py-3 text-error transition hover:bg-error/20">
+              <button className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-error/10 py-3 text-error transition-all duration-200 hover:bg-error hover:text-white">
                 <Trash2 size={18} />
                 Delete
               </button>

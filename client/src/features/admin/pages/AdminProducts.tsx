@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Plus, Search } from "lucide-react";
+import { Plus, Search, Pencil, Trash2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 
@@ -222,15 +222,17 @@ const AdminProducts = () => {
               </div>
 
               {/* Actions */}
-              <div className="mt-6 flex gap-2">
-                <button className="flex-1 rounded-xl bg-secondary py-2 transition hover:bg-secondary-foreground hover:text-white">
-                  Edit
-                </button>
+            <div className="mt-6 flex gap-3">
+              <button className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-border py-3 transition-all duration-200 hover:bg-secondary hover:text-white">
+                <Pencil size={18} />
+                Edit
+              </button>
 
-                <button className="rounded-xl bg-error/10 px-4 text-error transition hover:bg-error hover:text-white">
-                  Delete
-                </button>
-              </div>
+              <button className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-error/10 py-3 text-error transition-all duration-200 hover:bg-error hover:text-white">
+                <Trash2 size={18} />
+                Delete
+              </button>
+            </div>
             </motion.div>
           ))}
         </div>
