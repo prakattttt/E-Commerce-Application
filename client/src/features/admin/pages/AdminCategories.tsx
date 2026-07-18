@@ -39,7 +39,7 @@ const AdminCategories = () => {
       animate="visible"
       className="space-y-8"
     >
-      {/* ================= Header ================= */}
+      {/* Header */}
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
           <h1 className="font-display text-3xl font-bold">Categories</h1>
@@ -58,7 +58,7 @@ const AdminCategories = () => {
         </Link>
       </div>
 
-      {/* ================= Search ================= */}
+      {/* Search */}
       <div className="relative max-w-md">
         <Search
           size={18}
@@ -72,7 +72,7 @@ const AdminCategories = () => {
         />
       </div>
 
-      {/* ================= Categories ================= */}
+      {/* Categories */}
       <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
         {categories.map((category, index) => (
           <motion.div

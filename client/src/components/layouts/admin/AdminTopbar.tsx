@@ -1,4 +1,4 @@
-import { Bell, Menu, Search } from "lucide-react";
+import { Menu, Search } from "lucide-react";
 
 interface Props {
   onMenuClick: () => void;
@@ -24,18 +24,19 @@ const AdminTopbar = ({ onMenuClick }: Props) => {
       </div>
       {/* Right */}
       <div className="flex items-center gap-3">
-        <div className="hidden items-center gap-2 rounded-xl border border-border bg-card px-4 py-2 md:flex">
-          <Search size={18} />
+        {/* Search */}
+        <div className="relative hidden md:block">
+          <Search
+            size={18}
+            className="absolute top-1/2 left-3 -translate-y-1/2 text-muted-foreground"
+          />
 
           <input
-            placeholder="Search..."
-            className="bg-transparent outline-none"
+            type="search"
+            placeholder="Search products..."
+            className="h-11 w-62 rounded-full border border-border bg-card py-2 pr-4 pl-10 text-sm text-foreground transition-all duration-300 focus:w-72 focus:border-primary focus:outline-none placeholder:text-muted-foreground"
           />
         </div>
-        {/* Notifications */}
-        <button className="rounded-xl border border-border bg-card p-3">
-          <Bell size={18} />
-        </button>
 
         {/* Avatar */}
         <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary font-semibold text-primary-foreground">

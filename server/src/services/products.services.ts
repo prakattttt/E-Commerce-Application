@@ -90,3 +90,14 @@ export const getProducts = async ({
     .skip(skip)
     .limit(12);
 };
+
+export const getProductBySlug = async (slug: string) => {
+  return Product.findOne({ slug }).populate("category");
+};
+
+export const getFeaturedProducts = async () => {
+  return Product.find({ featured: true })
+    .populate("category")
+    .sort({ createdAt: -1 })
+    .limit(8);
+};
