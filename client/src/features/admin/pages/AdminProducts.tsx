@@ -24,20 +24,14 @@ const AdminProducts = () => {
 
   /* Fetch all products when the page loads. */
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchData = async () => {
       try {
-        const data = await getProducts();
-        setProducts(data.products);
-      } catch (error) {
-        getErrorMessage(error);
-      } finally {
-        setLoading(false);
-      }
-    };
+        const [productsData, categoriesData] = await Promise.all([
+          getProducts(),
+          getCategories(),
+        ]);
 
-    const fetchCategories = async () => {
-      try {
-        const data = await getCategories();
+        setProducts(productsData.products);
 
         setCategories([
           {
@@ -45,16 +39,16 @@ const AdminProducts = () => {
             name: "All",
             slug: "all",
           },
-          ...data.categories,
+          ...categoriesData.categories,
         ]);
       } catch (error) {
         getErrorMessage(error);
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchCategories();
-
-    fetchProducts();
+    fetchData();
   }, []);
 
   /* Filter products according to search text. */
