@@ -1,8 +1,7 @@
 import { motion } from "framer-motion";
 
 import { fadeUp } from "../../../animations";
-
-const dummyCategories = ["Electronics", "Fashion", "Shoes", "Accessories"];
+import type { ICategory } from "../../shop/types/categories.types";
 
 interface ProductBasicInfoFormProps {
   productName: string;
@@ -11,8 +10,7 @@ interface ProductBasicInfoFormProps {
   onBrandChange: (value: string) => void;
   category: string;
   onCategoryChange: (value: string) => void;
-  status: string;
-  onStatusChange: (value: string) => void;
+  categories: ICategory[];
   description: string;
   onDescriptionChange: (value: string) => void;
 }
@@ -24,8 +22,7 @@ const ProductBasicInfoForm = ({
   onBrandChange,
   category,
   onCategoryChange,
-  status,
-  onStatusChange,
+  categories,
   description,
   onDescriptionChange,
 }: ProductBasicInfoFormProps) => {
@@ -71,23 +68,11 @@ const ProductBasicInfoForm = ({
             >
               <option value="">Select Category</option>
 
-              {dummyCategories.map((cat) => (
-                <option key={cat}>{cat}</option>
+              {categories.map((cat) => (
+                <option key={cat._id} value={cat._id}>
+                  {cat.name}
+                </option>
               ))}
-            </select>
-          </div>
-
-          <div>
-            <label className="mb-2 block text-sm font-medium">Visibility</label>
-
-            <select
-              value={status}
-              onChange={(e) => onStatusChange(e.target.value)}
-              className="w-full rounded-xl border border-border bg-background px-4 py-3 outline-none transition focus:border-primary"
-            >
-              <option value="draft">Draft</option>
-              <option value="active">Active</option>
-              <option value="archived">Archived</option>
             </select>
           </div>
         </div>

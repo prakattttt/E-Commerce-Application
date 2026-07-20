@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { fadeUp } from "../../../animations";
 import ProductBasicInfoForm from "../components/ProductBasicInfoForm";
@@ -9,8 +9,15 @@ import ProductPricingForm from "../components/ProductPricingForm";
 import ProductExtraDetailsForm from "../components/ProductExtraDetailsForm";
 import ProductImagesForm from "../components/ProductImagesForm";
 import FormActions from "../components/FormActions";
+import { createProduct } from "../api/admin.api";
+import { getCategories } from "../../shop/api/categories.api";
+import { getErrorMessage } from "../../../utils/getErrorMessage";
+import type { ICategory } from "../../shop/types/categories.types";
+import type { CreateProductPayload } from "../types/products.types";
 
 const NewProduct = () => {
+  const navigate = useNavigate();
+
   const [productName, setProductName] = useState("");
   const [description, setDescription] = useState("");
   const [brand, setBrand] = useState("");
@@ -18,10 +25,61 @@ const NewProduct = () => {
   const [price, setPrice] = useState("");
   const [originalPrice, setOriginalPrice] = useState("");
   const [stock, setStock] = useState("");
-  const [status, setStatus] = useState("draft");
+
   const [badge, setBadge] = useState("");
-  const [rating, setRating] = useState("");
-  const [reviews, setReviews] = useState("");
+
+  const [categories, setCategories] = useState<ICategory[]>([]);
+  const [submitting, setSubmitting] = useState(false);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const data = await getCategories();
+        setCategories(data.categories);
+      } catch (error) {
+        getErrorMessage(error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  const handleSave = async () => {
+    if (
+      !productName.trim() ||
+      !description.trim() ||
+      !brand.trim() ||
+      !category ||
+      !price ||
+      !stock
+    ) {
+      getErrorMessage(new Error("Please fill in all required fields."));
+      return;
+    }
+
+    const payload: CreateProductPayload = {
+      name: productName.trim(),
+      description: description.trim(),
+      brand: brand.trim(),
+      category,
+      price: Number(price),
+      stock: Number(stock),
+    };
+
+    if (originalPrice) payload.originalPrice = Number(originalPrice);
+    if (badge.trim()) payload.badge = badge.trim();
+
+    try {
+      setSubmitting(true);
+      const response = await createProduct(payload);
+      console.log(response);
+      navigate("/admin/products");
+    } catch (error) {
+      getErrorMessage(error);
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <motion.section
@@ -55,8 +113,7 @@ const NewProduct = () => {
         onBrandChange={setBrand}
         category={category}
         onCategoryChange={setCategory}
-        status={status}
-        onStatusChange={setStatus}
+        categories={categories}
         description={description}
         onDescriptionChange={setDescription}
       />
@@ -73,15 +130,16 @@ const NewProduct = () => {
       <ProductExtraDetailsForm
         badge={badge}
         onBadgeChange={setBadge}
-        rating={rating}
-        onRatingChange={setRating}
-        reviews={reviews}
-        onReviewsChange={setReviews}
       />
 
       <ProductImagesForm />
 
-      <FormActions cancelTo="/admin/products" saveLabel="Save Product" />
+      <FormActions
+        cancelTo="/admin/products"
+        saveLabel="Save Product"
+        onSave={handleSave}
+        loading={submitting}
+      />
     </motion.section>
   );
 };

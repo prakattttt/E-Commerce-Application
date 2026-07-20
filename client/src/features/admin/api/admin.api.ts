@@ -1,4 +1,5 @@
 import api from "../../../api/axios";
+import type { CreateProductPayload } from "../types/products.types";
 
 export interface ProductFilters {
   category?: string;
@@ -26,3 +27,9 @@ export const getCategories = async () => {
   const response = await api.get("/admin/categories");
   return response.data;
 };
+
+export const createProduct = async (data: CreateProductPayload) => {
+  const response = await api.post("/admin/products", data);
+  return response.data;
+};
+

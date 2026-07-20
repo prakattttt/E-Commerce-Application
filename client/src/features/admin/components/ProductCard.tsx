@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Pencil, Trash2, StarIcon } from "lucide-react";
+import { Pencil, Trash2, StarIcon, ImageOff } from "lucide-react";
 
 import { fadeUp } from "../../../animations";
 import type { IProduct } from "../../shop/types/products.types";
@@ -20,15 +20,20 @@ const ProductCard = ({ product, index }: ProductCardProps) => {
     >
       {/* Product Image */}
       <div className="flex gap-4">
-        <img
-          src={product.imageCover.url}
-          alt={product.name}
-          className="h-20 w-20 rounded-xl border border-border object-cover"
-        />
+        {product.imageCover?.url ? (
+          <img
+            src={product.imageCover.url}
+            alt={product.name}
+            className="h-20 w-20 rounded-xl border border-border object-cover"
+          />
+        ) : (
+          <div className="flex h-20 w-20 items-center justify-center rounded-xl border border-border bg-muted text-muted-foreground">
+            <ImageOff size={28} />
+          </div>
+        )}
 
         <div className="flex-1">
           <h2 className="font-semibold">{product.name}</h2>
-
           <p className="text-sm text-muted-foreground">{product.brand}</p>
         </div>
       </div>
@@ -57,8 +62,8 @@ const ProductCard = ({ product, index }: ProductCardProps) => {
           <span className="text-muted-foreground">Rating</span>
 
           <span className="flex items-center gap-1">
-            <StarIcon size={18} className="fill-gold text-gold" /> {product.rating} (
-            {product.reviews})
+            <StarIcon size={18} className="fill-gold text-gold" />{" "}
+            {product.rating} ({product.reviews})
           </span>
         </div>
 
