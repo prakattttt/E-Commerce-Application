@@ -1,8 +1,14 @@
 import mongoose, { Schema, Types } from "mongoose";
 
+/* Payment Method */
+
 export type PaymentMethod = "eSewa" | "Khalti";
 
-export type PaymentStatus = "Pending" | "Paid" | "Failed" | "Refunded";
+/* Payment Status */
+
+export type PaymentStatus = "Pending" | "Paid";
+
+/* Order Status */
 
 export type OrderStatus =
   | "Pending"
@@ -11,61 +17,64 @@ export type OrderStatus =
   | "Delivered"
   | "Cancelled";
 
+/* Single Product inside an Order */
+
 export interface IOrderItem {
+  /* Reference to original product */
   product: Types.ObjectId;
 
+  /* Snapshot of product information */
   name: string;
-
   image: string;
-
-  quantity: number;
-
   price: number;
+
+  /* Quantity ordered */
+  quantity: number;
 }
+
+/* Shipping Address */
 
 export interface IShippingAddress {
   fullName: string;
-
   phone: string;
 
   address: string;
-
   city: string;
-
-  state: string;
-
-  zipCode: string;
 
   country: string;
 }
 
+/* Order */
+
 export interface IOrder {
   _id: Types.ObjectId;
 
+  /* User who placed the order */
   user: Types.ObjectId;
 
+  /* Purchased products */
   items: IOrderItem[];
 
+  /* Price Summary */
   subtotal: number;
-
   shippingCost: number;
-
   total: number;
 
+  /* Delivery Information */
   shippingAddress: IShippingAddress;
 
+  /* Payment */
   paymentMethod: PaymentMethod;
-
   paymentStatus: PaymentStatus;
 
+  /* Delivery Progress */
   orderStatus: OrderStatus;
 
   createdAt: Date;
-
   updatedAt: Date;
 }
 
-/* Order Item Schema */
+/* ---------------- Order Item ---------------- */
 
 const orderItemSchema = new Schema<IOrderItem>(
   {
@@ -75,10 +84,10 @@ const orderItemSchema = new Schema<IOrderItem>(
       required: true,
     },
 
+    /* Stored as snapshot */
     name: {
       type: String,
       required: true,
-      trim: true,
     },
 
     image: {
@@ -86,16 +95,16 @@ const orderItemSchema = new Schema<IOrderItem>(
       required: true,
     },
 
-    quantity: {
-      type: Number,
-      required: true,
-      min: 1,
-    },
-
     price: {
       type: Number,
       required: true,
       min: 0,
+    },
+
+    quantity: {
+      type: Number,
+      required: true,
+      min: 1,
     },
   },
   {
@@ -103,7 +112,7 @@ const orderItemSchema = new Schema<IOrderItem>(
   },
 );
 
-/* Shipping Address Schema */
+/* ---------------- Shipping Address ---------------- */
 
 const shippingAddressSchema = new Schema<IShippingAddress>(
   {
@@ -131,18 +140,6 @@ const shippingAddressSchema = new Schema<IShippingAddress>(
       trim: true,
     },
 
-    state: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-
-    zipCode: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-
     country: {
       type: String,
       required: true,
@@ -153,6 +150,8 @@ const shippingAddressSchema = new Schema<IShippingAddress>(
     _id: false,
   },
 );
+
+/* ---------------- Order ---------------- */
 
 const orderSchema = new Schema<IOrder>(
   {
@@ -166,10 +165,6 @@ const orderSchema = new Schema<IOrder>(
     items: {
       type: [orderItemSchema],
       required: true,
-      validate: {
-        validator: (items: IOrderItem[]) => items.length > 0,
-        message: "Order must contain at least one product.",
-      },
     },
 
     subtotal: {
@@ -181,7 +176,6 @@ const orderSchema = new Schema<IOrder>(
     shippingCost: {
       type: Number,
       default: 0,
-      min: 0,
     },
 
     total: {
@@ -197,19 +191,25 @@ const orderSchema = new Schema<IOrder>(
 
     paymentMethod: {
       type: String,
-      enum: ["COD", "eSewa", "Khalti"],
+      enum: ["eSewa", "Khalti"],
       required: true,
     },
 
     paymentStatus: {
       type: String,
-      enum: ["Pending", "Paid", "Failed", "Refunded"],
+      enum: ["Pending", "Paid"],
       default: "Pending",
     },
 
     orderStatus: {
       type: String,
-      enum: ["Pending", "Processing", "Shipped", "Delivered", "Cancelled"],
+      enum: [
+        "Pending",
+        "Processing",
+        "Shipped",
+        "Delivered",
+        "Cancelled",
+      ],
       default: "Pending",
     },
   },
@@ -223,14 +223,6 @@ const orderSchema = new Schema<IOrder>(
 orderSchema.index({
   user: 1,
   createdAt: -1,
-});
-
-orderSchema.index({
-  orderStatus: 1,
-});
-
-orderSchema.index({
-  paymentStatus: 1,
 });
 
 export const Order = mongoose.model<IOrder>("Order", orderSchema);
