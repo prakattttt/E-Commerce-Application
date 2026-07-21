@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { fadeUp } from "../../../animations";
 import CategoryInfoForm from "../components/CategoryInfoForm";
@@ -8,7 +8,14 @@ import FormActions from "../components/FormActions";
 
 const NewCategory = () => {
   const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
+
+  useEffect(() => {
+    const run = async () => {
+
+    }
+
+    run();
+  }, [])
 
   return (
     <motion.section
@@ -28,8 +35,6 @@ const NewCategory = () => {
       <CategoryInfoForm
         name={name}
         onNameChange={setName}
-        description={description}
-        onDescriptionChange={setDescription}
       />
 
       <CategoryImageUpload />
