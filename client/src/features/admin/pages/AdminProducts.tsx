@@ -13,6 +13,9 @@ import PageHeader from "../components/PageHeader";
 import ProductFilterBar from "../components/ProductFilterBar";
 import ProductCard from "../components/ProductCard";
 import EmptyState from "../components/EmptyState";
+import DeletePopup from "../../../components/common/DeletePopup";
+import { deleteProduct } from "../api/admin.api";
+import { toast } from "sonner";
 
 const AdminProducts = () => {
   const [products, setProducts] = useState<IProduct[]>([]);
@@ -20,6 +23,8 @@ const AdminProducts = () => {
   const [categories, setCategories] = useState<ICategory[]>([]);
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [search, setSearch] = useState("");
+  const [selectedProduct, setSelectedProduct] = useState<IProduct | null>(null);
+  const [deletePopupOpen, setDeletePopupOpen] = useState(false);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -57,6 +62,27 @@ const AdminProducts = () => {
 
     fetchProducts();
   }, [selectedCategory]);
+
+  const handleDeleteProduct = async () => {
+    if (!selectedProduct) return;
+
+    try {
+      const response = await deleteProduct(selectedProduct._id);
+
+      toast.success(response.message);
+
+      const remainingProducts = products.filter(
+        (p) => p._id != selectedProduct._id,
+      );
+      setProducts(remainingProducts);
+
+      setDeletePopupOpen(false);
+
+      setSelectedProduct(null);
+    } catch (error) {
+      getErrorMessage(error);
+    }
+  };
 
   const filteredProducts = products.filter((product) => {
     return (
@@ -111,10 +137,28 @@ const AdminProducts = () => {
       {!loading && filteredProducts.length > 0 && (
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
           {filteredProducts.map((product, index) => (
-            <ProductCard key={product._id} product={product} index={index} />
+            <ProductCard
+              key={product._id}
+              product={product}
+              index={index}
+              onDeleteClick={(product) => {
+                setSelectedProduct(product);
+                setDeletePopupOpen(true);
+              }}
+            />
           ))}
         </div>
       )}
+      <DeletePopup
+        open={deletePopupOpen}
+        itemName={selectedProduct?.name ?? ""}
+        itemType="Product"
+        onClose={() => {
+          setDeletePopupOpen(false);
+          setSelectedProduct(null);
+        }}
+        onDelete={handleDeleteProduct}
+      />
     </motion.section>
   );
 };

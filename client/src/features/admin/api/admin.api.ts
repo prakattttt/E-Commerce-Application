@@ -38,3 +38,8 @@ export const createCategory = async (data: CreateCategoryPayload) => {
   const response = await api.post("/admin/categories", data);
   return response.data;
 };
+
+export const deleteProduct = async (id: string) => {
+  const response = await api.delete(`/admin/products/${id}`);
+  return response.data;
+};

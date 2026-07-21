@@ -7,9 +7,11 @@ import type { IProduct } from "../../shop/types/products.types";
 interface ProductCardProps {
   product: IProduct;
   index: number;
+
+  onDeleteClick: (product: IProduct) => void;
 }
 
-const ProductCard = ({ product, index }: ProductCardProps) => {
+const ProductCard = ({ product, index, onDeleteClick }: ProductCardProps) => {
   return (
     <motion.div
       variants={fadeUp}
@@ -34,6 +36,7 @@ const ProductCard = ({ product, index }: ProductCardProps) => {
 
         <div className="flex-1">
           <h2 className="font-semibold">{product.name}</h2>
+
           <p className="text-sm text-muted-foreground">{product.brand}</p>
         </div>
       </div>
@@ -62,7 +65,7 @@ const ProductCard = ({ product, index }: ProductCardProps) => {
           <span className="text-muted-foreground">Rating</span>
 
           <span className="flex items-center gap-1">
-            <StarIcon size={18} className="fill-gold text-gold" />{" "}
+            <StarIcon size={18} className="fill-gold text-gold" />
             {product.rating} ({product.reviews})
           </span>
         </div>
@@ -84,12 +87,15 @@ const ProductCard = ({ product, index }: ProductCardProps) => {
 
       {/* Actions */}
       <div className="mt-6 flex gap-3">
-        <button className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-border py-3 transition-all duration-200 hover:bg-secondary">
+        <button className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-border py-3 hover:bg-secondary">
           <Pencil size={18} />
           Edit
         </button>
 
-        <button className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-error/10 py-3 text-error transition-all duration-200 hover:bg-error hover:text-white">
+        <button
+          onClick={() => onDeleteClick(product)}
+          className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-error/10 py-3 text-error hover:bg-error hover:text-white"
+        >
           <Trash2 size={18} />
           Delete
         </button>
