@@ -43,3 +43,8 @@ export const deleteProduct = async (id: string) => {
   const response = await api.delete(`/admin/products/${id}`);
   return response.data;
 };
+
+export const deleteCategory = async (slug: string) => {
+  const response = await api.delete(`/admin/categories/${slug}`);
+  return response.data;
+};

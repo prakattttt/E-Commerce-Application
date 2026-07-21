@@ -7,9 +7,11 @@ import type { ICategoryPlus } from "../types/categories.types";
 interface CategoryCardProps {
   category: ICategoryPlus;
   index: number;
+
+  onDeleteClick: (categories: ICategoryPlus) => void;
 }
 
-const CategoryCard = ({ category, index }: CategoryCardProps) => {
+const CategoryCard = ({ category, index, onDeleteClick }: CategoryCardProps) => {
   return (
     <motion.div
       variants={fadeUp}
@@ -43,7 +45,7 @@ const CategoryCard = ({ category, index }: CategoryCardProps) => {
           Edit
         </button>
 
-        <button className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-error/10 py-3 text-error transition-all duration-200 hover:bg-error hover:text-white">
+        <button className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-error/10 py-3 text-error transition-all duration-200 hover:bg-error hover:text-white" onClick={() => onDeleteClick(category)}>
           <Trash2 size={18} />
           Delete
         </button>

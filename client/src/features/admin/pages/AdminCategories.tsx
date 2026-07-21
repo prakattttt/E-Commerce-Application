@@ -4,15 +4,42 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 import { fadeUp } from "../../../animations";
-import { getCategories } from "../api/admin.api";
+import { deleteCategory, getCategories } from "../api/admin.api";
 import { getErrorMessage } from "../../../utils/getErrorMessage";
 import type { ICategoryPlus } from "../types/categories.types";
 import PageHeader from "../components/PageHeader";
 import SearchBar from "../components/SearchBar";
 import CategoryCard from "../components/CategoryCard";
+import DeletePopup from "../../../components/common/DeletePopup";
+import { toast } from "sonner";
 
 const AdminCategories = () => {
   const [categories, setCategories] = useState<ICategoryPlus[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<ICategoryPlus | null>(
+    null,
+  );
+  const [deletePopupOpen, setDeletePopupOpen] = useState(false);
+
+    const handleDeleteCategory= async () => {
+    if (!selectedCategory) return;
+
+    try {
+      const response = await deleteCategory(selectedCategory.slug);
+
+      toast.success(response.message);
+
+      const remainingCategories = categories.filter(
+        (c) => c._id != selectedCategory._id,
+      );
+      setCategories(remainingCategories);
+
+      setDeletePopupOpen(false);
+
+      setSelectedCategory(null);
+    } catch (error) {
+      getErrorMessage(error);
+    }
+  };
 
   useEffect(() => {
     const run = async () => {
@@ -52,9 +79,27 @@ const AdminCategories = () => {
 
       <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
         {categories.map((category, index) => (
-          <CategoryCard key={category._id} category={category} index={index} />
+          <CategoryCard
+            key={category._id}
+            category={category}
+            index={index}
+            onDeleteClick={(category) => {
+              setSelectedCategory(category);
+              setDeletePopupOpen(true);
+            }}
+          />
         ))}
       </div>
+      <DeletePopup
+        open={deletePopupOpen}
+        itemName={selectedCategory?.name ?? ""}
+        itemType="Product"
+        onClose={() => {
+          setDeletePopupOpen(false);
+          setSelectedCategory(null);
+        }}
+        onDelete={handleDeleteCategory}
+      />
     </motion.section>
   );
 };
