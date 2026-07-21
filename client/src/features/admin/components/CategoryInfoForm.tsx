@@ -5,8 +5,6 @@ import { fadeUp } from "../../../animations";
 interface CategoryInfoFormProps {
   name: string;
   onNameChange: (value: string) => void;
-  slug: string;
-  onSlugChange: (value: string) => void;
   description: string;
   onDescriptionChange: (value: string) => void;
 }
@@ -14,8 +12,6 @@ interface CategoryInfoFormProps {
 const CategoryInfoForm = ({
   name,
   onNameChange,
-  slug,
-  onSlugChange,
   description,
   onDescriptionChange,
 }: CategoryInfoFormProps) => {
@@ -32,17 +28,6 @@ const CategoryInfoForm = ({
               value={name}
               onChange={(e) => onNameChange(e.target.value)}
               placeholder="Electronics"
-              className="w-full rounded-xl border border-border bg-background px-4 py-3 outline-none focus:border-primary"
-            />
-          </div>
-
-          <div>
-            <label className="mb-2 block font-medium">Slug</label>
-
-            <input
-              value={slug}
-              onChange={(e) => onSlugChange(e.target.value)}
-              placeholder="electronics"
               className="w-full rounded-xl border border-border bg-background px-4 py-3 outline-none focus:border-primary"
             />
           </div>

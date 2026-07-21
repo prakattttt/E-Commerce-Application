@@ -4,16 +4,11 @@ import { useState } from "react";
 import { fadeUp } from "../../../animations";
 import CategoryInfoForm from "../components/CategoryInfoForm";
 import CategoryImageUpload from "../components/CategoryImageUpload";
-import CategorySettingsForm from "../components/CategorySettingsForm";
-import CategoryPreview from "../components/CategoryPreview";
 import FormActions from "../components/FormActions";
 
 const NewCategory = () => {
   const [name, setName] = useState("");
-  const [slug, setSlug] = useState("");
   const [description, setDescription] = useState("");
-  const [status, setStatus] = useState("active");
-  const [featured, setFeatured] = useState(false);
 
   return (
     <motion.section
@@ -33,22 +28,11 @@ const NewCategory = () => {
       <CategoryInfoForm
         name={name}
         onNameChange={setName}
-        slug={slug}
-        onSlugChange={setSlug}
         description={description}
         onDescriptionChange={setDescription}
       />
 
       <CategoryImageUpload />
-
-      <CategorySettingsForm
-        status={status}
-        onStatusChange={setStatus}
-        featured={featured}
-        onFeaturedChange={setFeatured}
-      />
-
-      <CategoryPreview name={name} description={description} />
 
       <FormActions cancelTo="/admin/categories" saveLabel="Save Category" />
     </motion.section>
