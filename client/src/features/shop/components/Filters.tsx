@@ -173,7 +173,7 @@ const Filters = ({
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.97 }}
             onClick={() => {
-              setSelectedCategory("All");
+              setSelectedCategory("all");
               setSelectedPrice("All");
             }}
             className="w-full rounded-xl bg-primary py-2 font-medium text-primary-foreground"
