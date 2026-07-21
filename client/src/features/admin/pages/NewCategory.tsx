@@ -1,21 +1,29 @@
 import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 import { fadeUp } from "../../../animations";
 import CategoryInfoForm from "../components/CategoryInfoForm";
 import CategoryImageUpload from "../components/CategoryImageUpload";
 import FormActions from "../components/FormActions";
+import { createCategory } from "../api/admin.api";
+import { toast } from "sonner";
+import { getErrorMessage } from "../../../utils/getErrorMessage";
+import { useNavigate } from "react-router-dom";
 
 const NewCategory = () => {
   const [name, setName] = useState("");
+  const image = ""; //temporary image until image handling
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    const run = async () => {
-
+  const onSave = async () => {
+    try {
+      const response = await createCategory({ name, image });
+      toast.success(response.message);
+      navigate("/admin/categories");
+    } catch (error) {
+      getErrorMessage(error);
     }
-
-    run();
-  }, [])
+  };
 
   return (
     <motion.section
@@ -32,14 +40,11 @@ const NewCategory = () => {
         </p>
       </div>
 
-      <CategoryInfoForm
-        name={name}
-        onNameChange={setName}
-      />
+      <CategoryInfoForm name={name} onNameChange={setName} />
 
       <CategoryImageUpload />
 
-      <FormActions cancelTo="/admin/categories" saveLabel="Save Category" />
+      <FormActions cancelTo="/admin/categories" saveLabel="Save Category" onSave={onSave} />
     </motion.section>
   );
 };
