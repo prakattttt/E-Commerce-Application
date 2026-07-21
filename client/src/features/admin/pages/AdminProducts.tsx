@@ -93,62 +93,64 @@ const AdminProducts = () => {
   });
 
   return (
-    <motion.section
-      variants={fadeUp}
-      initial="hidden"
-      animate="visible"
-      className="space-y-8"
-    >
-      <PageHeader
-        title="Products"
-        description="Manage every product available in ShopSphere."
-        action={
-          <Link
-            to="/admin/products/new"
-            className="flex items-center gap-2 rounded-xl bg-primary px-5 py-3 font-medium text-primary-foreground transition hover:opacity-90"
-          >
-            <Plus size={18} />
-            Add Product
-          </Link>
-        }
-      />
-
-      <ProductFilterBar
-        search={search}
-        onSearchChange={setSearch}
-        categories={categories}
-        selectedCategory={selectedCategory}
-        onCategoryChange={setSelectedCategory}
-      />
-
-      {loading && (
-        <div className="py-16 text-center text-muted-foreground">
-          Loading products...
-        </div>
-      )}
-
-      {!loading && filteredProducts.length === 0 && (
-        <EmptyState
-          title="No Products Found"
-          message="Try searching for another product."
+    <>
+      <motion.section
+        variants={fadeUp}
+        initial="hidden"
+        animate="visible"
+        className="space-y-8"
+      >
+        <PageHeader
+          title="Products"
+          description="Manage every product available in ShopSphere."
+          action={
+            <Link
+              to="/admin/products/new"
+              className="flex items-center gap-2 rounded-xl bg-primary px-5 py-3 font-medium text-primary-foreground transition hover:opacity-90"
+            >
+              <Plus size={18} />
+              Add Product
+            </Link>
+          }
         />
-      )}
 
-      {!loading && filteredProducts.length > 0 && (
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
-          {filteredProducts.map((product, index) => (
-            <ProductCard
-              key={product._id}
-              product={product}
-              index={index}
-              onDeleteClick={(product) => {
-                setSelectedProduct(product);
-                setDeletePopupOpen(true);
-              }}
-            />
-          ))}
-        </div>
-      )}
+        <ProductFilterBar
+          search={search}
+          onSearchChange={setSearch}
+          categories={categories}
+          selectedCategory={selectedCategory}
+          onCategoryChange={setSelectedCategory}
+        />
+
+        {loading && (
+          <div className="py-16 text-center text-muted-foreground">
+            Loading products...
+          </div>
+        )}
+
+        {!loading && filteredProducts.length === 0 && (
+          <EmptyState
+            title="No Products Found"
+            message="Try searching for another product."
+          />
+        )}
+
+        {!loading && filteredProducts.length > 0 && (
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+            {filteredProducts.map((product, index) => (
+              <ProductCard
+                key={product._id}
+                product={product}
+                index={index}
+                onDeleteClick={(product) => {
+                  setSelectedProduct(product);
+                  setDeletePopupOpen(true);
+                }}
+              />
+            ))}
+          </div>
+        )}
+      </motion.section>
       <DeletePopup
         open={deletePopupOpen}
         itemName={selectedProduct?.name ?? ""}
@@ -159,7 +161,7 @@ const AdminProducts = () => {
         }}
         onDelete={handleDeleteProduct}
       />
-    </motion.section>
+    </>
   );
 };
 

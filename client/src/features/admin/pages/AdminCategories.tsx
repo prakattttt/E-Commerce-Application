@@ -15,12 +15,11 @@ import { toast } from "sonner";
 
 const AdminCategories = () => {
   const [categories, setCategories] = useState<ICategoryPlus[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<ICategoryPlus | null>(
-    null,
-  );
+  const [selectedCategory, setSelectedCategory] =
+    useState<ICategoryPlus | null>(null);
   const [deletePopupOpen, setDeletePopupOpen] = useState(false);
 
-    const handleDeleteCategory= async () => {
+  const handleDeleteCategory = async () => {
     if (!selectedCategory) return;
 
     try {
@@ -55,41 +54,43 @@ const AdminCategories = () => {
   }, []);
 
   return (
-    <motion.section
-      variants={fadeUp}
-      initial="hidden"
-      animate="visible"
-      className="space-y-8"
-    >
-      <PageHeader
-        title="Categories"
-        description="Organize your products into different categories."
-        action={
-          <Link
-            to="/admin/categories/new"
-            className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3 font-medium text-primary-foreground transition hover:opacity-90"
-          >
-            <Plus size={18} />
-            Add Category
-          </Link>
-        }
-      />
+    <>
+      <motion.section
+        variants={fadeUp}
+        initial="hidden"
+        animate="visible"
+        className="space-y-8"
+      >
+        <PageHeader
+          title="Categories"
+          description="Organize your products into different categories."
+          action={
+            <Link
+              to="/admin/categories/new"
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3 font-medium text-primary-foreground transition hover:opacity-90"
+            >
+              <Plus size={18} />
+              Add Category
+            </Link>
+          }
+        />
 
-      <SearchBar placeholder="Search category..." className="max-w-md" />
+        <SearchBar placeholder="Search category..." className="max-w-md" />
 
-      <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-        {categories.map((category, index) => (
-          <CategoryCard
-            key={category._id}
-            category={category}
-            index={index}
-            onDeleteClick={(category) => {
-              setSelectedCategory(category);
-              setDeletePopupOpen(true);
-            }}
-          />
-        ))}
-      </div>
+        <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+          {categories.map((category, index) => (
+            <CategoryCard
+              key={category._id}
+              category={category}
+              index={index}
+              onDeleteClick={(category) => {
+                setSelectedCategory(category);
+                setDeletePopupOpen(true);
+              }}
+            />
+          ))}
+        </div>
+      </motion.section>
       <DeletePopup
         open={deletePopupOpen}
         itemName={selectedCategory?.name ?? ""}
@@ -100,7 +101,7 @@ const AdminCategories = () => {
         }}
         onDelete={handleDeleteCategory}
       />
-    </motion.section>
+    </>
   );
 };
 
