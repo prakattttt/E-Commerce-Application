@@ -18,7 +18,7 @@ const QuickActionsCard = () => {
 
       <div className="space-y-4">
         <Link
-          to="/admin/products/create"
+          to="/admin/products/new"
           className="flex items-center gap-3 rounded-2xl bg-primary px-5 py-4 font-medium text-primary-foreground transition hover:opacity-90"
         >
           <Plus size={18} />
@@ -26,7 +26,7 @@ const QuickActionsCard = () => {
         </Link>
 
         <Link
-          to="/admin/categories/create"
+          to="/admin/categories/new"
           className="flex items-center gap-3 rounded-2xl border border-border px-5 py-4 transition hover:bg-secondary"
         >
           <Plus size={18} />
