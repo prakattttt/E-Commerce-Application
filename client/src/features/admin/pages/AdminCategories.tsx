@@ -31,12 +31,11 @@ const AdminCategories = () => {
         (c) => c._id != selectedCategory._id,
       );
       setCategories(remainingCategories);
-
-      setDeletePopupOpen(false);
-
-      setSelectedCategory(null);
     } catch (error) {
-      getErrorMessage(error);
+      toast.error(getErrorMessage(error));
+    } finally {
+      setDeletePopupOpen(false);
+      setSelectedCategory(null);
     }
   };
 

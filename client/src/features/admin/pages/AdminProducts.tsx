@@ -75,12 +75,11 @@ const AdminProducts = () => {
         (p) => p._id != selectedProduct._id,
       );
       setProducts(remainingProducts);
-
-      setDeletePopupOpen(false);
-
-      setSelectedProduct(null);
     } catch (error) {
-      getErrorMessage(error);
+      toast.error(getErrorMessage(error));
+    } finally {
+      setDeletePopupOpen(false);
+      setSelectedProduct(null);
     }
   };
 
