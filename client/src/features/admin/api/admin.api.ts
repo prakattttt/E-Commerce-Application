@@ -31,8 +31,14 @@ export const getProducts = async ({
   return response.data;
 };
 
-export const getUsers = async () => {
-  const response = await api.get("/admin/users");
+export const getUsers = async ({ skip = 0, search = "" }) => {
+  const response = await api.get("/admin/users", {
+    params: {
+      skip,
+      search,
+    },
+  });
+
   return response.data;
 };
 

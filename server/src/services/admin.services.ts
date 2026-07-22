@@ -77,10 +77,7 @@ export const getProductById = async (id: string) => {
   return Product.findById(id).populate("category", "name slug");
 };
 
-export const getCategories = async (
-  skip = 0,
-  search = "",
-) => {
+export const getCategories = async (skip = 0, search = "") => {
   const pipeline: PipelineStage[] = [];
 
   if (search.trim()) {
@@ -169,9 +166,29 @@ export const getDashboard = async () => {
   };
 };
 
-export const getAllUsers = async (skip = 0) => {
-  return User.find()
+export const getAllUsers = async (skip = 0, search = "") => {
+  const query: Record<string, unknown> = {};
+
+  if (search.trim()) {
+    query.$or = [
+      {
+        name: {
+          $regex: search,
+          $options: "i",
+        },
+      },
+      {
+        email: {
+          $regex: search,
+          $options: "i",
+        },
+      },
+    ];
+  }
+
+  return User.find(query)
     .select("name email avatar role createdAt")
+    .sort({ createdAt: -1 })
     .skip(skip)
     .limit(12);
 };

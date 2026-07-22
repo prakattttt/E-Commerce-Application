@@ -11,16 +11,24 @@ import UserCard from "../components/UserCard";
 import { deleteUser } from "../api/admin.api";
 import DeletePopup from "../../../components/common/DeletePopup";
 import { toast } from "sonner";
+import useDebounce from "../../auth/hooks/useDebounce";
 
 const AdminUsers = () => {
   const [users, setUsers] = useState<IUser[]>([]);
   const [selectedUser, setSelectedUser] = useState<IUser | null>(null);
+
+  const [search, setSearch] = useState("");
+  const debouncedSearch = useDebounce(search, 500);
+
   const [deletePopupOpen, setDeletePopupOpen] = useState(false);
 
   useEffect(() => {
     const run = async () => {
       try {
-        const response = await getUsers();
+        const response = await getUsers({
+          search: debouncedSearch,
+        });
+
         setUsers(response.users);
       } catch (error) {
         getErrorMessage(error);
@@ -28,7 +36,7 @@ const AdminUsers = () => {
     };
 
     run();
-  }, []);
+  }, [debouncedSearch]);
 
   const handleDeleteUser = async () => {
     if (!selectedUser) return;
@@ -60,7 +68,12 @@ const AdminUsers = () => {
           description="Manage all registered ShopSphere users."
         />
 
-        <SearchBar placeholder="Search users..." className="max-w-md" />
+        <SearchBar
+          placeholder="Search users..."
+          className="max-w-md"
+          value={search}
+          onChange={setSearch}
+        />
 
         <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
           {users.map((user, index) => (

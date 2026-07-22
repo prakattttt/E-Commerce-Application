@@ -120,7 +120,9 @@ export const getDashboard: RequestHandler = expressAsyncHandler(
 export const getAllUsers: RequestHandler = expressAsyncHandler(
   async (req, res) => {
     const skip = Number(req.query.skip) || 0;
-    const users = await AdminService.getAllUsers(skip);
+    const search = (req.query.search as string) || "";
+
+    const users = await AdminService.getAllUsers(skip, search);
 
     res.status(200).json({
       success: true,
@@ -128,7 +130,6 @@ export const getAllUsers: RequestHandler = expressAsyncHandler(
     });
   },
 );
-
 export const getCategories: RequestHandler = expressAsyncHandler(
   async (req, res) => {
     const skip = Number(req.query.skip) || 0;
