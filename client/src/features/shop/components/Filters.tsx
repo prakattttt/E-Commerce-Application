@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import type { ICategory } from "../types/categories.types";
 import { getErrorMessage } from "../../../utils/getErrorMessage";
 import { getCategories } from "../api/categories.api";
+import { toast } from "sonner";
 
 const prices: { value: TPrice; label: string }[] = [
   { value: "All", label: "All Prices" },
@@ -42,7 +43,7 @@ const Filters = ({
           ...data.categories,
         ]);
       } catch (error) {
-        getErrorMessage(error);
+        toast.error(getErrorMessage(error));
       }
     };
 
