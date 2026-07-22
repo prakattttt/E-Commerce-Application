@@ -94,7 +94,7 @@ const AdminCategories = () => {
       <DeletePopup
         open={deletePopupOpen}
         itemName={selectedCategory?.name ?? ""}
-        itemType="Product"
+        itemType="Category"
         onClose={() => {
           setDeletePopupOpen(false);
           setSelectedCategory(null);

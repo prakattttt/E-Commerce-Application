@@ -48,3 +48,8 @@ export const deleteCategory = async (slug: string) => {
   const response = await api.delete(`/admin/categories/${slug}`);
   return response.data;
 };
+
+export const deleteUser = async (id: string) => {
+  const response = await api.delete(`/admin/users/${id}`);
+  return response.data;
+};

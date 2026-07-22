@@ -9,9 +9,11 @@ import { capitalize } from "../../../utils/capitalize";
 interface UserCardProps {
   user: IUser;
   index: number;
+  
+  onDeleteClick: (user: IUser) => void;
 }
 
-const UserCard = ({ user, index }: UserCardProps) => {
+const UserCard = ({ user, index, onDeleteClick }: UserCardProps) => {
   return (
     <motion.div
       variants={fadeUp}
@@ -68,7 +70,7 @@ const UserCard = ({ user, index }: UserCardProps) => {
           Change Role
         </button>
 
-        <button className="flex items-center justify-center rounded-xl bg-error/10 px-5 text-error transition hover:bg-error/20">
+        <button className="flex items-center justify-center rounded-xl bg-error/10 px-5 text-error transition hover:bg-error/20" onClick={() => onDeleteClick(user)}>
           <Trash2 size={18} />
         </button>
       </div>
