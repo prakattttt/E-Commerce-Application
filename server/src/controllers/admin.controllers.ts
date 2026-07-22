@@ -132,3 +132,25 @@ export const getCategories: RequestHandler = expressAsyncHandler(
     });
   },
 );
+
+export const deleteUser: RequestHandler = expressAsyncHandler(
+  async (req, res) => {
+    const id = req.params.id as string;
+
+    await AdminService.deleteUser(id);
+
+    res
+      .clearCookie("token", {
+        httpOnly: true,
+        secure: false,
+        sameSite: "lax" as const,
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+      })
+      .status(200)
+      .json({
+        success: true,
+
+        message: "Account deleted",
+      });
+  },
+);

@@ -51,7 +51,7 @@ export const getCategories = async (skip = 0) => {
   return Category.aggregate([
     {
       $lookup: {
-        from: "products", 
+        from: "products",
         localField: "_id",
         foreignField: "category",
         as: "products",
@@ -114,4 +114,25 @@ export const getAllUsers = async (skip = 0) => {
     .select("name email avatar role createdAt")
     .skip(skip)
     .limit(12);
+};
+
+export const deleteUser = async (id: string) => {
+  const user = await User.findById(id);
+  if (!user) {
+    throw new AppError("User not found", 400);
+  }
+
+  if (user.role === "admin") {
+    throw new AppError("Admin users cannot be deleted", 400);
+  }
+
+  const totalUsers = await User.countDocuments();
+
+  if (totalUsers <= 1) {
+    throw new AppError("At least one user must remain", 400);
+  }
+
+  const deletedUser = await User.findByIdAndDelete(id);
+
+  return deletedUser;
 };

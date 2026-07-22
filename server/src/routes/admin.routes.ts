@@ -9,6 +9,7 @@ import {
   getDashboard,
   getAllUsers,
   getCategories,
+  deleteUser,
 } from "../controllers/admin.controllers.js";
 
 import * as CategoryController from "../controllers/categories.controllers.js";
@@ -47,6 +48,8 @@ router.get("/dashboard", getDashboard);
 router.patch("/products/:id", updateProduct);
 
 router.delete("/products/:id", deleteProduct);
+
+router.delete("/users/:id", deleteUser);
 
 router.post(
   "/categories",
