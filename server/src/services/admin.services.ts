@@ -3,6 +3,7 @@ import type { CreateProductDTO } from "../models/products.models.js";
 import { Category } from "../models/categories.models.js";
 import AppError from "../utils/AppError.js";
 import { User } from "../models/users.models.js";
+import type { PipelineStage } from "mongoose";
 
 interface GetAllProductsOptions {
   skip?: number;
@@ -76,8 +77,34 @@ export const getProductById = async (id: string) => {
   return Product.findById(id).populate("category", "name slug");
 };
 
-export const getCategories = async (skip = 0) => {
-  return Category.aggregate([
+export const getCategories = async (
+  skip = 0,
+  search = "",
+) => {
+  const pipeline: PipelineStage[] = [];
+
+  if (search.trim()) {
+    pipeline.push({
+      $match: {
+        $or: [
+          {
+            name: {
+              $regex: search,
+              $options: "i",
+            },
+          },
+          {
+            slug: {
+              $regex: search,
+              $options: "i",
+            },
+          },
+        ],
+      },
+    });
+  }
+
+  pipeline.push(
     {
       $lookup: {
         from: "products",
@@ -88,7 +115,9 @@ export const getCategories = async (skip = 0) => {
     },
     {
       $addFields: {
-        productCount: { $size: "$products" },
+        productCount: {
+          $size: "$products",
+        },
       },
     },
     {
@@ -107,7 +136,9 @@ export const getCategories = async (skip = 0) => {
     {
       $limit: 12,
     },
-  ]);
+  );
+
+  return Category.aggregate(pipeline);
 };
 
 export const updateProduct = async (

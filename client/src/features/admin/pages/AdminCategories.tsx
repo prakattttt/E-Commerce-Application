@@ -12,9 +12,14 @@ import SearchBar from "../components/SearchBar";
 import CategoryCard from "../components/CategoryCard";
 import DeletePopup from "../../../components/common/DeletePopup";
 import { toast } from "sonner";
+import useDebounce from "../../auth/hooks/useDebounce";
 
 const AdminCategories = () => {
   const [categories, setCategories] = useState<ICategoryPlus[]>([]);
+
+  const [search, setSearch] = useState("");
+  const debouncedSearch = useDebounce(search, 500);
+
   const [selectedCategory, setSelectedCategory] =
     useState<ICategoryPlus | null>(null);
   const [deletePopupOpen, setDeletePopupOpen] = useState(false);
@@ -42,7 +47,10 @@ const AdminCategories = () => {
   useEffect(() => {
     const run = async () => {
       try {
-        const response = await getCategories();
+        const response = await getCategories({
+          search: debouncedSearch,
+        });
+
         setCategories(response.categories);
       } catch (error) {
         getErrorMessage(error);
@@ -50,7 +58,7 @@ const AdminCategories = () => {
     };
 
     run();
-  }, []);
+  }, [debouncedSearch]);
 
   return (
     <>
@@ -74,7 +82,12 @@ const AdminCategories = () => {
           }
         />
 
-        <SearchBar placeholder="Search category..." className="max-w-md" />
+        <SearchBar
+          placeholder="Search category..."
+          className="max-w-md"
+          value={search}
+          onChange={setSearch}
+        />
 
         <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
           {categories.map((category, index) => (
