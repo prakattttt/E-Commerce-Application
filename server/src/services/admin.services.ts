@@ -7,6 +7,7 @@ import { User } from "../models/users.models.js";
 interface GetAllProductsOptions {
   skip?: number;
   category?: string;
+  search?: string;
 }
 
 export const createProduct = async (data: CreateProductDTO) => {
@@ -21,6 +22,7 @@ export const createProduct = async (data: CreateProductDTO) => {
 export const getAllProducts = async ({
   skip = 0,
   category,
+  search,
 }: GetAllProductsOptions) => {
   const query: Record<string, unknown> = {};
 
@@ -36,9 +38,36 @@ export const getAllProducts = async ({
     }
   }
 
+  /* Search */
+
+  if (search && search.trim() !== "") {
+    query.$or = [
+      {
+        name: {
+          $regex: search,
+          $options: "i",
+        },
+      },
+      {
+        brand: {
+          $regex: search,
+          $options: "i",
+        },
+      },
+      {
+        description: {
+          $regex: search,
+          $options: "i",
+        },
+      },
+    ];
+  }
+
   return Product.find(query)
     .populate("category")
-    .sort({ createdAt: -1 })
+    .sort({
+      createdAt: -1,
+    })
     .skip(skip)
     .limit(12);
 };

@@ -23,8 +23,16 @@ export const createProduct: RequestHandler = expressAsyncHandler(
 export const getAllProducts: RequestHandler = expressAsyncHandler(
   async (req, res) => {
     const skip = Number(req.query.skip) || 0;
+
     const category = req.query.category as string;
-    const products = await AdminService.getAllProducts({ skip, category });
+
+    const search = req.query.search as string;
+
+    const products = await AdminService.getAllProducts({
+      skip,
+      category,
+      search,
+    });
 
     res.status(200).json({
       success: true,

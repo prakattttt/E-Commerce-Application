@@ -11,12 +11,24 @@ export const getDashboard = async () => {
   return response.data;
 };
 
-export const getProducts = async (filters: ProductFilters = {}) => {
-  const { data } = await api.get("/admin/products", {
-    params: filters,
+export const getProducts = async ({
+  skip = 0,
+  category,
+  search,
+}: {
+  skip?: number;
+  category?: string;
+  search?: string;
+}) => {
+  const response = await api.get("/admin/products", {
+    params: {
+      skip,
+      category,
+      search,
+    },
   });
 
-  return data;
+  return response.data;
 };
 
 export const getUsers = async () => {

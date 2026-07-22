@@ -4,7 +4,10 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 import { fadeUp } from "../../../animations";
-import { getProducts } from "../api/admin.api";
+import {
+  getProducts,
+  deleteProduct,
+} from "../api/admin.api";
 import type { IProduct } from "../../shop/types/products.types";
 import type { ICategory } from "../../shop/types/categories.types";
 import { getErrorMessage } from "../../../utils/getErrorMessage";
@@ -14,16 +17,22 @@ import ProductFilterBar from "../components/ProductFilterBar";
 import ProductCard from "../components/ProductCard";
 import EmptyState from "../components/EmptyState";
 import DeletePopup from "../../../components/common/DeletePopup";
-import { deleteProduct } from "../api/admin.api";
 import { toast } from "sonner";
+import useDebounce from "../../auth/hooks/useDebounce";
 
 const AdminProducts = () => {
   const [products, setProducts] = useState<IProduct[]>([]);
   const [loading, setLoading] = useState(true);
+
   const [categories, setCategories] = useState<ICategory[]>([]);
   const [selectedCategory, setSelectedCategory] = useState("all");
+
   const [search, setSearch] = useState("");
-  const [selectedProduct, setSelectedProduct] = useState<IProduct | null>(null);
+  const debouncedSearch = useDebounce(search, 500);
+
+  const [selectedProduct, setSelectedProduct] =
+    useState<IProduct | null>(null);
+
   const [deletePopupOpen, setDeletePopupOpen] = useState(false);
 
   useEffect(() => {
@@ -32,7 +41,11 @@ const AdminProducts = () => {
         const data = await getCategories();
 
         setCategories([
-          { _id: "all", name: "All", slug: "all" },
+          {
+            _id: "all",
+            name: "All",
+            slug: "all",
+          },
           ...data.categories,
         ]);
       } catch (error) {
@@ -48,9 +61,13 @@ const AdminProducts = () => {
       try {
         setLoading(true);
 
-        const data = await getProducts(
-          selectedCategory === "all" ? {} : { category: selectedCategory },
-        );
+        const data = await getProducts({
+          category:
+            selectedCategory === "all"
+              ? undefined
+              : selectedCategory,
+          search: debouncedSearch,
+        });
 
         setProducts(data.products);
       } catch (error) {
@@ -61,7 +78,7 @@ const AdminProducts = () => {
     };
 
     fetchProducts();
-  }, [selectedCategory]);
+  }, [selectedCategory, debouncedSearch]);
 
   const handleDeleteProduct = async () => {
     if (!selectedProduct) return;
@@ -71,10 +88,9 @@ const AdminProducts = () => {
 
       toast.success(response.message);
 
-      const remainingProducts = products.filter(
-        (p) => p._id != selectedProduct._id,
+      setProducts((prev) =>
+        prev.filter((p) => p._id !== selectedProduct._id),
       );
-      setProducts(remainingProducts);
     } catch (error) {
       toast.error(getErrorMessage(error));
     } finally {
@@ -82,14 +98,6 @@ const AdminProducts = () => {
       setSelectedProduct(null);
     }
   };
-
-  const filteredProducts = products.filter((product) => {
-    return (
-      product.name.toLowerCase().includes(search.toLowerCase()) ||
-      product.brand.toLowerCase().includes(search.toLowerCase()) ||
-      product.category.name.toLowerCase().includes(search.toLowerCase())
-    );
-  });
 
   return (
     <>
@@ -127,16 +135,16 @@ const AdminProducts = () => {
           </div>
         )}
 
-        {!loading && filteredProducts.length === 0 && (
+        {!loading && products.length === 0 && (
           <EmptyState
             title="No Products Found"
             message="Try searching for another product."
           />
         )}
 
-        {!loading && filteredProducts.length > 0 && (
+        {!loading && products.length > 0 && (
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
-            {filteredProducts.map((product, index) => (
+            {products.map((product, index) => (
               <ProductCard
                 key={product._id}
                 product={product}
@@ -150,6 +158,7 @@ const AdminProducts = () => {
           </div>
         )}
       </motion.section>
+
       <DeletePopup
         open={deletePopupOpen}
         itemName={selectedProduct?.name ?? ""}
