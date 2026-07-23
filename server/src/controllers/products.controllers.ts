@@ -17,12 +17,14 @@ export const getProducts: RequestHandler = expressAsyncHandler(
     const category = req.query.category as string;
     const price = req.query.price as string;
     const sort = req.query.sort as string;
+    const search = req.query.search as string;
 
     const products = await ProductService.getProducts({
       skip,
       category,
       price,
-      sort
+      sort,
+      search,
     });
 
     res.status(200).json({

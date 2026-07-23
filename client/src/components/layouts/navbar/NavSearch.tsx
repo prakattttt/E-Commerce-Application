@@ -13,7 +13,7 @@ const NavSearch = () => {
 
   const [search, setSearch] = useState("");
 
-  const debouncedSearch = useDebounce(search, 400);
+  const debouncedSearch = useDebounce(search, 600);
 
   const [products, setProducts] = useState<IProduct[]>([]);
 
