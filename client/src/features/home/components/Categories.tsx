@@ -15,8 +15,6 @@ const Categories = () => {
         const data = await getCategories();
 
         setCategories(data.categories);
-
-        console.log(data);
       } catch (error) {
         toast.error(getErrorMessage(error));
       }

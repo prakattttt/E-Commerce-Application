@@ -6,6 +6,7 @@ interface GetProductsOptions {
   category?: string;
   price?: string;
   sort?: string;
+  search?: string;
 }
 
 export const getProducts = async ({
@@ -13,6 +14,7 @@ export const getProducts = async ({
   category,
   price,
   sort,
+  search,
 }: GetProductsOptions) => {
   const query: Record<string, unknown> = {};
 
@@ -54,6 +56,31 @@ export const getProducts = async ({
     if (categoryDoc) {
       query.category = categoryDoc._id;
     }
+  }
+
+  /* Search */
+
+  if (search?.trim()) {
+    query.$or = [
+      {
+        name: {
+          $regex: search,
+          $options: "i",
+        },
+      },
+      {
+        brand: {
+          $regex: search,
+          $options: "i",
+        },
+      },
+      {
+        description: {
+          $regex: search,
+          $options: "i",
+        },
+      },
+    ];
   }
 
   /* Price */
