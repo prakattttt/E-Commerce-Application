@@ -31,6 +31,8 @@ export interface IProduct {
 
   badge?: string;
 
+  featured: boolean;
+
   createdAt: Date;
   updatedAt: Date;
 }
@@ -52,6 +54,7 @@ export interface CreateProductDTO {
   reviews?: number;
 
   badge?: string;
+  featured: boolean;
 }
 
 const imageSchema = new Schema<IProductImage>(
@@ -153,6 +156,11 @@ const productSchema = new Schema<IProduct>(
       type: String,
       trim: true,
       default: "",
+    },
+
+    featured: {
+      type: Boolean,
+      default: false,
     },
   },
   {

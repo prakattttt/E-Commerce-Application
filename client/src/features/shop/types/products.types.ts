@@ -30,4 +30,6 @@ export interface IProduct {
   reviews: number;
 
   badge?: string;
+
+  featured: boolean;
 }

@@ -126,5 +126,5 @@ export const getFeaturedProducts = async () => {
   return Product.find({ featured: true })
     .populate("category")
     .sort({ createdAt: -1 })
-    .limit(8);
+    .limit(4);
 };

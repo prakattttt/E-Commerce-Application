@@ -15,4 +15,6 @@ export interface CreateProductPayload {
   reviews?: number;
 
   badge?: string;
+
+  featured: boolean;
 }

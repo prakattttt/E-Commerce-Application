@@ -14,4 +14,6 @@ export const createProductSchema = z.object({
   brand: z.string().min(2),
 
   category: z.string().min(1),
+
+  featured: z.boolean().default(false),
 });

@@ -14,6 +14,7 @@ import { getCategories } from "../../shop/api/categories.api";
 import { getErrorMessage } from "../../../utils/getErrorMessage";
 import type { ICategory } from "../../shop/types/categories.types";
 import type { CreateProductPayload } from "../types/products.types";
+import { toast } from "sonner";
 
 const NewProduct = () => {
   const navigate = useNavigate();
@@ -25,6 +26,7 @@ const NewProduct = () => {
   const [price, setPrice] = useState("");
   const [originalPrice, setOriginalPrice] = useState("");
   const [stock, setStock] = useState("");
+  const [featured, setFeatured] = useState(false);
 
   const [badge, setBadge] = useState("");
 
@@ -64,6 +66,7 @@ const NewProduct = () => {
       category,
       price: Number(price),
       stock: Number(stock),
+      featured,
     };
 
     if (originalPrice) payload.originalPrice = Number(originalPrice);
@@ -75,7 +78,7 @@ const NewProduct = () => {
       console.log(response);
       navigate("/admin/products");
     } catch (error) {
-      getErrorMessage(error);
+      toast.error(getErrorMessage(error));
     } finally {
       setSubmitting(false);
     }
@@ -130,6 +133,8 @@ const NewProduct = () => {
       <ProductExtraDetailsForm
         badge={badge}
         onBadgeChange={setBadge}
+        featured={featured}
+        onFeaturedChange={setFeatured}
       />
 
       <ProductImagesForm />

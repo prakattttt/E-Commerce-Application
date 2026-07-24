@@ -18,7 +18,11 @@ const ProductCard = ({ product, index, onDeleteClick }: ProductCardProps) => {
       custom={index}
       initial="hidden"
       animate="visible"
-      className="rounded-2xl border border-border bg-card p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
+      className={`relative rounded-2xl bg-card p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-lg ${
+        product.featured
+          ? "border-2 border-gold/60 ring-1 ring-gold/20"
+          : "border border-border"
+      }`}
     >
       {/* Product Image */}
       <div className="flex gap-4">
