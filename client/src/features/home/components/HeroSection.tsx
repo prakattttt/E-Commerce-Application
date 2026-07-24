@@ -6,7 +6,7 @@ const HeroSection = () => {
   return (
     <section
       className="
-        relative overflow-hidden pt-14
+        relative overflow-hidden pt-18 pb-8
         bg-[linear-gradient(135deg,#1e1b4b_0%,var(--primary)_40%,#7c3aed_70%,#a855f7_100%)]
         text-primary-foreground
       "
@@ -52,24 +52,6 @@ const HeroSection = () => {
             <Link to={"/about"} className="rounded-xl border border-primary-foreground/20 bg-primary-foregorund/5 px-8 py-3 font-semibold text-primary-foreground backdrop-blur transition hover:bg-primary-foreground/5">
               Explore Deals
             </Link>
-          </div>
-
-          {/* Stats */}
-          <div className="mt-16 flex gap-12">
-            <div>
-              <h3 className="font-display text-3xl font-bold">50K+</h3>
-              <p className="mt-1 text-primary-foreground/70">Products</p>
-            </div>
-
-            <div>
-              <h3 className="font-display text-3xl font-bold">2M+</h3>
-              <p className="mt-1 text-primary-foreground/70">Customers</p>
-            </div>
-
-            <div>
-              <h3 className="font-display text-3xl font-bold">99%</h3>
-              <p className="mt-1 text-primary-foreground/70">Satisfaction</p>
-            </div>
           </div>
         </div>
 
