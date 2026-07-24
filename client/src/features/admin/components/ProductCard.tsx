@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Pencil, Trash2, StarIcon, ImageOff } from "lucide-react";
+import { Pencil, Trash2, StarIcon, ImageOff, Sparkles } from "lucide-react";
 
 import { fadeUp } from "../../../animations";
 import type { IProduct } from "../../shop/types/products.types";
@@ -18,12 +18,18 @@ const ProductCard = ({ product, index, onDeleteClick }: ProductCardProps) => {
       custom={index}
       initial="hidden"
       animate="visible"
-      className={`relative rounded-2xl bg-card p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-lg ${
+      className={`relative overflow-hidden rounded-2xl p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-lg ${
         product.featured
-          ? "border-2 border-gold/60 ring-1 ring-gold/20"
-          : "border border-border"
+          ? "border border-amber-300/60 bg-linear-to-br from-amber-50/60 via-card to-card dark:from-amber-500/5"
+          : "border border-border bg-card"
       }`}
     >
+      {product.featured && (
+        <div className="absolute top-4 right-4 flex items-center gap-1 rounded-full bg-amber-100 px-2.5 py-1 text-[11px] font-semibold text-amber-700">
+          <Sparkles size={12} className="fill-current" />
+          Featured
+        </div>
+      )}
       {/* Product Image */}
       <div className="flex gap-4">
         {product.imageCover?.url ? (
@@ -38,8 +44,8 @@ const ProductCard = ({ product, index, onDeleteClick }: ProductCardProps) => {
           </div>
         )}
 
-        <div className="flex-1">
-          <h2 className="font-semibold">{product.name}</h2>
+        <div className={`flex-1 ${product.featured && "pr-20"}`}>
+          <h2 className="font-semibold wrap-break-words">{product.name}</h2>
 
           <p className="text-sm text-muted-foreground">{product.brand}</p>
         </div>
