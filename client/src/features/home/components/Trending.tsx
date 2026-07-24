@@ -19,7 +19,7 @@ const Trending = () => {
           </h2>
         </div>
 
-        <button className="flex items-center gap-2 font-semibold text-primary transition hover:gap-3">
+        <button className="flex items-center gap-2 font-semibold text-primary transition hover:translate-x-1">
           View All
           <ArrowRight size={18} />
         </button>
