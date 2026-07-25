@@ -14,7 +14,7 @@ function DiscountCard({ product }: { product: IProduct }) {
       {/* Image */}
       <div className="relative aspect-square overflow-hidden bg-muted">
         <img
-          src={product.imageCover.url}
+          src={product?.imageCover?.url}
           alt={product.name}
           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
         />

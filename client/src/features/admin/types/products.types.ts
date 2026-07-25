@@ -17,4 +17,5 @@ export interface CreateProductPayload {
   badge?: string;
 
   featured: boolean;
+  flashSale: boolean;
 }

@@ -25,7 +25,6 @@ const ProductsGrid = ({ selectedCategory, selectedPrice, selectedSort }: Props) 
           price: selectedPrice,
           sort: selectedSort
         });
-        console.log(selectedSort)
         setProducts(data.products);
       } catch (error) {
         getErrorMessage(error);

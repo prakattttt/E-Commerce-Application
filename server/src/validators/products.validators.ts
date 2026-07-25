@@ -16,4 +16,6 @@ export const createProductSchema = z.object({
   category: z.string().min(1),
 
   featured: z.boolean().default(false),
+
+  flashSale: z.boolean().default(false),
 });

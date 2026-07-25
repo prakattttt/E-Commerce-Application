@@ -33,6 +33,8 @@ export interface IProduct {
 
   featured: boolean;
 
+  flashSale: boolean;
+
   createdAt: Date;
   updatedAt: Date;
 }
@@ -55,6 +57,7 @@ export interface CreateProductDTO {
 
   badge?: string;
   featured: boolean;
+  flashSale: boolean;
 }
 
 const imageSchema = new Schema<IProductImage>(
@@ -159,6 +162,11 @@ const productSchema = new Schema<IProduct>(
     },
 
     featured: {
+      type: Boolean,
+      default: false,
+    },
+
+    flashSale: {
       type: Boolean,
       default: false,
     },

@@ -7,6 +7,7 @@ import { fadeUp } from "../../../animations";
 import ProductBasicInfoForm from "../components/ProductBasicInfoForm";
 import ProductPricingForm from "../components/ProductPricingForm";
 import ProductExtraDetailsForm from "../components/ProductExtraDetailsForm";
+import ProductVisibilityForm from "../components/ProductVisibilityForm";
 import ProductImagesForm from "../components/ProductImagesForm";
 import FormActions from "../components/FormActions";
 import { createProduct } from "../api/admin.api";
@@ -27,6 +28,7 @@ const NewProduct = () => {
   const [originalPrice, setOriginalPrice] = useState("");
   const [stock, setStock] = useState("");
   const [featured, setFeatured] = useState(false);
+  const [flashSale, setFlashSale] = useState(false);
 
   const [badge, setBadge] = useState("");
 
@@ -67,6 +69,7 @@ const NewProduct = () => {
       price: Number(price),
       stock: Number(stock),
       featured,
+      flashSale,
     };
 
     if (originalPrice) payload.originalPrice = Number(originalPrice);
@@ -130,11 +133,13 @@ const NewProduct = () => {
         onStockChange={setStock}
       />
 
-      <ProductExtraDetailsForm
-        badge={badge}
-        onBadgeChange={setBadge}
+      <ProductExtraDetailsForm badge={badge} onBadgeChange={setBadge} />
+
+      <ProductVisibilityForm
         featured={featured}
         onFeaturedChange={setFeatured}
+        flashSale={flashSale}
+        onFlashSaleChange={setFlashSale}
       />
 
       <ProductImagesForm />

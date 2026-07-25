@@ -32,4 +32,5 @@ export interface IProduct {
   badge?: string;
 
   featured: boolean;
+  flashSale: boolean;
 }

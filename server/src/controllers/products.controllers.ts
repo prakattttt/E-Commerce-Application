@@ -73,3 +73,14 @@ export const getFeaturedProducts: RequestHandler = expressAsyncHandler(
     });
   },
 );
+
+export const getFlashSaleProducts: RequestHandler =
+  expressAsyncHandler(async (_req, res) => {
+    const products = await ProductService.getFlashSaleProducts();
+
+    res.status(200).json({
+      success: true,
+      message: "Flash sale products fetched successfully.",
+      products,
+    });
+  });

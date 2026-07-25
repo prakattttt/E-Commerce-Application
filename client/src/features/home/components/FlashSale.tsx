@@ -1,12 +1,38 @@
 import { motion } from "framer-motion";
 import { Zap } from "lucide-react";
+import { useEffect, useState } from "react";
+
 import DiscountCard from "../../../components/common/DiscountCard";
-import { flashSaleProducts } from "../../../components/dummy/dummy";
-import { fadeUp } from "../../../animations/index";
+import { fadeUp } from "../../../animations";
+import { getFlashSaleProducts } from "../api/home.api";
+import type { IProduct } from "../../shop/types/products.types";
+import { getErrorMessage } from "../../../utils/getErrorMessage";
+import { toast } from "sonner";
 
 const FlashSale = () => {
+  const [products, setProducts] = useState<IProduct[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchFlashSaleProducts = async () => {
+      try {
+        const data = await getFlashSaleProducts();
+        setProducts(data.products);
+        console.log(data);
+      } catch (error) {
+        toast.error(getErrorMessage(error));
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFlashSaleProducts();
+  }, []);
+
+  if (loading || products.length === 0) return null;
+
   return (
-    <section className="mx-auto max-w-7xl overflow-hidden rounded-3xl px-6">
+    <section className="mx-auto max-w-7xl overflow-hidden rounded-3xl px-6 pb-20">
       <div className="rounded-3xl bg-[linear-gradient(135deg,#1e1b4b_0%,#312e81_50%,#4c1d95_100%)] p-8 text-primary-foreground md:p-12">
         {/* Header */}
         <div className="mb-10 flex flex-col items-start justify-between gap-6 lg:flex-row lg:items-center">
@@ -25,9 +51,8 @@ const FlashSale = () => {
             </p>
           </div>
 
-          {/* Dummy Timer */}
           <div className="flex items-center gap-4">
-            <h1 className="text-sm font-medium text-muted mb-5">Ends In:</h1>
+            <h1 className="mb-5 text-sm font-medium text-muted">Ends In:</h1>
 
             <div className="flex items-center gap-3">
               {["12", "45", "32"].map((time, i) => (
@@ -47,7 +72,7 @@ const FlashSale = () => {
 
         {/* Products */}
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {flashSaleProducts.map((product, index) => (
+          {products.map((product, index) => (
             <motion.div
               key={product._id}
               custom={index}

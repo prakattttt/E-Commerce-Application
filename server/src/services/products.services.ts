@@ -126,5 +126,14 @@ export const getFeaturedProducts = async () => {
   return Product.find({ featured: true })
     .populate("category")
     .sort({ createdAt: -1 })
+    .limit(8);
+};
+
+export const getFlashSaleProducts = async () => {
+  return Product.find({
+    flashSale: true,
+  })
+    .populate("category")
+    .sort({ createdAt: -1 })
     .limit(4);
 };

@@ -6,7 +6,7 @@ import { fadeUp } from "../../../animations/index";
 
 const NewArrivals = () => {
   return (
-    <section className="mx-auto max-w-7xl px-6 py-20">
+    <section className="mx-auto max-w-7xl px-6 pb-20">
       {/* Header */}
       <div className="mb-12 flex items-end justify-between">
         <div>

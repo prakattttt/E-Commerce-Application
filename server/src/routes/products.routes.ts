@@ -3,7 +3,8 @@ import { Router } from "express";
 import {
   getProducts,
   getProductBySlug,
-  getFeaturedProducts
+  getFeaturedProducts,
+  getFlashSaleProducts
 } from "../controllers/products.controllers.js";
 
 const router: Router = Router();
@@ -18,6 +19,8 @@ const router: Router = Router();
 router.get("/", getProducts);
 
 router.get("/featured", getFeaturedProducts);
+
+router.get("/flash-sale", getFlashSaleProducts);
 
 router.get("/:slug", getProductBySlug);
 
