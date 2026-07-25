@@ -14,3 +14,8 @@ export const getNewProducts = async () => {
   const response = await api.get("/products/latest");
   return response.data;
 };
+
+export const getTrendingProducts = async () => {
+  const response = await api.get("/products/trending");
+  return response.data;
+};

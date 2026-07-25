@@ -5,7 +5,8 @@ import {
   getProductBySlug,
   getFeaturedProducts,
   getFlashSaleProducts,
-  getNewProducts
+  getNewProducts,
+  getTrendingProducts
 } from "../controllers/products.controllers.js";
 
 const router: Router = Router();
@@ -25,7 +26,8 @@ router.get("/flash-sale", getFlashSaleProducts);
 
 router.get("/latest", getNewProducts);
 
-router.get("/:slug", getProductBySlug);
+router.get("/trending", getTrendingProducts);
 
+router.get("/:slug", getProductBySlug);
 
 export default router;

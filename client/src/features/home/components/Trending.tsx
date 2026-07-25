@@ -1,10 +1,34 @@
 import { ArrowRight } from "lucide-react";
-import { trendingProducts } from "../../../components/dummy/dummy";
 import ProductCard from "../../../components/common/ProductCard";
 import { motion } from "framer-motion";
 import { fadeUp } from "../../../animations";
+import { useState, useEffect } from "react";
+import type { IProduct } from "../../shop/types/products.types";
+import { getTrendingProducts } from "../api/home.api";
+import { getErrorMessage } from "../../../utils/getErrorMessage";
+import { toast } from "sonner";
 
 const Trending = () => {
+  const [products, setProducts] = useState<IProduct[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchFlashSaleProducts = async () => {
+      try {
+        const data = await getTrendingProducts();
+        setProducts(data.products);
+        console.log(data);
+      } catch (error) {
+        toast.error(getErrorMessage(error));
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFlashSaleProducts();
+  }, []);
+
+  if (loading || products.length === 0) return null;
   return (
     <section className="mx-auto max-w-7xl px-6 py-20">
       {/* Header */}
@@ -27,7 +51,7 @@ const Trending = () => {
 
       {/* Products */}
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {trendingProducts.map((product, index) => (
+        {products.map((product, index) => (
           <motion.div
             key={product._id}
             custom={index}

@@ -74,8 +74,8 @@ export const getFeaturedProducts: RequestHandler = expressAsyncHandler(
   },
 );
 
-export const getFlashSaleProducts: RequestHandler =
-  expressAsyncHandler(async (_req, res) => {
+export const getFlashSaleProducts: RequestHandler = expressAsyncHandler(
+  async (_req, res) => {
     const products = await ProductService.getFlashSaleProducts();
 
     res.status(200).json({
@@ -83,10 +83,11 @@ export const getFlashSaleProducts: RequestHandler =
       message: "Flash sale products fetched successfully.",
       products,
     });
-  });
+  },
+);
 
-  export const getNewProducts: RequestHandler =
-  expressAsyncHandler(async (_req, res) => {
+export const getNewProducts: RequestHandler = expressAsyncHandler(
+  async (_req, res) => {
     const products = await ProductService.getNewProducts();
 
     res.status(200).json({
@@ -94,5 +95,17 @@ export const getFlashSaleProducts: RequestHandler =
       message: "New products fetched successfully.",
       products,
     });
-  });
+  },
+);
 
+export const getTrendingProducts: RequestHandler = expressAsyncHandler(
+  async (_req, res) => {
+    const products = await ProductService.getTrendingProducts();
+
+    res.status(200).json({
+      success: true,
+      message: "Trending products fetched successfully.",
+      products,
+    });
+  },
+);

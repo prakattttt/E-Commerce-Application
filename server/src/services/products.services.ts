@@ -139,8 +139,47 @@ export const getFlashSaleProducts = async () => {
 };
 
 export const getNewProducts = async () => {
-  return Product.find()
-    .populate("category")
-    .sort({ createdAt: -1 })
-    .limit(12);
+  return Product.find().populate("category").sort({ createdAt: -1 }).limit(12);
+};
+
+export const getTrendingProducts = async () => {
+  return Product.aggregate([
+    {
+      $match: {
+        stock: { $gt: 0 },
+      },
+    },
+    {
+      $addFields: {
+        trendingScore: {
+          $add: [
+            "$reviews",
+            {
+              $multiply: ["$rating", 20],
+            },
+          ],
+        },
+      },
+    },
+    {
+      $sort: {
+        trendingScore: -1,
+        createdAt: -1,
+      },
+    },
+    {
+      $limit: 8,
+    },
+    {
+      $lookup: {
+        from: "categories",
+        localField: "category",
+        foreignField: "_id",
+        as: "category",
+      },
+    },
+    {
+      $unwind: "$category",
+    },
+  ]);
 };
