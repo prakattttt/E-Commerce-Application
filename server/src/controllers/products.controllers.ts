@@ -84,3 +84,15 @@ export const getFlashSaleProducts: RequestHandler =
       products,
     });
   });
+
+  export const getNewProducts: RequestHandler =
+  expressAsyncHandler(async (_req, res) => {
+    const products = await ProductService.getNewProducts();
+
+    res.status(200).json({
+      success: true,
+      message: "New products fetched successfully.",
+      products,
+    });
+  });
+

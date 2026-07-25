@@ -9,3 +9,8 @@ export const getFlashSaleProducts = async () => {
   const response = await api.get("/products/flash-sale");
   return response.data;
 };
+
+export const getNewProducts = async () => {
+  const response = await api.get("/products/latest");
+  return response.data;
+};

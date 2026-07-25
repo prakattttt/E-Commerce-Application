@@ -1,10 +1,34 @@
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import ProductCard from "../../../components/common/ProductCard";
-import { newArrivalProducts } from "../../../components/dummy/dummy";
 import { fadeUp } from "../../../animations/index";
+import { useState, useEffect } from "react";
+import type { IProduct } from "../../shop/types/products.types";
+import { getNewProducts } from "../api/home.api";
+import { getErrorMessage } from "../../../utils/getErrorMessage";
+import { toast } from "sonner";
 
 const NewArrivals = () => {
+  const [products, setProducts] = useState<IProduct[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchFlashSaleProducts = async () => {
+      try {
+        const data = await getNewProducts();
+        setProducts(data.products);
+        console.log(data);
+      } catch (error) {
+        toast.error(getErrorMessage(error));
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFlashSaleProducts();
+  }, []);
+
+  if (loading || products.length === 0) return null;
   return (
     <section className="mx-auto max-w-7xl px-6 pb-20">
       {/* Header */}
@@ -25,7 +49,7 @@ const NewArrivals = () => {
 
       {/* Products */}
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {newArrivalProducts.map((product, index) => (
+        {products.map((product, index) => (
           <motion.div
             key={index}
             custom={index}

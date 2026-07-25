@@ -137,3 +137,10 @@ export const getFlashSaleProducts = async () => {
     .sort({ createdAt: -1 })
     .limit(4);
 };
+
+export const getNewProducts = async () => {
+  return Product.find()
+    .populate("category")
+    .sort({ createdAt: -1 })
+    .limit(12);
+};
