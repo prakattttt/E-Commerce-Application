@@ -74,7 +74,7 @@ const NavSearch = () => {
                 className="flex items-center gap-3 p-3 transition hover:bg-secondary"
               >
                 <img
-                  src={product.imageCover.url}
+                  src={product?.imageCover?.url}
                   alt={product.name}
                   className="h-12 w-12 rounded-lg object-cover"
                 />
