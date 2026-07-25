@@ -17,7 +17,6 @@ const Trending = () => {
       try {
         const data = await getTrendingProducts();
         setProducts(data.products);
-        console.log(data);
       } catch (error) {
         toast.error(getErrorMessage(error));
       } finally {

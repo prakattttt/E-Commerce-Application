@@ -18,7 +18,6 @@ const FlashSale = () => {
       try {
         const data = await getFlashSaleProducts();
         setProducts(data.products);
-        console.log(data);
       } catch (error) {
         toast.error(getErrorMessage(error));
       } finally {

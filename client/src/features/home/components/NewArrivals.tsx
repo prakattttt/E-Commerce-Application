@@ -17,7 +17,6 @@ const NewArrivals = () => {
       try {
         const data = await getNewProducts();
         setProducts(data.products);
-        console.log(data);
       } catch (error) {
         toast.error(getErrorMessage(error));
       } finally {
