@@ -26,7 +26,7 @@ const ProductExtraDetailsForm = ({
           value={badge}
           onChange={(e) => onBadgeChange(e.target.value)}
           placeholder="Best Seller"
-          className="w-full rounded-xl border border-border bg-background px-4 py-3 outline-none transition focus:border-primary"
+          className="min-w-80 rounded-xl border border-border bg-background px-4 py-3 outline-none transition focus:border-primary"
         />
       </div>
     </motion.div>
