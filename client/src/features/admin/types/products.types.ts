@@ -11,9 +11,6 @@ export interface CreateProductPayload {
 
   category: string;
 
-  rating?: number;
-  reviews?: number;
-
   badge?: string;
 
   featured: boolean;

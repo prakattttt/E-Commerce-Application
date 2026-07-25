@@ -57,7 +57,7 @@ const NewProduct = () => {
       !price ||
       !stock
     ) {
-      getErrorMessage(new Error("Please fill in all required fields."));
+      toast.error(getErrorMessage(new Error("Please fill in all required fields.")));
       return;
     }
 
@@ -65,6 +65,7 @@ const NewProduct = () => {
       name: productName.trim(),
       description: description.trim(),
       brand: brand.trim(),
+      badge: badge.trim(),
       category,
       price: Number(price),
       stock: Number(stock),
