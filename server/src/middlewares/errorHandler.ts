@@ -5,6 +5,7 @@ import { ZodError } from "zod";
 
 import AppError from "../utils/AppError.js";
 import env from "../config/env.js";
+import multer from "multer";
 
 export const errorHandler = (
   err: unknown,
@@ -18,6 +19,15 @@ export const errorHandler = (
       status: "fail",
       statusCode: 400,
       message: err.issues.map((issue) => issue.message),
+    });
+  }
+
+  // Multer errors
+  if (err instanceof multer.MulterError) {
+    return res.status(400).json({
+      status: "fail",
+      statusCode: 400,
+      message: err.message,
     });
   }
 
