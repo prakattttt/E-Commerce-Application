@@ -7,10 +7,17 @@ import * as AdminService from "../services/admin.services.js";
 export const createProduct: RequestHandler = expressAsyncHandler(
   async (req, res) => {
     const data = createProductSchema.parse(req.body);
-    const product = await AdminService.createProduct({
-      ...data,
-      originalPrice: data.originalPrice ?? data.price,
-    });
+
+    const files = req.files as {
+      imageCover?: Express.Multer.File[];
+      images?: Express.Multer.File[];
+    };
+
+    const product = await AdminService.createProduct(
+      data,
+      files.imageCover?.[0],
+      files.images ?? [],
+    );
 
     res.status(201).json({
       success: true,

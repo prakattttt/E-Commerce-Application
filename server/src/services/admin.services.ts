@@ -4,6 +4,9 @@ import { Category } from "../models/categories.models.js";
 import AppError from "../utils/AppError.js";
 import { User } from "../models/users.models.js";
 import type { PipelineStage } from "mongoose";
+import { uploadToCloudinary } from "../utils/uploadToCloudinary.js";
+import { createProductSchema } from "../validators/products.validators.js";
+import z from "zod";
 
 interface GetAllProductsOptions {
   skip?: number;
@@ -11,13 +14,44 @@ interface GetAllProductsOptions {
   search?: string;
 }
 
-export const createProduct = async (data: CreateProductDTO) => {
+type CreateProductInput = z.infer<typeof createProductSchema>;
+
+export const createProduct = async (
+  data: CreateProductInput,
+  imageCover?: Express.Multer.File,
+  images: Express.Multer.File[] = [],
+) => {
   const category = await Category.findById(data.category);
 
   if (!category) {
     throw new AppError("Category does not exist", 404);
   }
-  return Product.create(data);
+
+  const gallery = await Promise.all(
+    images.map(async (image) => {
+      const uploaded = await uploadToCloudinary(image);
+
+      return {
+        url: uploaded.secure_url,
+        publicId: uploaded.public_id,
+      };
+    }),
+  );
+
+  const cover = imageCover ? await uploadToCloudinary(imageCover) : null;
+
+  return Product.create({
+    ...data,
+
+    ...(cover && {
+      imageCover: {
+        url: cover.secure_url,
+        publicId: cover.public_id,
+      },
+    }),
+
+    images: gallery,
+  });
 };
 
 export const getAllProducts = async ({

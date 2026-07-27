@@ -17,6 +17,8 @@ import * as CategoryController from "../controllers/categories.controllers.js";
 import { protect } from "../middlewares/authentication.js";
 import { authorize } from "../middlewares/authorization.js";
 
+import upload from "../middlewares/multer.js";
+
 const router: Router = Router();
 
 // Every route below requires admin access
@@ -33,7 +35,20 @@ router.use(authorize("admin"));
     DELETE  /api/admin/products/:id
 */
 
-router.post("/products", createProduct);
+router.post(
+  "/products",
+  upload.fields([
+    {
+      name: "imageCover",
+      maxCount: 1,
+    },
+    {
+      name: "images",
+      maxCount: 5,
+    },
+  ]),
+  createProduct,
+);
 
 router.get("/products", getAllProducts);
 
