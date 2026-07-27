@@ -1,5 +1,4 @@
 import api from "../../../api/axios";
-import type { CreateProductPayload } from "../types/products.types";
 import type { CreateCategoryPayload } from "../types/categories.types";
 
 export interface ProductFilters {
@@ -53,7 +52,7 @@ export const getCategories = async ({ skip = 0, search = "" }) => {
   return response.data;
 };
 
-export const createProduct = async (data: CreateProductPayload) => {
+export const createProduct = async (data: FormData) => {
   const response = await api.post("/admin/products", data);
   return response.data;
 };

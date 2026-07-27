@@ -14,7 +14,6 @@ import { createProduct } from "../api/admin.api";
 import { getCategories } from "../../shop/api/categories.api";
 import { getErrorMessage } from "../../../utils/getErrorMessage";
 import type { ICategory } from "../../shop/types/categories.types";
-import type { CreateProductPayload } from "../types/products.types";
 import { toast } from "sonner";
 
 const NewProduct = () => {
@@ -33,6 +32,10 @@ const NewProduct = () => {
   const [badge, setBadge] = useState("");
 
   const [categories, setCategories] = useState<ICategory[]>([]);
+
+  const [imageCover, setImageCover] = useState<File | null>(null);
+  const [images, setImages] = useState<File[]>([]);
+
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
@@ -57,29 +60,46 @@ const NewProduct = () => {
       !price ||
       !stock
     ) {
-      toast.error(getErrorMessage(new Error("Please fill in all required fields.")));
+      toast.error(
+        getErrorMessage(new Error("Please fill in all required fields.")),
+      );
       return;
     }
 
-    const payload: CreateProductPayload = {
+    const formData = new FormData();
+
+    const fields: Record<string, string | boolean | undefined> = {
       name: productName.trim(),
       description: description.trim(),
       brand: brand.trim(),
-      badge: badge.trim(),
       category,
-      price: Number(price),
-      stock: Number(stock),
+      price,
+      stock,
+      originalPrice: originalPrice || price,
+      badge: badge.trim() || "",
       featured,
       flashSale,
     };
 
-    if (originalPrice) payload.originalPrice = Number(originalPrice);
-    if (badge.trim()) payload.badge = badge.trim();
+    Object.entries(fields).forEach(([key, value]) => {
+      formData.append(key, String(value));
+    });
+
+    if (imageCover) {
+      formData.append("imageCover", imageCover);
+    }
+
+    images.forEach((image) => {
+      formData.append("images", image);
+    });
 
     try {
       setSubmitting(true);
-      const response = await createProduct(payload);
+
+      const response = await createProduct(formData);
+
       console.log(response);
+
       navigate("/admin/products");
     } catch (error) {
       toast.error(getErrorMessage(error));
@@ -143,7 +163,12 @@ const NewProduct = () => {
         onFlashSaleChange={setFlashSale}
       />
 
-      <ProductImagesForm />
+      <ProductImagesForm
+        imageCover={imageCover}
+        onImageCoverChange={setImageCover}
+        images={images}
+        onImagesChange={setImages}
+      />
 
       <FormActions
         cancelTo="/admin/products"
