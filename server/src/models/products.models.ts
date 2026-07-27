@@ -15,7 +15,7 @@ export interface IProduct {
   description: string;
 
   price: number;
-  originalPrice?: number;
+  originalPrice: number;
 
   stock: number;
 
@@ -24,15 +24,15 @@ export interface IProduct {
   category: mongoose.Types.ObjectId;
 
   imageCover: IProductImage;
+
   images: IProductImage[];
 
   rating: number;
   reviews: number;
 
-  badge?: string;
+  badge: string;
 
   featured: boolean;
-
   flashSale: boolean;
 
   createdAt: Date;
@@ -134,7 +134,7 @@ const productSchema = new Schema<IProduct>(
 
     imageCover: {
       type: imageSchema,
-      // required: true,
+      required: true,
     },
 
     images: {
