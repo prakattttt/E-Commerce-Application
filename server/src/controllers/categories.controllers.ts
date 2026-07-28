@@ -4,12 +4,15 @@ import type { RequestHandler } from "express";
 import * as CategoryService from "../services/category.services.js";
 import AppError from "../utils/AppError.js";
 
+import { createCategorySchema } from "../validators/categories.validator.js";
+
 export const createCategory: RequestHandler = expressAsyncHandler(
   async (req, res) => {
-    const category = await CategoryService.createCategory(
-      req.body.name,
-      req.body.image,
-    );
+    const data = createCategorySchema.parse(req.body);
+
+    const image = req.file as Express.Multer.File | undefined;
+
+    const category = await CategoryService.createCategory(data, image);
 
     res.status(201).json({
       success: true,

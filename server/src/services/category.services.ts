@@ -1,14 +1,34 @@
+import type { CreateCategoryInput } from "../validators/categories.validator.js";
+import { uploadToCloudinary } from "../utils/uploadToCloudinary.js";
 import { Category } from "../models/categories.models.js";
 
 export const createCategory = async (
-  name: string,
-  image?: {
-    url: string;
-    publicId: string;
-  },
+  data: CreateCategoryInput,
+  image?: Express.Multer.File,
 ) => {
-  const categoryData = image ? { name, image } : { name };
-  return Category.create(categoryData);
+  let uploadedImage:
+    | {
+        url: string;
+        publicId: string;
+      }
+    | undefined;
+
+  if (image) {
+    const uploaded = await uploadToCloudinary(image, "categories");
+
+    uploadedImage = {
+      url: uploaded.secure_url,
+      publicId: uploaded.public_id,
+    };
+  }
+
+  return Category.create({
+    ...data,
+
+    ...(uploadedImage && {
+      image: uploadedImage,
+    }),
+  });
 };
 
 export const getCategories = async () => {

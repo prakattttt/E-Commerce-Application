@@ -12,7 +12,7 @@ import {
   deleteUser,
 } from "../controllers/admin.controllers.js";
 
-import * as CategoryController from "../controllers/categories.controllers.js";
+import { createCategory, updateCategory, deleteCategory } from "../controllers/categories.controllers.js";
 
 import { protect } from "../middlewares/authentication.js";
 import { authorize } from "../middlewares/authorization.js";
@@ -66,25 +66,10 @@ router.delete("/products/:id", deleteProduct);
 
 router.delete("/users/:id", deleteUser);
 
-router.post(
-  "/categories",
-  protect,
-  authorize("admin"),
-  CategoryController.createCategory,
-);
+router.post("/categories", upload.single("image"), createCategory);
 
-router.patch(
-  "/categories/:slug",
-  protect,
-  authorize("admin"),
-  CategoryController.updateCategory,
-);
+router.patch("/categories/:slug", updateCategory);
 
-router.delete(
-  "/categories/:slug",
-  protect,
-  authorize("admin"),
-  CategoryController.deleteCategory,
-);
+router.delete("/categories/:slug", deleteCategory);
 
 export default router;
