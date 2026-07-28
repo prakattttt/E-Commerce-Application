@@ -1,6 +1,8 @@
 import mongoose, { Schema, Types } from "mongoose";
 import slugify from "slugify";
 
+import { imageSchema, type IImage } from "./schemas/image.schemas.js";
+
 export interface ICategory {
   _id: Types.ObjectId;
 
@@ -8,10 +10,7 @@ export interface ICategory {
 
   slug: string;
 
-  image?: {
-    url: string;
-    publicId: string;
-  };
+  image?: IImage;
 
   createdAt: Date;
   updatedAt: Date;
@@ -35,8 +34,7 @@ const categorySchema = new Schema<ICategory>(
     },
 
     image: {
-      url: String,
-      publicId: String,
+      type: imageSchema,
     },
   },
   {
@@ -53,4 +51,7 @@ categorySchema.pre("validate", function () {
   }
 });
 
-export const Category = mongoose.model<ICategory>("Category", categorySchema);
+export const Category = mongoose.model<ICategory>(
+  "Category",
+  categorySchema,
+);

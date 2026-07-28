@@ -1,10 +1,7 @@
 import mongoose, { Schema, Types } from "mongoose";
 import slugify from "slugify";
 
-export interface IProductImage {
-  url: string;
-  publicId: string;
-}
+import { imageSchema, type IImage } from "./schemas/image.schemas.js";
 
 export interface IProduct {
   _id: Types.ObjectId;
@@ -23,14 +20,14 @@ export interface IProduct {
 
   category: mongoose.Types.ObjectId;
 
-  imageCover: IProductImage;
+  imageCover: IImage;
 
-  images: IProductImage[];
+  images: IImage[];
 
   rating: number;
   reviews: number;
 
-  badge: string;
+  badge?: string;
 
   featured: boolean;
   flashSale: boolean;
@@ -39,47 +36,7 @@ export interface IProduct {
   updatedAt: Date;
 }
 
-export interface CreateProductDTO {
-  name: string;
-  description: string;
-
-  price: number;
-  originalPrice?: number;
-
-  stock: number;
-
-  brand: string;
-
-  category: string;
-
-  rating?: number;
-  reviews?: number;
-
-  badge?: string;
-  featured: boolean;
-  flashSale: boolean;
-}
-
-const imageSchema = new Schema<IProductImage>(
-  {
-    url: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-
-    publicId: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-  },
-  {
-    _id: false,
-  },
-);
-
-/* Schems for products */
+/* Schemqs for products */
 const productSchema = new Schema<IProduct>(
   {
     name: {
@@ -177,7 +134,6 @@ const productSchema = new Schema<IProduct>(
 );
 
 /* Indexes */
-
 productSchema.index({
   name: "text",
   description: "text",
@@ -185,7 +141,6 @@ productSchema.index({
 });
 
 /* Middleware */
-
 productSchema.pre("validate", function () {
   if (this.isModified("name")) {
     this.slug = slugify(this.name, {
