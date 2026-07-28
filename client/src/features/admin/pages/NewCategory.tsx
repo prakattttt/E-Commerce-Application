@@ -12,12 +12,19 @@ import { useNavigate } from "react-router-dom";
 
 const NewCategory = () => {
   const [name, setName] = useState("");
-  const image = ""; //temporary image until image handling
+  const [image, setImage] = useState<File | null>(null);
   const navigate = useNavigate();
 
   const onSave = async () => {
     try {
-      const response = await createCategory({ name, image });
+      const formData = new FormData();
+      formData.append("name", name);
+
+      if (image) {
+        formData.append("image", image);
+      }
+
+      const response = await createCategory(formData);
       toast.success(response.message);
       navigate("/admin/categories");
     } catch (error) {
@@ -42,9 +49,13 @@ const NewCategory = () => {
 
       <CategoryInfoForm name={name} onNameChange={setName} />
 
-      <CategoryImageUpload />
+      <CategoryImageUpload image={image} onImageChange={setImage} />
 
-      <FormActions cancelTo="/admin/categories" saveLabel="Save Category" onSave={onSave} />
+      <FormActions
+        cancelTo="/admin/categories"
+        saveLabel="Save Category"
+        onSave={onSave}
+      />
     </motion.section>
   );
 };

@@ -49,11 +49,11 @@ const Categories = () => {
             className="group overflow-hidden rounded-2xl bg-card shadow-sm hover:shadow-xl"
           >
             <div className="relative aspect-3/4 overflow-hidden">
-              {/* <img
-                src={category}
+              <img
+                src={category?.image?.url}
                 alt={category.name}
                 className="h-full w-full object-cover transition duration-500 group-hover:scale-110"
-              /> */}
+              />
 
               <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/10 to-transparent" />
 
