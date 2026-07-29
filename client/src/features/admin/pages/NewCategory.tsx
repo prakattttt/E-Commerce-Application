@@ -15,7 +15,10 @@ const NewCategory = () => {
   const [image, setImage] = useState<File | null>(null);
   const navigate = useNavigate();
 
+  const [submitting, setSubmitting] = useState(false);
+
   const onSave = async () => {
+    setSubmitting(true);
     try {
       const formData = new FormData();
       formData.append("name", name);
@@ -29,6 +32,7 @@ const NewCategory = () => {
       navigate("/admin/categories");
     } catch (error) {
       getErrorMessage(error);
+      setSubmitting(false);
     }
   };
 
@@ -55,6 +59,7 @@ const NewCategory = () => {
         cancelTo="/admin/categories"
         saveLabel="Save Category"
         onSave={onSave}
+        loading={submitting}
       />
     </motion.section>
   );

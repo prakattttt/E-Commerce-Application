@@ -24,8 +24,11 @@ const AdminCategories = () => {
     useState<ICategoryPlus | null>(null);
   const [deletePopupOpen, setDeletePopupOpen] = useState(false);
 
+  const [isDeleting, setisDeleting] = useState(false);
+
   const handleDeleteCategory = async () => {
     if (!selectedCategory) return;
+    setisDeleting(true);
 
     try {
       const response = await deleteCategory(selectedCategory.slug);
@@ -41,6 +44,7 @@ const AdminCategories = () => {
     } finally {
       setDeletePopupOpen(false);
       setSelectedCategory(null);
+      setisDeleting(false);
     }
   };
 
@@ -107,6 +111,7 @@ const AdminCategories = () => {
         open={deletePopupOpen}
         itemName={selectedCategory?.name ?? ""}
         itemType="Category"
+        loading={isDeleting}
         onClose={() => {
           setDeletePopupOpen(false);
           setSelectedCategory(null);

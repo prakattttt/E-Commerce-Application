@@ -4,10 +4,7 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 import { fadeUp } from "../../../animations";
-import {
-  getProducts,
-  deleteProduct,
-} from "../api/admin.api";
+import { getProducts, deleteProduct } from "../api/admin.api";
 import type { IProduct } from "../../shop/types/products.types";
 import type { ICategory } from "../../shop/types/categories.types";
 import { getErrorMessage } from "../../../utils/getErrorMessage";
@@ -30,8 +27,7 @@ const AdminProducts = () => {
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce(search, 500);
 
-  const [selectedProduct, setSelectedProduct] =
-    useState<IProduct | null>(null);
+  const [selectedProduct, setSelectedProduct] = useState<IProduct | null>(null);
 
   const [deletePopupOpen, setDeletePopupOpen] = useState(false);
 
@@ -58,14 +54,10 @@ const AdminProducts = () => {
 
   useEffect(() => {
     const fetchProducts = async () => {
+      setLoading(true);
       try {
-        setLoading(true);
-
         const data = await getProducts({
-          category:
-            selectedCategory === "all"
-              ? undefined
-              : selectedCategory,
+          category: selectedCategory === "all" ? undefined : selectedCategory,
           search: debouncedSearch,
         });
 
@@ -82,20 +74,20 @@ const AdminProducts = () => {
 
   const handleDeleteProduct = async () => {
     if (!selectedProduct) return;
+    setLoading(true);
 
     try {
       const response = await deleteProduct(selectedProduct._id);
 
       toast.success(response.message);
 
-      setProducts((prev) =>
-        prev.filter((p) => p._id !== selectedProduct._id),
-      );
+      setProducts((prev) => prev.filter((p) => p._id !== selectedProduct._id));
     } catch (error) {
       toast.error(getErrorMessage(error));
     } finally {
       setDeletePopupOpen(false);
       setSelectedProduct(null);
+      setLoading(false);
     }
   };
 
@@ -163,6 +155,7 @@ const AdminProducts = () => {
         open={deletePopupOpen}
         itemName={selectedProduct?.name ?? ""}
         itemType="Product"
+        loading={loading}
         onClose={() => {
           setDeletePopupOpen(false);
           setSelectedProduct(null);
