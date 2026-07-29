@@ -1,11 +1,11 @@
 import { Product } from "../models/products.models.js";
-import type { CreateProductDTO } from "../models/products.models.js";
 import { Category } from "../models/categories.models.js";
 import AppError from "../utils/AppError.js";
 import { User } from "../models/users.models.js";
 import type { PipelineStage } from "mongoose";
 import { uploadToCloudinary } from "../utils/uploadToCloudinary.js";
 import { createProductSchema } from "../validators/products.validators.js";
+import { deleteFromCloudinary } from "../utils/deleteFromCloudinary.js";
 import z from "zod";
 
 interface GetAllProductsOptions {
@@ -174,7 +174,7 @@ export const getCategories = async (skip = 0, search = "") => {
 
 export const updateProduct = async (
   id: string,
-  updateData: Partial<CreateProductDTO>,
+  updateData: Partial<CreateProductInput>,
 ) => {
   return Product.findByIdAndUpdate(id, updateData, {
     new: true,
@@ -183,7 +183,25 @@ export const updateProduct = async (
 };
 
 export const deleteProduct = async (id: string) => {
-  return Product.findByIdAndDelete(id);
+  const product = await Product.findById(id);
+
+  if (!product) {
+    throw new AppError("Product not found.", 404);
+  }
+
+  if (product.imageCover?.publicId) {
+    await deleteFromCloudinary(product.imageCover.publicId);
+  }
+
+  await Promise.all(
+    product.images.map((image) =>
+      deleteFromCloudinary(image.publicId),
+    ),
+  );
+
+  await product.deleteOne();
+
+  return product;
 };
 
 export const getDashboard = async () => {

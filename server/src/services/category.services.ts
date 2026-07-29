@@ -1,6 +1,8 @@
 import type { CreateCategoryInput } from "../validators/categories.validator.js";
+import AppError from "../utils/AppError.js";
 import { uploadToCloudinary } from "../utils/uploadToCloudinary.js";
 import { Category } from "../models/categories.models.js";
+import { deleteFromCloudinary } from "../utils/deleteFromCloudinary.js";
 
 export const createCategory = async (
   data: CreateCategoryInput,
@@ -66,7 +68,17 @@ export const updateCategory = async (
 };
 
 export const deleteCategory = async (slug: string) => {
-  return Category.findOneAndDelete({
-    slug,
-  });
+  const category = await Category.findOne({ slug });
+
+  if (!category) {
+    throw new AppError("Category not found.", 404);
+  }
+
+  if (category.image?.publicId) {
+    await deleteFromCloudinary(category.image.publicId);
+  }
+
+  await category.deleteOne();
+
+  return category;
 };
