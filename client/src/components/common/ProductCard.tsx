@@ -1,9 +1,12 @@
 import { Heart, Star } from "lucide-react";
 import type { IProduct } from "../../features/shop/types/products.types";
+import { useNavigate } from "react-router-dom";
 
 function ProductCard({ product }: { product: IProduct }) {
+  const navigate = useNavigate();
   return (
-    <div className="group overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-shadow duration-300 hover:shadow-xl">
+    <div className="group overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-shadow duration-300 hover:shadow-xl"
+    onClick={() => navigate(`/product/${product.slug}`)}>
       {/* Image */}
       <div className="relative aspect-square overflow-hidden bg-muted">
         <img

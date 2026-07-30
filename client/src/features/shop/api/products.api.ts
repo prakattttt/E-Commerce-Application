@@ -14,10 +14,28 @@ export const getAllProducts = async (filters: ProductFilters = {}) => {
   return data;
 };
 
+export const getProductBySlug = async (slug: string) => {
+  const response = await api.get(`/products/${slug}`);
+  return response.data;
+};
+
 export const searchProducts = async (search: string) => {
   const response = await api.get("/products", {
     params: {
       search,
+    },
+  });
+
+  return response.data;
+};
+
+export const getRelatedProducts = async (
+  category: string,
+  productId: string,
+) => {
+  const response = await api.get(`/products/${productId}/related`, {
+    params: {
+      category,
     },
   });
 

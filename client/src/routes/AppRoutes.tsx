@@ -14,7 +14,8 @@ import AdminCategories from "../features/admin/pages/AdminCategories";
 import AdminOrders from "../features/admin/pages/AdminOrders";
 import AdminUsers from "../features/admin/pages/AdminUsers";
 import NewProduct from "../features/admin/pages/NewProduct";
-import NewCategory from "../features/admin/pages/NewCategory"
+import NewCategory from "../features/admin/pages/NewCategory";
+import ProductDetails from "../pages/ProductDetails";
 
 import AdminHome from "../features/admin/pages/AdminDashboard";
 
@@ -32,6 +33,8 @@ const AppRoutes = () => {
         <Route path="shop" element={<Shop />} />
 
         <Route path="profile" element={<Profile />} />
+
+        <Route path="product/:slug" element={<ProductDetails />} />
 
         <Route path="auth" element={<AuthPage />} />
       </Route>
