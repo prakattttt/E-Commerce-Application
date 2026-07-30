@@ -7,6 +7,8 @@ import { fadeUp } from "../../../../animations";
 
 import type { IProduct } from "../../types/products.types";
 import { getRelatedProducts } from "../../api/products.api";
+import { getErrorMessage } from "../../../../utils/getErrorMessage";
+import { toast } from "sonner";
 
 interface RelatedProductsProps {
   categorySlug: string;
@@ -26,6 +28,8 @@ const RelatedProducts = ({
         const data = await getRelatedProducts(categorySlug, currentProductId);
 
         setProducts(data.products);
+      } catch (error) {
+        toast.error(getErrorMessage(error));
       } finally {
         setLoading(false);
       }

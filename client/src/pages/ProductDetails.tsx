@@ -4,13 +4,14 @@ import { useParams } from "react-router-dom";
 import ProductBreadcrumb from "../features/shop/components/product-details/ProductBreadcrumb";
 import ProductGallery from "../features/shop/components/product-details/ProductGallery";
 import ProductInfo from "../features/shop/components/product-details/ProductInfo";
-import ProductDescription from "../features/shop/components/product-details/ProductDescription";
 import ProductReviews from "../features/shop/components/product-details/ProductReviews";
 import RelatedProducts from "../features/shop/components/product-details/RelatedProducts";
 
 import { getProductBySlug } from "../features/shop/api/products.api";
 
 import type { IProduct } from "../features/shop/types/products.types";
+import { getErrorMessage } from "../utils/getErrorMessage";
+import { toast } from "sonner";
 
 const ProductDetails = () => {
   const { slug } = useParams();
@@ -26,7 +27,9 @@ const ProductDetails = () => {
         const response = await getProductBySlug(slug);
 
         setProduct(response.product);
-      } finally {
+      } catch(error) {
+       toast.error(getErrorMessage(error)); 
+      }finally {
         setLoading(false);
       }
     };
@@ -55,15 +58,16 @@ const ProductDetails = () => {
         productName={product.name}
       />
 
-      <div className="mt-8 grid gap-12 lg:grid-cols-2">
-        <ProductGallery
-          imageCover={product.imageCover}
-          images={product.images}
-        />
+      <div className="mt-8 grid gap-12 lg:grid-cols-2 lg:items-start">
+        <div className="lg:sticky lg:top-24">
+          <ProductGallery
+            imageCover={product.imageCover}
+            images={product.images}
+          />
+        </div>
 
         <ProductInfo product={product} />
       </div>
-      <ProductDescription product={product} />
 
       <ProductReviews product={product} />
 

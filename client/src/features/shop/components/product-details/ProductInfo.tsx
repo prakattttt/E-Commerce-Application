@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Heart,
   ShoppingCart,
@@ -5,42 +6,25 @@ import {
   ShieldCheck,
   Truck,
   RotateCcw,
-  Star,
 } from "lucide-react";
 
 import type { IProduct } from "../../types/products.types";
+import ProductBadge from "./ProductBadge";
+import RatingStars from "./RatingStars";
+import Price from "./Price";
+import StockStatus from "./StockStatus";
+import QuantitySelector from "./QuantitySelector";
 
 interface ProductInfoProps {
   product: IProduct;
 }
 
 const ProductInfo = ({ product }: ProductInfoProps) => {
-  const discount =
-    product.originalPrice && product.originalPrice > product.price
-      ? Math.round(
-          ((product.originalPrice - product.price) / product.originalPrice) *
-            100,
-        )
-      : 0;
+  const [quantity, setQuantity] = useState(1);
 
   return (
     <div className="space-y-7">
-      {/* Badge */}
-      {(product.badge || product.featured) && (
-        <div className="flex flex-wrap gap-2">
-          {product.badge && (
-            <span className="rounded-full bg-primary px-3 py-1 text-xs font-semibold text-primary-foreground">
-              {product.badge}
-            </span>
-          )}
-
-          {product.featured && (
-            <span className="rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
-              Featured
-            </span>
-          )}
-        </div>
-      )}
+      <ProductBadge badge={product.badge} featured={product.featured} />
 
       {/* Name */}
       <h1 className="font-display text-4xl font-bold leading-tight">
@@ -50,80 +34,34 @@ const ProductInfo = ({ product }: ProductInfoProps) => {
       {/* Brand + Category */}
       <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
         <span>{product.brand}</span>
-
         <span>•</span>
-
         <span>{product.category.name}</span>
       </div>
 
-      {/* Rating */}
-      <div className="flex items-center gap-3">
-        <div className="flex items-center gap-1">
-          <Star size={18} className="fill-gold text-gold" />
+      <RatingStars rating={product.rating} reviews={product.reviews} />
 
-          <span className="font-semibold">{product.rating.toFixed(1)}</span>
-        </div>
+      <Price
+        price={product.price}
+        originalPrice={product.originalPrice ?? product.price}
+      />
 
-        <span className="text-muted-foreground">
-          ({product.reviews} reviews)
-        </span>
-      </div>
-
-      {/* Price */}
-      <div className="flex items-end gap-4">
-        <h2 className="font-display text-4xl font-bold text-primary">
-          Rs. {product.price.toLocaleString()}
-        </h2>
-
-        {discount > 0 && (
-          <>
-            <span className="text-xl text-muted-foreground line-through">
-              Rs. {product.originalPrice?.toLocaleString()}
-            </span>
-
-            <span className="rounded-full bg-success/10 px-3 py-1 text-sm font-semibold text-success">
-              {discount}% OFF
-            </span>
-          </>
-        )}
-      </div>
-
-      {/* Stock */}
-      <div>
-        {product.stock > 0 ? (
-          <span className="rounded-full bg-success/10 px-3 py-2 text-sm font-medium text-success">
-            In Stock ({product.stock} available)
-          </span>
-        ) : (
-          <span className="rounded-full bg-error/10 px-3 py-2 text-sm font-medium text-error">
-            Out of Stock
-          </span>
-        )}
-      </div>
+      <StockStatus stock={product.stock} />
 
       {/* Description */}
       <div>
-        <h3 className="mb-2 font-semibold">Description</h3>
-
+        <h3 className="mt-7 mb-2 font-semibold">Description</h3>
         <p className="leading-7 text-muted-foreground">{product.description}</p>
       </div>
 
-      {/* Quantity */}
-      <div className="space-y-2">
-        <label className="text-sm font-medium">Quantity</label>
-
-        <div className="flex w-fit items-center overflow-hidden rounded-xl border border-border">
-          <button className="px-4 py-3 hover:bg-secondary">−</button>
-
-          <span className="border-x border-border px-6 py-3">1</span>
-
-          <button className="px-4 py-3 hover:bg-secondary">+</button>
-        </div>
-      </div>
+      <QuantitySelector
+        quantity={quantity}
+        onChange={setQuantity}
+        max={product.stock > 0 ? product.stock : 1}
+      />
 
       {/* Buttons */}
       <div className="flex flex-wrap gap-3">
-        <button className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-primary px-6 py-4 font-semibold text-primary-foreground transition hover:opacity-90">
+        <button className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-primary px-3 lg:px-6 py-4 font-semibold text-primary-foreground transition hover:opacity-90">
           <ShoppingCart size={20} />
           Add to Cart
         </button>
@@ -137,14 +75,12 @@ const ProductInfo = ({ product }: ProductInfoProps) => {
         </button>
       </div>
 
-      {/* Benefits */}
+      Benefits
       <div className="space-y-4 rounded-2xl border border-border bg-card p-5">
         <div className="flex items-center gap-3">
           <Truck className="text-primary" size={20} />
-
           <div>
             <p className="font-medium">Free Delivery</p>
-
             <p className="text-sm text-muted-foreground">
               On orders above Rs. 2,000
             </p>
@@ -153,20 +89,16 @@ const ProductInfo = ({ product }: ProductInfoProps) => {
 
         <div className="flex items-center gap-3">
           <RotateCcw className="text-primary" size={20} />
-
           <div>
             <p className="font-medium">7 Day Returns</p>
-
             <p className="text-sm text-muted-foreground">Easy return policy</p>
           </div>
         </div>
 
         <div className="flex items-center gap-3">
           <ShieldCheck className="text-primary" size={20} />
-
           <div>
             <p className="font-medium">100% Genuine Product</p>
-
             <p className="text-sm text-muted-foreground">
               Direct from verified brands
             </p>

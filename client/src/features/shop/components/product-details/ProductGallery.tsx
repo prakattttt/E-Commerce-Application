@@ -11,8 +11,6 @@ interface ProductGalleryProps {
   images: ProductImage[];
 }
 
-const FALLBACK_IMAGE = "/images/placeholder.png";
-
 const ProductGallery = ({ imageCover, images }: ProductGalleryProps) => {
   const gallery = useMemo(
     () => [imageCover, ...images].filter((img) => img?.url),
@@ -77,7 +75,6 @@ const ProductGallery = ({ imageCover, images }: ProductGalleryProps) => {
               alt="Product thumbnail"
               onError={(e) => {
                 e.currentTarget.onerror = null;
-                e.currentTarget.src = FALLBACK_IMAGE;
               }}
               className="h-20 w-20 object-cover"
             />
@@ -91,14 +88,13 @@ const ProductGallery = ({ imageCover, images }: ProductGalleryProps) => {
         initial={{ opacity: 0.5, scale: 0.98 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.25 }}
-        className="group relative order-1 aspect-square w-full overflow-hidden rounded-3xl border border-border bg-card lg:max-w-140"
+        className="group relative order-1 h-72 w-full overflow-hidden rounded-3xl border border-border bg-card sm:h-96 md:h-105 lg:h-120 lg:max-w-140"
       >
         <img
           src={selectedImage.url}
           alt="Product"
           onError={(e) => {
             e.currentTarget.onerror = null;
-            e.currentTarget.src = FALLBACK_IMAGE;
           }}
           className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
         />
