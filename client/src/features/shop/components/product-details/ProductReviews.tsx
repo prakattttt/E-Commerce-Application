@@ -15,7 +15,7 @@ const ProductReviews = ({ product }: ProductReviewsProps) => {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true }}
-      className="mt-16 rounded-3xl border border-border bg-card p-8 shadow-sm"
+      className="mt-12 rounded-3xl border border-border bg-card p-8 shadow-sm"
     >
       <div className="mb-8 flex items-center justify-between">
         <div>

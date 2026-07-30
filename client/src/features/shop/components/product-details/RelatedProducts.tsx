@@ -40,7 +40,7 @@ const RelatedProducts = ({
 
   if (loading) {
     return (
-      <section className="mx-auto mt-20 max-w-7xl">
+      <section className="mx-auto mt-14 max-w-7xl">
         <h2 className="mb-8 font-display text-3xl font-bold">
           Related Products
         </h2>
