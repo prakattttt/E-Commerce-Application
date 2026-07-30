@@ -45,7 +45,7 @@ const userSchema = new Schema<IUser>(
       url: {
         type: String,
         default:
-          "https://res.cloudinary.com/demo/image/upload/default-profile.png",
+          "",
       },
 
       publicId: {
