@@ -8,20 +8,26 @@ import { getErrorMessage } from "../../../utils/getErrorMessage";
 
 const Categories = () => {
   const [categories, setCategories] = useState<ICategory[]>([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchCategories = async () => {
+      setLoading(true);
       try {
         const data = await getCategories();
 
         setCategories(data.categories);
       } catch (error) {
         toast.error(getErrorMessage(error));
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchCategories();
   }, []);
+
+    if (loading || categories.length === 0) return null;
   return (
     <section className="mx-auto max-w-7xl px-6 py-20">
       <div className="mb-12">
