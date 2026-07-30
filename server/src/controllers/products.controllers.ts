@@ -109,3 +109,20 @@ export const getTrendingProducts: RequestHandler = expressAsyncHandler(
     });
   },
 );
+
+export const getRelatedProducts: RequestHandler = expressAsyncHandler(
+  async (req, res) => {
+    const id = req.params.id as string;
+    const { category } = req.query;
+
+    const products = await ProductService.getRelatedProducts(
+      id,
+      String(category),
+    );
+
+    res.status(200).json({
+      success: true,
+      products,
+    });
+  },
+);

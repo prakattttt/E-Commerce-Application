@@ -183,3 +183,27 @@ export const getTrendingProducts = async () => {
     },
   ]);
 };
+
+export const getRelatedProducts = async (
+  productId: string,
+  categorySlug: string,
+) => {
+  const category = await Category.findOne({
+    slug: categorySlug,
+  });
+
+  if (!category) {
+    return [];
+  }
+
+  return Product.find({
+    category: category._id,
+    _id: { $ne: productId },
+  })
+    .populate("category")
+    .sort({
+      rating: -1,
+      reviews: -1,
+    })
+    .limit(4);
+};

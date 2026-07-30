@@ -6,7 +6,8 @@ import {
   getFeaturedProducts,
   getFlashSaleProducts,
   getNewProducts,
-  getTrendingProducts
+  getTrendingProducts,
+  getRelatedProducts
 } from "../controllers/products.controllers.js";
 
 const router: Router = Router();
@@ -29,5 +30,7 @@ router.get("/latest", getNewProducts);
 router.get("/trending", getTrendingProducts);
 
 router.get("/:slug", getProductBySlug);
+
+router.get("/:id/related", getRelatedProducts);
 
 export default router;
