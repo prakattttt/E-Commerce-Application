@@ -70,7 +70,7 @@ const ProductDetails = () => {
 
           <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
             <Link
-              to="/products"
+              to="/shop"
               className="flex items-center gap-2 rounded-xl bg-primary px-6 py-3 font-semibold text-primary-foreground transition hover:opacity-90"
             >
               <ArrowLeft size={18} />
