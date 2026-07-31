@@ -16,6 +16,7 @@ import EmptyState from "../components/EmptyState";
 import DeletePopup from "../../../components/common/DeletePopup";
 import { toast } from "sonner";
 import useDebounce from "../../auth/hooks/useDebounce";
+import Loader from "../../../components/ui/Loader";
 
 const AdminProducts = () => {
   const [products, setProducts] = useState<IProduct[]>([]);
@@ -71,6 +72,10 @@ const AdminProducts = () => {
 
     fetchProducts();
   }, [selectedCategory, debouncedSearch]);
+
+  if (loading) {
+    return <Loader fullScreen />;
+  }
 
   const handleDeleteProduct = async () => {
     if (!selectedProduct) return;

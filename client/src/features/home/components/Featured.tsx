@@ -10,10 +10,12 @@ import type { IProduct } from "../../shop/types/products.types";
 import { getErrorMessage } from "../../../utils/getErrorMessage";
 import { toast } from "sonner";
 import { isAxiosError } from "axios";
+import Loader from "../../../components/ui/Loader";
 
 const Featured = () => {
   const [products, setProducts] = useState<IProduct[]>([]);
   const [loading, setLoading] = useState(true);
+  
 
   useEffect(() => {
     const fetchFeaturedProducts = async () => {
@@ -34,7 +36,11 @@ const Featured = () => {
     fetchFeaturedProducts();
   }, []);
 
-  if (loading || products.length === 0) return null;
+  if (loading) {
+    <Loader fullScreen />;
+  }
+
+  if (products.length === 0) return null;
 
   return (
     <section className="mx-auto max-w-7xl px-6">

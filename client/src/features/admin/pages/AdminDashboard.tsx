@@ -8,6 +8,7 @@ import { getErrorMessage } from "../../../utils/getErrorMessage";
 import StatCard from "../components/StatCard";
 import RecentOrdersCard from "../components/RecentOrdersCard";
 import QuickActionsCard from "../components/QuickActionsCard";
+import Loader from "../../../components/ui/Loader";
 
 const AdminDashboard = () => {
   const [dashboard, setDashboard] = useState({
@@ -16,9 +17,11 @@ const AdminDashboard = () => {
     users: 0,
     orders: 0,
   });
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const run = async () => {
+      setLoading(true);
       try {
         const data = await getDashboard();
         setDashboard({
@@ -27,6 +30,8 @@ const AdminDashboard = () => {
         });
       } catch (error) {
         getErrorMessage(error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -34,11 +39,30 @@ const AdminDashboard = () => {
   }, []);
 
   const stats = [
-    { title: "Products", value: dashboard.products, icon: Package, color: "text-primary" },
-    { title: "Categories", value: dashboard.categories, icon: Tags, color: "text-accent" },
-    { title: "Orders", value: dashboard.orders, icon: ShoppingCart, color: "text-success" },
+    {
+      title: "Products",
+      value: dashboard.products,
+      icon: Package,
+      color: "text-primary",
+    },
+    {
+      title: "Categories",
+      value: dashboard.categories,
+      icon: Tags,
+      color: "text-accent",
+    },
+    {
+      title: "Orders",
+      value: dashboard.orders,
+      icon: ShoppingCart,
+      color: "text-success",
+    },
     { title: "Users", value: dashboard.users, icon: Users, color: "text-info" },
   ];
+
+  if (loading) {
+    return <Loader fullScreen />;
+  }
 
   return (
     <div className="space-y-8">

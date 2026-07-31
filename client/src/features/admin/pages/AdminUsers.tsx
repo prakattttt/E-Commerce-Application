@@ -12,6 +12,7 @@ import { deleteUser } from "../api/admin.api";
 import DeletePopup from "../../../components/common/DeletePopup";
 import { toast } from "sonner";
 import useDebounce from "../../auth/hooks/useDebounce";
+import Loader from "../../../components/ui/Loader";
 
 const AdminUsers = () => {
   const [users, setUsers] = useState<IUser[]>([]);
@@ -22,8 +23,11 @@ const AdminUsers = () => {
 
   const [deletePopupOpen, setDeletePopupOpen] = useState(false);
 
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     const run = async () => {
+      setLoading(true);
       try {
         const response = await getUsers({
           search: debouncedSearch,
@@ -32,6 +36,8 @@ const AdminUsers = () => {
         setUsers(response.users);
       } catch (error) {
         getErrorMessage(error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -54,6 +60,10 @@ const AdminUsers = () => {
       setSelectedUser(null);
     }
   };
+
+  if(loading) {
+    return <Loader fullScreen />
+  }
 
   return (
     <>

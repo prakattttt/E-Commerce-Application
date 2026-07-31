@@ -7,6 +7,7 @@ import type { IProduct } from "../types/products.types";
 import { getErrorMessage } from "../../../utils/getErrorMessage";
 import { getAllProducts } from "../api/products.api";
 import type { TPrice, TSort } from "../types/filter.types";
+import Loader from "../../../components/ui/Loader";
 
 type Props = {
   selectedCategory: string;
@@ -14,25 +15,37 @@ type Props = {
   selectedSort: TSort;
 };
 
-const ProductsGrid = ({ selectedCategory, selectedPrice, selectedSort }: Props) => {
+const ProductsGrid = ({
+  selectedCategory,
+  selectedPrice,
+  selectedSort,
+}: Props) => {
   const [products, setProducts] = useState<IProduct[]>([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
+        setLoading(true);
         const data = await getAllProducts({
           category: selectedCategory,
           price: selectedPrice,
-          sort: selectedSort
+          sort: selectedSort,
         });
         setProducts(data.products);
       } catch (error) {
         getErrorMessage(error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchProducts();
   }, [selectedCategory, selectedPrice, selectedSort]);
+
+  if (loading) {
+    return <Loader fullScreen/>;
+  }
 
   return (
     <section className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">

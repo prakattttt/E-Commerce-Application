@@ -8,6 +8,7 @@ import { getFlashSaleProducts } from "../api/home.api";
 import type { IProduct } from "../../shop/types/products.types";
 import { getErrorMessage } from "../../../utils/getErrorMessage";
 import { toast } from "sonner";
+import Loader from "../../../components/ui/Loader";
 
 const FlashSale = () => {
   const [products, setProducts] = useState<IProduct[]>([]);
@@ -28,7 +29,11 @@ const FlashSale = () => {
     fetchFlashSaleProducts();
   }, []);
 
-  if (loading || products.length === 0) return null;
+  if (loading) {
+    <Loader fullScreen />;
+  }
+
+  if (products.length === 0) return null;
 
   return (
     <section className="mx-auto max-w-7xl overflow-hidden rounded-3xl px-6 pb-20">

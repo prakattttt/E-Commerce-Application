@@ -5,6 +5,7 @@ import type { ICategory } from "../../shop/types/categories.types";
 import { getCategories } from "../../shop/api/categories.api";
 import { toast } from "sonner";
 import { getErrorMessage } from "../../../utils/getErrorMessage";
+import Loader from "../../../components/ui/Loader";
 
 const Categories = () => {
   const [categories, setCategories] = useState<ICategory[]>([]);
@@ -27,7 +28,11 @@ const Categories = () => {
     fetchCategories();
   }, []);
 
-    if (loading || categories.length === 0) return null;
+  if (loading) {
+    <Loader fullScreen />;
+  }
+
+  if (categories.length === 0) return null;
   return (
     <section className="mx-auto max-w-7xl px-6 py-20">
       <div className="mb-12">
@@ -64,7 +69,6 @@ const Categories = () => {
               <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/10 to-transparent" />
 
               <div className="absolute bottom-0 left-0 w-full p-4 text-left text-primary-foreground">
-
                 <h3 className="mt-1 font-semibold">{category.name}</h3>
               </div>
             </div>

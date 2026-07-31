@@ -13,6 +13,7 @@ import CategoryCard from "../components/CategoryCard";
 import DeletePopup from "../../../components/common/DeletePopup";
 import { toast } from "sonner";
 import useDebounce from "../../auth/hooks/useDebounce";
+import Loader from "../../../components/ui/Loader";
 
 const AdminCategories = () => {
   const [categories, setCategories] = useState<ICategoryPlus[]>([]);
@@ -24,6 +25,7 @@ const AdminCategories = () => {
     useState<ICategoryPlus | null>(null);
   const [deletePopupOpen, setDeletePopupOpen] = useState(false);
 
+  const [loading, setLoading] = useState(false);
   const [isDeleting, setisDeleting] = useState(false);
 
   const handleDeleteCategory = async () => {
@@ -50,6 +52,8 @@ const AdminCategories = () => {
 
   useEffect(() => {
     const run = async () => {
+      setLoading(true);
+
       try {
         const response = await getCategories({
           search: debouncedSearch,
@@ -58,11 +62,17 @@ const AdminCategories = () => {
         setCategories(response.categories);
       } catch (error) {
         getErrorMessage(error);
+      } finally {
+        setLoading(false);
       }
     };
 
     run();
   }, [debouncedSearch]);
+
+  if (loading) {
+    return <Loader fullScreen />;
+  }
 
   return (
     <>
