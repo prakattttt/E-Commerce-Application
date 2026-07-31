@@ -12,12 +12,15 @@ import { getProductBySlug } from "../features/shop/api/products.api";
 import type { IProduct } from "../features/shop/types/products.types";
 import { getErrorMessage } from "../utils/getErrorMessage";
 import { toast } from "sonner";
+import Loader from "../components/ui/Loader";
+import useDelayedLoading from "../hooks/useDelayedLoading";
 
 const ProductDetails = () => {
   const { slug } = useParams();
 
   const [product, setProduct] = useState<IProduct | null>(null);
   const [loading, setLoading] = useState(true);
+  const showLoader = useDelayedLoading(loading);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -27,9 +30,9 @@ const ProductDetails = () => {
         const response = await getProductBySlug(slug);
 
         setProduct(response.product);
-      } catch(error) {
-       toast.error(getErrorMessage(error)); 
-      }finally {
+      } catch (error) {
+        toast.error(getErrorMessage(error));
+      } finally {
         setLoading(false);
       }
     };
@@ -37,10 +40,8 @@ const ProductDetails = () => {
     fetchProduct();
   }, [slug]);
 
-  if (loading) {
-    return (
-      <section className="mx-auto max-w-7xl px-6 py-20">Loading...</section>
-    );
+  if (showLoader) {
+    return <Loader fullScreen />;
   }
 
   if (!product) {
