@@ -16,7 +16,6 @@ const Categories = () => {
       setLoading(true);
       try {
         const data = await getCategories();
-
         setCategories(data.categories);
       } catch (error) {
         toast.error(getErrorMessage(error));
@@ -29,7 +28,11 @@ const Categories = () => {
   }, []);
 
   if (loading) {
-    <Loader fullScreen />;
+    return (
+      <section className="mx-auto max-w-7xl py-24">
+        <Loader />
+      </section>
+    );
   }
 
   if (categories.length === 0) return null;

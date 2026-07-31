@@ -1,7 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 
 import { fadeUp } from "../../../animations";
 import ProductCard from "../../../components/common/ProductCard";
@@ -15,7 +15,6 @@ import Loader from "../../../components/ui/Loader";
 const Featured = () => {
   const [products, setProducts] = useState<IProduct[]>([]);
   const [loading, setLoading] = useState(true);
-  
 
   useEffect(() => {
     const fetchFeaturedProducts = async () => {
@@ -24,10 +23,9 @@ const Featured = () => {
         setProducts(data.products);
       } catch (error) {
         toast.error(getErrorMessage(error, "Featured Product Not Found"));
-        if(isAxiosError(error)) {
-        console.log(error.response?.data)
+        if (isAxiosError(error)) {
+          console.log(error.response?.data);
         }
-
       } finally {
         setLoading(false);
       }
@@ -37,7 +35,11 @@ const Featured = () => {
   }, []);
 
   if (loading) {
-    <Loader fullScreen />;
+    return (
+      <section className="mx-auto max-w-7xl py-24">
+        <Loader />
+      </section>
+    );
   }
 
   if (products.length === 0) return null;

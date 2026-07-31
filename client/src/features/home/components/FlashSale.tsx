@@ -30,7 +30,11 @@ const FlashSale = () => {
   }, []);
 
   if (loading) {
-    <Loader fullScreen />;
+    return (
+      <section className="mx-auto max-w-7xl py-24">
+        <Loader />
+      </section>
+    );
   }
 
   if (products.length === 0) return null;
