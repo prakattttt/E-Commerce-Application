@@ -32,6 +32,15 @@ const AdminCategories = () => {
     if (!selectedCategory) return;
     setisDeleting(true);
 
+    if (selectedCategory.productCount != 0) {
+      toast.error("Cannot delete category with more one or more products.");
+      setDeletePopupOpen(false);
+      setSelectedCategory(null);
+      setisDeleting(false);
+
+      return;
+    }
+
     try {
       const response = await deleteCategory(selectedCategory.slug);
 
