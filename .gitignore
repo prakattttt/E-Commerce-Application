@@ -13,6 +13,7 @@ dummy
 dist
 dist-ssr
 *.local
+seed
 
 # Editor directories and files
 .vscode/*
