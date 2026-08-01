@@ -158,12 +158,6 @@ export const deleteUser: RequestHandler = expressAsyncHandler(
     await AdminService.deleteUser(id);
 
     res
-      .clearCookie("token", {
-        httpOnly: true,
-        secure: false,
-        sameSite: "lax" as const,
-        maxAge: 7 * 24 * 60 * 60 * 1000,
-      })
       .status(200)
       .json({
         success: true,
