@@ -1,10 +1,18 @@
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import { UserRound, LogIn } from "lucide-react";
+
+import { scaleIn } from "../../../animations";
 
 const SecondaryUi = () => {
   return (
     <section className="flex min-h-[70vh] items-center justify-center px-6">
-      <div className="w-full max-w-md rounded-3xl border border-border bg-card p-10 text-center shadow-sm">
+      <motion.div
+        variants={scaleIn}
+        initial="hidden"
+        animate="visible"
+        className="w-full max-w-md rounded-3xl border border-border bg-card p-10 text-center shadow-sm"
+      >
         <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-primary/10">
           <UserRound size={40} className="text-primary" />
         </div>
@@ -25,7 +33,7 @@ const SecondaryUi = () => {
           <LogIn size={18} />
           Sign In
         </Link>
-      </div>
+      </motion.div>
     </section>
   );
 };

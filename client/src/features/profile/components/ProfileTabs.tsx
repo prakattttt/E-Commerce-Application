@@ -15,10 +15,6 @@ const tabs = [
     value: "wishlist",
   },
   {
-    label: "Addresses",
-    value: "addresses",
-  },
-  {
     label: "Settings",
     value: "settings",
   },
