@@ -8,6 +8,7 @@ import { getTrendingProducts } from "../api/home.api";
 import { getErrorMessage } from "../../../utils/getErrorMessage";
 import { toast } from "sonner";
 import Loader from "../../../components/ui/Loader";
+import { Link } from "react-router-dom";
 
 const Trending = () => {
   const [products, setProducts] = useState<IProduct[]>([]);
@@ -51,10 +52,10 @@ const Trending = () => {
           </h2>
         </div>
 
-        <button className="flex items-center gap-2 font-semibold text-primary transition hover:translate-x-1">
+        <Link to="/shop" className="flex items-center gap-2 font-semibold text-primary transition hover:translate-x-1">
           View All
           <ArrowRight size={18} />
-        </button>
+        </Link>
       </div>
 
       {/* Products */}

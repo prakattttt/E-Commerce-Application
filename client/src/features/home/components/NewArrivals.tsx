@@ -8,6 +8,7 @@ import { getNewProducts } from "../api/home.api";
 import { getErrorMessage } from "../../../utils/getErrorMessage";
 import { toast } from "sonner";
 import Loader from "../../../components/ui/Loader";
+import { Link } from "react-router-dom";
 
 const NewArrivals = () => {
   const [products, setProducts] = useState<IProduct[]>([]);
@@ -49,10 +50,10 @@ const NewArrivals = () => {
           <h2 className="mt-2 font-display text-4xl font-bold">New Arrivals</h2>
         </div>
 
-        <button className="flex items-center gap-2 font-semibold text-primary transition hover:translate-x-1">
+        <Link to="/shop" className="flex items-center gap-2 font-semibold text-primary transition hover:translate-x-1">
           View All
           <ArrowRight size={18} />
-        </button>
+        </Link>
       </div>
 
       {/* Products */}

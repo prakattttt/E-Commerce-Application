@@ -6,6 +6,8 @@ import { getCategories } from "../../shop/api/categories.api";
 import { toast } from "sonner";
 import { getErrorMessage } from "../../../utils/getErrorMessage";
 import Loader from "../../../components/ui/Loader";
+import { ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Categories = () => {
   const [categories, setCategories] = useState<ICategory[]>([]);
@@ -37,15 +39,25 @@ const Categories = () => {
 
   if (categories.length === 0) return null;
   return (
-    <section className="mx-auto max-w-7xl px-6 py-20">
-      <div className="mb-12">
-        <p className="text-sm font-semibold uppercase tracking-[0.25em] text-primary">
-          Browse By
-        </p>
+    <section className="mx-auto max-w-7xl px-6 py-12">
+      <div className="mb-12 flex items-end justify-between">
+        <div>
+          <p className="text-sm font-semibold uppercase tracking-[0.25em] text-primary">
+            Hand Picked
+          </p>
 
-        <h2 className="mt-2 font-display text-4xl font-bold">
-          Shop Categories
-        </h2>
+          <h2 className="mt-2 font-display text-4xl font-bold">
+            Featured Products
+          </h2>
+        </div>
+
+        <Link
+          to="/shop"
+          className="flex items-center gap-2 font-semibold text-primary transition hover:translate-x-1"
+        >
+          View All
+          <ArrowRight size={18} />
+        </Link>
       </div>
 
       <motion.div

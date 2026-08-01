@@ -58,7 +58,7 @@ const Featured = () => {
         </div>
 
         <Link
-          to="/products?featured=true"
+          to="/shop"
           className="flex items-center gap-2 font-semibold text-primary transition hover:translate-x-1"
         >
           View All
