@@ -20,7 +20,9 @@ const NewArrivals = () => {
         const data = await getNewProducts();
         setProducts(data.products);
       } catch (error) {
-        toast.error(getErrorMessage(error));
+        toast.error(getErrorMessage(error), {
+          id: "homepage-fetch-error",
+        });
       } finally {
         setLoading(false);
       }
@@ -50,7 +52,10 @@ const NewArrivals = () => {
           <h2 className="mt-2 font-display text-4xl font-bold">New Arrivals</h2>
         </div>
 
-        <Link to="/shop" className="flex items-center gap-2 font-semibold text-primary transition hover:translate-x-1">
+        <Link
+          to="/shop"
+          className="flex items-center gap-2 font-semibold text-primary transition hover:translate-x-1"
+        >
           View All
           <ArrowRight size={18} />
         </Link>

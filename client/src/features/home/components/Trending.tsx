@@ -20,7 +20,9 @@ const Trending = () => {
         const data = await getTrendingProducts();
         setProducts(data.products);
       } catch (error) {
-        toast.error(getErrorMessage(error));
+        toast.error(getErrorMessage(error), {
+          id: "homepage-fetch-error",
+        });
       } finally {
         setLoading(false);
       }
@@ -52,7 +54,10 @@ const Trending = () => {
           </h2>
         </div>
 
-        <Link to="/shop" className="flex items-center gap-2 font-semibold text-primary transition hover:translate-x-1">
+        <Link
+          to="/shop"
+          className="flex items-center gap-2 font-semibold text-primary transition hover:translate-x-1"
+        >
           View All
           <ArrowRight size={18} />
         </Link>

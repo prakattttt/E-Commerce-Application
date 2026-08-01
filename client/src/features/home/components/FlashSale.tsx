@@ -20,7 +20,9 @@ const FlashSale = () => {
         const data = await getFlashSaleProducts();
         setProducts(data.products);
       } catch (error) {
-        toast.error(getErrorMessage(error));
+        toast.error(getErrorMessage(error), {
+          id: "homepage-fetch-error",
+        });
       } finally {
         setLoading(false);
       }

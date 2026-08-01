@@ -20,7 +20,9 @@ const Categories = () => {
         const data = await getCategories();
         setCategories(data.categories);
       } catch (error) {
-        toast.error(getErrorMessage(error));
+        toast.error(getErrorMessage(error), {
+          id: "homepage-fetch-error",
+        });
       } finally {
         setLoading(false);
       }

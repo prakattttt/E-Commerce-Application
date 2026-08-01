@@ -9,7 +9,6 @@ import { getFeaturedProducts } from "../api/home.api";
 import type { IProduct } from "../../shop/types/products.types";
 import { getErrorMessage } from "../../../utils/getErrorMessage";
 import { toast } from "sonner";
-import { isAxiosError } from "axios";
 import Loader from "../../../components/ui/Loader";
 
 const Featured = () => {
@@ -22,10 +21,9 @@ const Featured = () => {
         const data = await getFeaturedProducts();
         setProducts(data.products);
       } catch (error) {
-        toast.error(getErrorMessage(error, "Featured Product Not Found"));
-        if (isAxiosError(error)) {
-          console.log(error.response?.data);
-        }
+        toast.error(getErrorMessage(error), {
+          id: "homepage-fetch-error",
+        });
       } finally {
         setLoading(false);
       }
