@@ -1,25 +1,22 @@
 import { FaFacebook, FaGithub, FaInstagram } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 
-{/*Main elements of the footer to be mapped individually*/}
-
 export const footerSections = [
   {
-    title: "Shop",
+    title: "Explore",
     links: [
-      "All Products",
-      "New Arrivals",
-      "Flash Deals",
-      "Best Sellers",
+      { name: "Home", path: "/" },
+      { name: "Shop", path: "/shop" },
+      { name: "About Us", path: "/about" },
     ],
   },
   {
-    title: "Company",
-    links: ["About Us", "Careers", "Press", "Blog"],
-  },
-  {
-    title: "Support",
-    links: ["Help Center", "Shipping Info", "Returns", "Contact Us"],
+    title: "Account",
+    links: [
+      { name: "My Profile", path: "/profile" },
+      { name: "FAQ", path: "/faq" },
+      { name: "Contact Us", path: "/contact" },
+    ],
   },
 ];
 

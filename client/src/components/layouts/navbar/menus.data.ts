@@ -4,50 +4,25 @@ export const menus = [
     path: "/",
   },
   {
-    name: "Shop",
-    path: "/shop",
+    name: "About",
+    path: "/about",
   },
   {
-    name: "Profile",
-    path: "/profile",
+    name: "Shop",
+    path: "/shop",
   },
 ];
 
 export const moreMenus = [
   {
-    name: "About Us",
-    path: "/about",
-    description: "Our story, mission & team",
+    name: "Profile",
+    path: "/profile",
+    description: "View and manage your account",
   },
   {
-    name: "Blog",
-    path: "/blog",
-    description: "Trends, guides & company news",
-  },
-  {
-    name: "Press",
-    path: "/press",
-    description: "Media coverage & press kit",
-  },
-  {
-    name: "Careers",
-    path: "/careers",
-    description: "Open roles & life at ShopSphere",
-  },
-  {
-    name: "Help Center",
-    path: "/help",
-    description: "FAQs & customer support",
-  },
-  {
-    name: "Shipping Info",
-    path: "/shipping",
-    description: "Delivery times & shipping policies",
-  },
-  {
-    name: "Returns",
-    path: "/returns",
-    description: "Easy returns & refund policy",
+    name: "FAQ",
+    path: "/faq",
+    description: "Answers to common questions",
   },
   {
     name: "Contact Us",
