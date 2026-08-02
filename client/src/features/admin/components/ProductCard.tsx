@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Pencil, Trash2, StarIcon, ImageOff, Sparkles } from "lucide-react";
+import { Link } from "react-router-dom";
 
 import { fadeUp } from "../../../animations";
 import type { IProduct } from "../../shop/types/products.types";
@@ -97,10 +98,10 @@ const ProductCard = ({ product, index, onDeleteClick }: ProductCardProps) => {
 
       {/* Actions */}
       <div className="mt-6 flex gap-3">
-        <button className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-border py-3 hover:bg-secondary">
+        <Link to={`/admin/products/${product.slug}/edit`} className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-border py-3 hover:bg-secondary">
           <Pencil size={18} />
           Edit
-        </button>
+        </Link>
 
         <button
           onClick={() => onDeleteClick(product)}
