@@ -20,6 +20,7 @@ import ProductDetails from "../pages/ProductDetails";
 import AdminHome from "../features/admin/pages/AdminDashboard";
 
 import ProtectAdmin from "../utils/ProtectAdmin";
+import FAQPage from "../pages/FAQPage";
 
 const AppRoutes = () => {
   return (
@@ -33,6 +34,8 @@ const AppRoutes = () => {
         <Route path="shop" element={<Shop />} />
 
         <Route path="profile" element={<Profile />} />
+
+        <Route path="faq" element={<FAQPage />} />
 
         <Route path="product/:slug" element={<ProductDetails />} />
 
