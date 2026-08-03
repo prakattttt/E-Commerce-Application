@@ -4,7 +4,7 @@ import AppError from "../utils/AppError.js";
 import { User } from "../models/users.models.js";
 import type { PipelineStage } from "mongoose";
 import { uploadToCloudinary } from "../utils/uploadToCloudinary.js";
-import { createProductSchema } from "../validators/products.validators.js";
+import { createProductSchema, updateProductSchema } from "../validators/products.validators.js";
 import { deleteFromCloudinary } from "../utils/deleteFromCloudinary.js";
 import z from "zod";
 
@@ -15,6 +15,7 @@ interface GetAllProductsOptions {
 }
 
 type CreateProductInput = z.infer<typeof createProductSchema>;
+type updateProductInput = z.infer<typeof updateProductSchema>
 
 export const createProduct = async (
   data: CreateProductInput,
@@ -173,10 +174,10 @@ export const getCategories = async (skip = 0, search = "") => {
 };
 
 export const updateProduct = async (
-  id: string,
-  updateData: Partial<CreateProductInput>,
+  slug: string,
+  updateData: updateProductInput,
 ) => {
-  return Product.findByIdAndUpdate(id, updateData, {
+  return Product.findOneAndUpdate({ slug }, updateData, {
     new: true,
     runValidators: true,
   }).populate("category", "name slug");
@@ -194,9 +195,7 @@ export const deleteProduct = async (id: string) => {
   }
 
   await Promise.all(
-    product.images.map((image) =>
-      deleteFromCloudinary(image.publicId),
-    ),
+    product.images.map((image) => deleteFromCloudinary(image.publicId)),
   );
 
   await product.deleteOne();

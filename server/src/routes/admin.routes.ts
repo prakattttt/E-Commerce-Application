@@ -25,16 +25,6 @@ const router: Router = Router();
 router.use(protect);
 router.use(authorize("admin"));
 
-/*
-    Admin Product Management Routes
-
-    POST    /api/admin/products
-    GET     /api/admin/products
-    GET     /api/admin/products/:id
-    PATCH   /api/admin/products/:id
-    DELETE  /api/admin/products/:id
-*/
-
 router.post(
   "/products",
   upload.fields([
@@ -60,7 +50,7 @@ router.get("/products/:id", getProductById);
 
 router.get("/dashboard", getDashboard);
 
-router.patch("/products/:id", updateProduct);
+router.patch("/products/:slug", updateProduct);
 
 router.delete("/products/:id", deleteProduct);
 

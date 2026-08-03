@@ -56,6 +56,11 @@ export const createProduct = async (data: FormData) => {
   return response.data;
 };
 
+export const updateProduct = async (data: FormData, slug: string) => {
+  const response = await api.patch(`/products/${slug}`, data);
+  return response.data;
+}
+
 export const createCategory = async (data: FormData) => {
   const response = await api.post("/admin/categories", data);
   return response.data;

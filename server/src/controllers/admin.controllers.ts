@@ -1,6 +1,6 @@
 import type { RequestHandler } from "express";
 import expressAsyncHandler from "express-async-handler";
-import { createProductSchema } from "../validators/products.validators.js";
+import { createProductSchema, updateProductSchema } from "../validators/products.validators.js";
 
 import * as AdminService from "../services/admin.services.js";
 
@@ -71,15 +71,17 @@ export const getProductById: RequestHandler = expressAsyncHandler(
 
 export const updateProduct: RequestHandler = expressAsyncHandler(
   async (req, res) => {
-    const id = req.params.id as string;
-    const product = await AdminService.updateProduct(id, req.body);
+    const slug = req.params.slug as string;
+
+    const validatedData = updateProductSchema.parse(req.body);
+
+    const product = await AdminService.updateProduct(slug, validatedData);
 
     if (!product) {
       res.status(404).json({
         success: false,
         message: "Product not found",
       });
-
       return;
     }
 
@@ -157,12 +159,10 @@ export const deleteUser: RequestHandler = expressAsyncHandler(
 
     await AdminService.deleteUser(id);
 
-    res
-      .status(200)
-      .json({
-        success: true,
+    res.status(200).json({
+      success: true,
 
-        message: "Account deleted",
-      });
+      message: "Account deleted",
+    });
   },
 );
