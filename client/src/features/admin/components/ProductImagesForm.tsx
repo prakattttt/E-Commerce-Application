@@ -4,6 +4,8 @@ import { ImagePlus, X } from "lucide-react";
 import type { IProductImage } from "../../shop/types/products.types";
 import { fadeUp } from "../../../animations";
 
+import { compressImage, compressImages } from "../../../utils/compressImage";
+
 interface ProductImagesFormProps {
   imageCover: File | null;
   onImageCoverChange: (file: File | null) => void;
@@ -32,6 +34,26 @@ const ProductImagesForm = ({
 }: ProductImagesFormProps) => {
   const removeGalleryImage = (index: number) => {
     onImagesChange(images.filter((_, i) => i !== index));
+  };
+
+  const handleCoverChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+
+    if (!file) return;
+
+    const compressed = await compressImage(file);
+
+    onImageCoverChange(compressed);
+  };
+
+  const handleGalleryChange = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const files = Array.from(e.target.files ?? []);
+
+    const compressed = await compressImages(files);
+
+    onImagesChange([...images, ...compressed]);
   };
 
   return (
@@ -104,7 +126,7 @@ const ProductImagesForm = ({
               type="file"
               accept="image/*"
               hidden
-              onChange={(e) => onImageCoverChange(e.target.files?.[0] ?? null)}
+              onChange={handleCoverChange}
             />
           </label>
         </div>
@@ -130,10 +152,7 @@ const ProductImagesForm = ({
               accept="image/*"
               multiple
               hidden
-              onChange={(e) => {
-                const files = Array.from(e.target.files ?? []);
-                onImagesChange([...images, ...files]);
-              }}
+              onChange={handleGalleryChange}
             />
           </label>
         </div>

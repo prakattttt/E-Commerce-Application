@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Upload, X } from "lucide-react";
 import { useMemo, useEffect } from "react";
+import { compressImage } from "../../../utils/compressImage";
 
 import { fadeUp } from "../../../animations";
 
@@ -26,6 +27,16 @@ const CategoryImageUpload = ({
       }
     };
   }, [previewUrl]);
+
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+
+    if (!file) return;
+
+    const compressed = await compressImage(file);
+
+    onImageChange(compressed);
+  };
 
   return (
     <motion.div
@@ -71,7 +82,7 @@ const CategoryImageUpload = ({
         <input
           type="file"
           className="hidden"
-          onChange={(e) => onImageChange(e.target.files?.[0] ?? null)}
+          onChange={handleImageChange}
         />
       </label>
     </motion.div>
