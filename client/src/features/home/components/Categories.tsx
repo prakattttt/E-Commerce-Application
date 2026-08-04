@@ -45,11 +45,11 @@ const Categories = () => {
       <div className="mb-12 flex items-end justify-between">
         <div>
           <p className="text-sm font-semibold uppercase tracking-[0.25em] text-primary">
-            Hand Picked
+            Browse By
           </p>
 
           <h2 className="mt-2 font-display text-4xl font-bold">
-            Featured Products
+            Shop Categories
           </h2>
         </div>
 
