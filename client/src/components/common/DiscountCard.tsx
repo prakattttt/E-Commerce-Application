@@ -1,4 +1,5 @@
 import type { IProduct } from "../../features/shop/types/products.types";
+import { useNavigate } from "react-router-dom";
 
 function DiscountCard({ product }: { product: IProduct }) {
   const discount =
@@ -9,8 +10,10 @@ function DiscountCard({ product }: { product: IProduct }) {
         )
       : null;
 
+      const navigate = useNavigate(); 
+
   return (
-    <div className="group overflow-hidden rounded-2xl border border-white/50 border-border bg-card/15 transition-all duration-300 hover:bg-card/20">
+    <div className="group overflow-hidden rounded-2xl border border-white/50 border-border bg-card/15 transition-all duration-300 hover:bg-card/20" onClick={() => navigate(`/product/${product.slug}`)}>
       {/* Image */}
       <div className="relative aspect-square overflow-hidden bg-muted">
         <img
