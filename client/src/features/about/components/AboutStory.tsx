@@ -11,7 +11,7 @@ const features = [
 
 const AboutStory = () => {
   return (
-    <section className="mt-15 grid items-center gap-16 lg:grid-cols-2">
+    <section className="mt-15 grid items-center gap-16 lg:grid-cols-2" id="story">
       {/* Left Content */}
       <motion.div
         variants={fadeUp}

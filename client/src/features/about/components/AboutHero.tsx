@@ -58,7 +58,9 @@ const AboutHero = () => {
             </button>
 
             <button className="rounded-xl border border-white/30 px-7 py-3 font-semibold backdrop-blur transition hover:bg-white/10">
+            <a href="#story">
               Learn More
+            </a>
             </button>
           </motion.div>
         </div>
