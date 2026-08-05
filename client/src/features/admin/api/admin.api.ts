@@ -57,7 +57,7 @@ export const createProduct = async (data: FormData) => {
 };
 
 export const updateProduct = async (data: FormData, slug: string) => {
-  const response = await api.patch(`/products/${slug}`, data);
+  const response = await api.patch(`/admin/products/${slug}`, data);
   return response.data;
 }
 

@@ -1,6 +1,9 @@
 import type { RequestHandler } from "express";
 import expressAsyncHandler from "express-async-handler";
-import { createProductSchema, updateProductSchema } from "../validators/products.validators.js";
+import {
+  createProductSchema,
+  updateProductSchema,
+} from "../validators/products.validators.js";
 
 import * as AdminService from "../services/admin.services.js";
 
@@ -75,15 +78,17 @@ export const updateProduct: RequestHandler = expressAsyncHandler(
 
     const validatedData = updateProductSchema.parse(req.body);
 
-    const product = await AdminService.updateProduct(slug, validatedData);
+    const files = req.files as {
+      imageCover?: Express.Multer.File[];
+      images?: Express.Multer.File[];
+    };
 
-    if (!product) {
-      res.status(404).json({
-        success: false,
-        message: "Product not found",
-      });
-      return;
-    }
+    const product = await AdminService.updateProduct(
+      slug,
+      validatedData,
+      files.imageCover?.[0],
+      files.images ?? [],
+    );
 
     res.status(200).json({
       success: true,

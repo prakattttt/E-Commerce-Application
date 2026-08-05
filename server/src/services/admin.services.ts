@@ -3,8 +3,11 @@ import { Category } from "../models/categories.models.js";
 import AppError from "../utils/AppError.js";
 import { User } from "../models/users.models.js";
 import type { PipelineStage } from "mongoose";
-import { uploadToCloudinary } from "../utils/uploadToCloudinary.js";
-import { createProductSchema, updateProductSchema } from "../validators/products.validators.js";
+import { uploadToCloudinary, uploadImages } from "../utils/uploadToCloudinary.js";
+import {
+  createProductSchema,
+  updateProductSchema,
+} from "../validators/products.validators.js";
 import { deleteFromCloudinary } from "../utils/deleteFromCloudinary.js";
 import z from "zod";
 
@@ -15,7 +18,7 @@ interface GetAllProductsOptions {
 }
 
 type CreateProductInput = z.infer<typeof createProductSchema>;
-type updateProductInput = z.infer<typeof updateProductSchema>
+type updateProductInput = z.infer<typeof updateProductSchema>;
 
 export const createProduct = async (
   data: CreateProductInput,
@@ -176,11 +179,47 @@ export const getCategories = async (skip = 0, search = "") => {
 export const updateProduct = async (
   slug: string,
   updateData: updateProductInput,
+  imageCover?: Express.Multer.File,
+  images: Express.Multer.File[] = [],
 ) => {
-  return Product.findOneAndUpdate({ slug }, updateData, {
-    new: true,
-    runValidators: true,
-  }).populate("category", "name slug");
+  const product = await Product.findOne({ slug });
+
+  if (!product) {
+    throw new AppError("Product not found.", 404);
+  }
+
+  if (updateData.category) {
+    const exists = await Category.exists({ _id: updateData.category });
+
+    if (!exists) {
+      throw new AppError("Category does not exist.", 404);
+    }
+  }
+
+  Object.assign(product, updateData);
+
+  // Cover
+  if (imageCover) {
+    if (product.imageCover?.publicId) {
+      await deleteFromCloudinary(product.imageCover.publicId);
+    }
+
+    const cover = await uploadToCloudinary(imageCover);
+
+    product.imageCover = {
+      url: cover.secure_url,
+      publicId: cover.public_id,
+    };
+  }
+
+  // Gallery
+  if (images.length) {
+    product.images.push(...(await uploadImages(images)));
+  }
+
+  await product.save();
+
+  return product.populate("category", "name slug");
 };
 
 export const deleteProduct = async (id: string) => {

@@ -12,7 +12,11 @@ import {
   deleteUser,
 } from "../controllers/admin.controllers.js";
 
-import { createCategory, updateCategory, deleteCategory } from "../controllers/categories.controllers.js";
+import {
+  createCategory,
+  updateCategory,
+  deleteCategory,
+} from "../controllers/categories.controllers.js";
 
 import { protect } from "../middlewares/authentication.js";
 import { authorize } from "../middlewares/authorization.js";
@@ -50,7 +54,20 @@ router.get("/products/:id", getProductById);
 
 router.get("/dashboard", getDashboard);
 
-router.patch("/products/:slug", updateProduct);
+router.patch(
+  "/products/:slug",
+  upload.fields([
+    {
+      name: "imageCover",
+      maxCount: 1,
+    },
+    {
+      name: "images",
+      maxCount: 5,
+    },
+  ]),
+  updateProduct,
+);
 
 router.delete("/products/:id", deleteProduct);
 

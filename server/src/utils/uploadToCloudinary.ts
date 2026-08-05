@@ -19,3 +19,17 @@ export const uploadToCloudinary = (
     streamifier.createReadStream(file.buffer).pipe(stream);
   });
 };
+
+export const uploadImages = async (
+  files: Express.Multer.File[],
+  folder = "products",
+) => {
+  const uploads = await Promise.all(
+    files.map((file) => uploadToCloudinary(file, folder)),
+  );
+
+  return uploads.map((image) => ({
+    url: image.secure_url,
+    publicId: image.public_id,
+  }));
+};
