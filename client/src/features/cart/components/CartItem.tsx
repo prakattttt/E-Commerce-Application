@@ -26,15 +26,17 @@ const CartItem = ({ item }: Props) => {
           </div>
 
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2 rounded-xl border px-2 py-1">
-              <button>
-                <Minus size={16} />
+            <div className="flex items-center rounded-xl border border-border bg-secondary/40 p-1">
+              <button className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground transition hover:bg-card hover:text-primary">
+                <Minus size={15} />
               </button>
 
-              <span>{item.quantity}</span>
+              <span className="min-w-10 text-center text-sm font-semibold">
+                {item.quantity}
+              </span>
 
-              <button>
-                <Plus size={16} />
+              <button className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground transition hover:bg-card hover:text-primary">
+                <Plus size={15} />
               </button>
             </div>
 

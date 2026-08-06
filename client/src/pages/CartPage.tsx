@@ -35,7 +35,7 @@ const CartPage = () => {
           Looks like you haven't added any products yet.
         </p>
 
-        <Link to="/products" className="btn-primary mt-8">
+        <Link to="/shop" className="btn-primary mt-8">
           Continue Shopping
         </Link>
       </motion.section>
