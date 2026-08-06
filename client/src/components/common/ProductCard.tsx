@@ -1,12 +1,29 @@
 import { Heart, Star } from "lucide-react";
 import type { IProduct } from "../../features/shop/types/products.types";
 import { useNavigate } from "react-router-dom";
+import useAuth from "../../features/auth/hooks/useAuth";
+import useCart from "../../features/cart/hooks/useCart";
+import { toast } from "sonner";
 
 function ProductCard({ product }: { product: IProduct }) {
+  const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
+
+  const { addItem } = useCart();
+
+  const addCart = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+
+    await addItem(product._id);
+
+    toast.success(`${product.name} added to cart`);
+  };
+
   return (
-    <div className="group overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-shadow duration-300 hover:shadow-xl"
-    onClick={() => navigate(`/product/${product.slug}`)}>
+    <div
+      className="group overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-shadow duration-300 hover:shadow-xl"
+      onClick={() => navigate(`/product/${product.slug}`)}
+    >
       {/* Image */}
       <div className="relative aspect-square overflow-hidden bg-muted">
         <img
@@ -80,9 +97,14 @@ function ProductCard({ product }: { product: IProduct }) {
           </div>
 
           {/* Button UI only */}
-          <button className="rounded-full bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground">
-            Add
-          </button>
+          {isAuthenticated && (
+            <button
+              className="rounded-full bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground cursor-pointer"
+              onClick={addCart}
+            >
+              Add
+            </button>
+          )}
         </div>
       </div>
     </div>
