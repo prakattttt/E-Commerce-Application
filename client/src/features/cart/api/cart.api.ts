@@ -14,3 +14,9 @@ export const addToCart = async ({ productId, quantity }: IAddToCart) => {
 
   return response.data;
 };
+
+export const clearCart = async () => {
+  const response = await api.delete("/cart");
+
+  return response.data;
+};
