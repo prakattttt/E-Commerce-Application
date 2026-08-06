@@ -11,7 +11,7 @@ const CartSummary = ({ cart }: Props) => {
     0,
   );
 
-  const shipping = subtotal >= 100 ? 0 : 10;
+  const shipping = subtotal >= 5000 ? 0 : 250;
 
   const tax = subtotal * 0.13;
 
@@ -33,7 +33,7 @@ const CartSummary = ({ cart }: Props) => {
         <div className="flex items-center justify-between text-muted-foreground">
           <span>Subtotal</span>
           <span className="font-medium text-foreground">
-            ${subtotal.toFixed(2)}
+            Rs. {subtotal.toFixed(2)}
           </span>
         </div>
 
@@ -44,7 +44,7 @@ const CartSummary = ({ cart }: Props) => {
             <span className="font-semibold text-success">Free</span>
           ) : (
             <span className="font-medium text-foreground">
-              ${shipping.toFixed(2)}
+              Rs. {shipping.toFixed(2)}
             </span>
           )}
         </div>
@@ -52,7 +52,7 @@ const CartSummary = ({ cart }: Props) => {
         <div className="flex items-center justify-between text-muted-foreground">
           <span>Tax (13%)</span>
 
-          <span className="font-medium text-foreground">${tax.toFixed(2)}</span>
+          <span className="font-medium text-foreground">Rs. {tax.toFixed(2)}</span>
         </div>
 
         <div className="my-2 border-t border-border" />
@@ -61,7 +61,7 @@ const CartSummary = ({ cart }: Props) => {
           <span className="text-lg font-semibold">Total</span>
 
           <span className="text-2xl font-bold text-primary">
-            ${total.toFixed(2)}
+            Rs. {total.toFixed(2)}
           </span>
         </div>
       </div>

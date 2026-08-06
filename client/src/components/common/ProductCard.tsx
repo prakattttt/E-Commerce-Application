@@ -87,11 +87,11 @@ function ProductCard({ product }: { product: IProduct }) {
         {/* Price */}
         <div className="flex items-center justify-between pt-2">
           <div className="flex items-center gap-2">
-            <span className="font-bold text-foreground">${product.price}</span>
+            <span className="font-bold text-foreground">Rs. {product.price}</span>
 
             {product.originalPrice && (
               <span className="text-xs text-muted-foreground line-through">
-                ${product.originalPrice}
+                Rs. {product.originalPrice}
               </span>
             )}
           </div>

@@ -42,7 +42,7 @@ const CartItem = ({ item }: Props) => {
 
             <div className="flex items-center gap-5">
               <span className="font-bold text-primary">
-                ${(item.product.price * item.quantity).toFixed(2)}
+                Rs. {(item.product.price * item.quantity).toFixed(2)}
               </span>
 
               <button className="text-muted-foreground hover:text-error">

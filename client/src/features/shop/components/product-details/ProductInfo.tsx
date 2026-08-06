@@ -87,7 +87,7 @@ const ProductInfo = ({ product }: ProductInfoProps) => {
           <div>
             <p className="font-medium">Free Delivery</p>
             <p className="text-sm text-muted-foreground">
-              On orders above Rs. 2,000
+              On orders above Rs. 5,000
             </p>
           </div>
         </div>
