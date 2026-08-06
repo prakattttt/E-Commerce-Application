@@ -9,7 +9,7 @@ import useCart from "../features/cart/hooks/useCart";
 import Loader from "../components/ui/Loader";
 
 const CartPage = () => {
-  const { cart, loading } = useCart();
+  const { cart, loading, quantity } = useCart();
 
   if (loading) {
     return <Loader fullScreen />;
@@ -49,7 +49,12 @@ const CartPage = () => {
       animate="visible"
       className="mx-auto max-w-7xl px-6 pt-24 pb-12"
     >
-      <h1 className="mb-8 font-display text-4xl font-bold">Shopping Cart</h1>
+      <div className="flex gap-5 items-center mb-8">
+        <h1 className="font-display text-4xl font-bold">Shopping Cart</h1>
+        <span className="text-2xl text-muted-foreground mt-1">
+          ( {quantity} {quantity === 1 ? "item" : "items"} )
+        </span>
+      </div>
 
       <div className="grid items-start gap-8 lg:grid-cols-[2fr_380px]">
         <div className="space-y-4">
