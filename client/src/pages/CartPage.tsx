@@ -7,6 +7,7 @@ import CartItem from "../features/cart/components/CartItem";
 import CartSummary from "../features/cart/components/CartSummary";
 import useCart from "../features/cart/hooks/useCart";
 import Loader from "../components/ui/Loader";
+import ClearCart from "../features/cart/components/ClearCart";
 
 const CartPage = () => {
   const { cart, loading, quantity } = useCart();
@@ -49,11 +50,11 @@ const CartPage = () => {
       animate="visible"
       className="mx-auto max-w-7xl px-6 pt-24 pb-12"
     >
-      <div className="flex gap-5 items-center mb-8">
+      <div className="mb-8">
         <h1 className="font-display text-4xl font-bold">Shopping Cart</h1>
-        <span className="text-2xl text-muted-foreground mt-1">
-          ( {quantity} {quantity === 1 ? "item" : "items"} )
-        </span>
+        <p className="mt-2 ml-1 text-muted-foreground text-lg">
+          {quantity} {quantity === 1 ? "item" : "items"} in your cart
+        </p>
       </div>
 
       <div className="grid items-start gap-8 lg:grid-cols-[2fr_380px]">
@@ -61,6 +62,7 @@ const CartPage = () => {
           {cart.items.map((item) => (
             <CartItem key={item.product._id} item={item} />
           ))}
+          <ClearCart />
         </div>
 
         <aside className="lg:sticky lg:top-24">
