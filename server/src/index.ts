@@ -14,6 +14,7 @@ import userRoutes from "./routes/users.routes.js";
 import productRoutes from "./routes/products.routes.js";
 import adminRoutes from "./routes/admin.routes.js";
 import categoryRoutes from "./routes/categories.routes.js";
+import cartRoutes from "./routes/carts.routes.js"
 
 import { errorHandler, notFoundHandler } from "./middlewares/errorHandler.js";
 
@@ -63,6 +64,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/categories", categoryRoutes);
+app.use("/api/cart", cartRoutes);
 
 // 404 handler
 app.use(notFoundHandler);
