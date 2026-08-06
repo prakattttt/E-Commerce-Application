@@ -67,7 +67,7 @@ const NavSearch = () => {
             products.map((product) => (
               <Link
                 key={product._id}
-                to={`/products/${product.slug}`}
+                to={`/product/${product.slug}`}
                 onClick={() => {
                   setSearch("");
                 }}
