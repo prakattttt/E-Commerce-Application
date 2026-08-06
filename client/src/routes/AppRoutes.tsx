@@ -23,6 +23,7 @@ import ProtectAdmin from "../utils/ProtectAdmin";
 import FAQPage from "../pages/FAQPage";
 import EditProduct from "../features/admin/pages/EditProduct";
 import EditCategory from "../features/admin/pages/EditCategory";
+import CartPage from "../pages/CartPage";
 
 const AppRoutes = () => {
   return (
@@ -40,6 +41,8 @@ const AppRoutes = () => {
         <Route path="faq" element={<FAQPage />} />
 
         <Route path="product/:slug" element={<ProductDetails />} />
+
+        <Route path="cart" element={<CartPage />} />
 
         <Route path="auth" element={<AuthPage />} />
       </Route>
