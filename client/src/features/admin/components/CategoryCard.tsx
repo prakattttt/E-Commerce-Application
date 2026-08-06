@@ -3,6 +3,7 @@ import { Pencil, Trash2, Package } from "lucide-react";
 
 import { fadeUp } from "../../../animations";
 import type { ICategoryPlus } from "../types/categories.types";
+import { useNavigate } from "react-router-dom";
 
 interface CategoryCardProps {
   category: ICategoryPlus;
@@ -11,7 +12,12 @@ interface CategoryCardProps {
   onDeleteClick: (categories: ICategoryPlus) => void;
 }
 
-const CategoryCard = ({ category, index, onDeleteClick }: CategoryCardProps) => {
+const CategoryCard = ({
+  category,
+  index,
+  onDeleteClick,
+}: CategoryCardProps) => {
+  const navigate = useNavigate();
   return (
     <motion.div
       variants={fadeUp}
@@ -40,12 +46,18 @@ const CategoryCard = ({ category, index, onDeleteClick }: CategoryCardProps) => 
 
       {/* Actions */}
       <div className="mt-6 flex gap-3">
-        <button className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-border py-3 transition-all duration-200 hover:bg-secondary">
+        <button
+          className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-border py-3 transition-all duration-200 hover:bg-secondary"
+          onClick={() => navigate(`/admin/categories/${category.slug}/edit`)}
+        >
           <Pencil size={18} />
           Edit
         </button>
 
-        <button className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-error/10 py-3 text-error transition-all duration-200 hover:bg-error hover:text-white" onClick={() => onDeleteClick(category)}>
+        <button
+          className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-error/10 py-3 text-error transition-all duration-200 hover:bg-error hover:text-white"
+          onClick={() => onDeleteClick(category)}
+        >
           <Trash2 size={18} />
           Delete
         </button>

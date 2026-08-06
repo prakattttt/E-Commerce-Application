@@ -75,7 +75,7 @@ router.delete("/users/:id", deleteUser);
 
 router.post("/categories", upload.single("image"), createCategory);
 
-router.patch("/categories/:slug", updateCategory);
+router.patch("/categories/:slug", upload.single("image"), updateCategory);
 
 router.delete("/categories/:slug", deleteCategory);
 

@@ -47,24 +47,35 @@ export const getCategoryBySlug = async (slug: string) => {
 
 export const updateCategory = async (
   slug: string,
-  data: {
-    name?: string;
-    image?: {
-      url: string;
-      publicId: string;
-    };
-  },
+  name?: string,
+  image?: Express.Multer.File,
 ) => {
-  return Category.findOneAndUpdate(
-    {
-      slug,
-    },
-    data,
-    {
-      new: true,
-      runValidators: true,
-    },
-  );
+  const category = await Category.findOne({ slug });
+
+  if (!category) {
+    throw new AppError("Category not found.", 404);
+  }
+
+  if (name) {
+    category.name = name;
+  }
+
+  if (image) {
+    if (category.image?.publicId) {
+      await deleteFromCloudinary(category.image.publicId);
+    }
+
+    const uploaded = await uploadToCloudinary(image, "categories");
+
+    category.image = {
+      url: uploaded.secure_url,
+      publicId: uploaded.public_id,
+    };
+  }
+
+  await category.save();
+
+  return category;
 };
 
 export const deleteCategory = async (slug: string) => {

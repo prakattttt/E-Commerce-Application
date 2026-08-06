@@ -5,3 +5,9 @@ export const getCategories = async () => {
 
   return data;
 };
+
+export const getCategoryBySlug = async (slug: string) => {
+  const { data } = await axios.get(`/categories/${slug}`);
+
+  return data;
+};

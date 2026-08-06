@@ -52,11 +52,10 @@ export const getCategoryBySlug: RequestHandler = expressAsyncHandler(
 export const updateCategory: RequestHandler = expressAsyncHandler(
   async (req, res) => {
     const slug = req.params.slug as string;
-    const category = await CategoryService.updateCategory(slug, req.body);
 
-    if (!category) {
-      throw new AppError("Category not found.", 404);
-    }
+    const { name } = req.body;
+
+    const category = await CategoryService.updateCategory(slug, name, req.file);
 
     res.status(200).json({
       success: true,

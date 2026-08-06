@@ -22,6 +22,7 @@ import AdminHome from "../features/admin/pages/AdminDashboard";
 import ProtectAdmin from "../utils/ProtectAdmin";
 import FAQPage from "../pages/FAQPage";
 import EditProduct from "../features/admin/pages/EditProduct";
+import EditCategory from "../features/admin/pages/EditCategory";
 
 const AppRoutes = () => {
   return (
@@ -47,13 +48,12 @@ const AppRoutes = () => {
       <Route element={<ProtectAdmin />}>
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<AdminHome />} />
-
-          {/* future */}
           <Route path="products" element={<AdminProducts />} />
           <Route path="products/new" element={<NewProduct />} />
           <Route path="products/:slug/edit" element={<EditProduct />} />
           <Route path="categories" element={<AdminCategories />} />
           <Route path="categories/new" element={<NewCategory />} />
+          <Route path="categories/:slug/edit" element={<EditCategory />} />
           <Route path="orders" element={<AdminOrders />} />
           <Route path="users" element={<AdminUsers />} />
         </Route>
