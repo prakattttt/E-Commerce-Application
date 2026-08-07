@@ -43,18 +43,34 @@ export const useCartStore = create<CartStore>((set) => ({
   },
 
   addItem: async (productId, quantity = 1) => {
-    await addToCart({
+    const response = await addToCart({
       productId,
       quantity,
     });
 
-    await useCartStore.getState().fetchCart();
+    const cart = response.cart;
+
+    set({
+      cart,
+      quantity: cart.items.reduce(
+        (sum: number, item: ICartItem) => sum + item.quantity,
+        0,
+      ),
+    });
   },
 
   deleteItem: async (productId) => {
-    await deleteCartItem(productId);
+    const response = await deleteCartItem(productId);
 
-    await useCartStore.getState().fetchCart();
+    const cart = response.cart;
+
+    set({
+      cart,
+      quantity: cart.items.reduce(
+        (sum: number, item: ICartItem) => sum + item.quantity,
+        0,
+      ),
+    });
   },
 
   clearCart: () => {
