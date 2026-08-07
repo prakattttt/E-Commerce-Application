@@ -22,10 +22,10 @@ const CartPage = () => {
         variants={fadeUp}
         initial="hidden"
         animate="visible"
-        className="container flex min-h-[70vh] flex-col items-center justify-center pt-24 text-center"
+        className="container flex min-h-screen flex-col items-center justify-center text-center"
       >
-        <div className="rounded-full bg-secondary p-6">
-          <ShoppingCart size={42} />
+        <div className="rounded-full bg-muted-foreground/20 p-6">
+          <ShoppingCart size={42} className="text-primary" />
         </div>
 
         <h1 className="mt-6 font-display text-3xl font-bold">
