@@ -10,6 +10,7 @@ const ClearCart = () => {
     try {
       await clearCartAPI();
       clearCart();
+      toast.success("Cart cleared sucessfully")
     } catch (error) {
       toast.error(getErrorMessage(error));
     }

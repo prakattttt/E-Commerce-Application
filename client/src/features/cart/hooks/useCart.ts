@@ -7,6 +7,7 @@ const useCart = () => {
 
   const fetchCart = useCartStore((state) => state.fetchCart);
   const addItem = useCartStore((state) => state.addItem);
+  const deleteItem = useCartStore((state) => state.deleteItem);
   const clearCart = useCartStore((state) => state.clearCart);
 
   return {
@@ -16,6 +17,7 @@ const useCart = () => {
 
     fetchCart,
     addItem,
+    deleteItem,
     clearCart,
   };
 };

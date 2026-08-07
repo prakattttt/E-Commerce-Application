@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-import { addToCart, getCart } from "../api/cart.api";
+import { addToCart, getCart, deleteCartItem } from "../api/cart.api";
 import type { ICart, ICartItem } from "../types/cart.types";
 
 interface CartStore {
@@ -10,6 +10,7 @@ interface CartStore {
 
   fetchCart: () => Promise<void>;
   addItem: (productId: string, quantity?: number) => Promise<void>;
+  deleteItem: (productId: string, quantity?: number) => Promise<void>;
 
   clearCart: () => void;
 }
@@ -27,7 +28,10 @@ export const useCartStore = create<CartStore>((set) => ({
 
       const cart = response.cart;
 
-      const quantity = cart.items.reduce((sum: number, item: ICartItem) => sum + item.quantity, 0);
+      const quantity = cart.items.reduce(
+        (sum: number, item: ICartItem) => sum + item.quantity,
+        0,
+      );
 
       set({
         cart,
@@ -43,6 +47,12 @@ export const useCartStore = create<CartStore>((set) => ({
       productId,
       quantity,
     });
+
+    await useCartStore.getState().fetchCart();
+  },
+
+  deleteItem: async (productId) => {
+    await deleteCartItem(productId);
 
     await useCartStore.getState().fetchCart();
   },

@@ -15,6 +15,12 @@ export const addToCart = async ({ productId, quantity }: IAddToCart) => {
   return response.data;
 };
 
+export const deleteCartItem = async (productId: string) => {
+  const response = await api.delete(`/cart/${productId}`);
+
+  return response.data;
+};
+
 export const clearCart = async () => {
   const response = await api.delete("/cart");
 

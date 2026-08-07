@@ -1,12 +1,24 @@
 import { Minus, Plus, Trash2 } from "lucide-react";
 
 import type { ICartItem } from "../types/cart.types";
+import useCart from "../hooks/useCart";
+import { toast } from "sonner";
+import { getErrorMessage } from "../../../utils/getErrorMessage";
 
 interface Props {
   item: ICartItem;
 }
 
 const CartItem = ({ item }: Props) => {
+  const { deleteItem } = useCart();
+  const deleteItemHandler = async () => {
+    try {
+      await deleteItem(item.product._id);
+      toast.success(`${item.product.name} removed from the cart`);
+    } catch (error) {
+      toast.error(getErrorMessage(error));
+    }
+  };
   return (
     <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
       <div className="flex gap-5">
@@ -27,7 +39,10 @@ const CartItem = ({ item }: Props) => {
 
           <div className="flex items-center justify-between">
             <div className="flex items-center rounded-xl border border-border bg-secondary/40 p-1">
-              <button className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground transition hover:bg-card hover:text-primary">
+              <button
+                className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground transition hover:bg-card hover:text-primary"
+                onClick={() => console.log("-")}
+              >
                 <Minus size={15} />
               </button>
 
@@ -35,7 +50,10 @@ const CartItem = ({ item }: Props) => {
                 {item.quantity}
               </span>
 
-              <button className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground transition hover:bg-card hover:text-primary">
+              <button
+                className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground transition hover:bg-card hover:text-primary"
+                onClick={() => console.log("+")}
+              >
                 <Plus size={15} />
               </button>
             </div>
@@ -45,7 +63,10 @@ const CartItem = ({ item }: Props) => {
                 Rs. {(item.product.price * item.quantity).toFixed(2)}
               </span>
 
-              <button className="text-muted-foreground hover:text-error">
+              <button
+                className="text-muted-foreground hover:text-error"
+                onClick={ deleteItemHandler}
+              >
                 <Trash2 size={18} />
               </button>
             </div>
