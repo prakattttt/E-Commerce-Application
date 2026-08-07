@@ -2,10 +2,11 @@ import { create } from "zustand";
 
 import {
   addToCart,
+  deleteCartItem,
   getCart,
   updateCartItem,
-  deleteCartItem,
 } from "../api/cart.api";
+
 import type { ICart, ICartItem } from "../types/cart.types";
 
 interface CartStore {
@@ -21,82 +22,59 @@ interface CartStore {
   clearCart: () => void;
 }
 
-export const useCartStore = create<CartStore>((set) => ({
-  cart: null,
-  quantity: 0,
-  loading: false,
+const getQuantity = (cart: ICart | null) =>
+  cart?.items.reduce(
+    (sum: number, item: ICartItem) => sum + item.quantity,
+    0,
+  ) ?? 0;
 
-  fetchCart: async () => {
-    set({ loading: true });
+export const useCartStore = create<CartStore>((set) => {
+  const updateCartState = (cart: ICart | null) => {
+    set({
+      cart,
+      quantity: getQuantity(cart),
+    });
+  };
 
-    try {
-      const response = await getCart();
+  return {
+    cart: null,
+    quantity: 0,
+    loading: false,
 
-      const cart = response.cart;
+    fetchCart: async () => {
+      set({ loading: true });
 
-      const quantity = cart.items.reduce(
-        (sum: number, item: ICartItem) => sum + item.quantity,
-        0,
-      );
+      try {
+        const response = await getCart();
+        updateCartState(response.cart ?? null);
+      } finally {
+        set({ loading: false });
+      }
+    },
 
-      set({
-        cart,
+    addItem: async (productId, quantity = 1) => {
+      const response = await addToCart({
+        productId,
         quantity,
       });
-    } finally {
-      set({ loading: false });
-    }
-  },
 
-  addItem: async (productId, quantity = 1) => {
-    const response = await addToCart({
-      productId,
-      quantity,
-    });
+      updateCartState(response.cart ?? null);
+    },
 
-    const cart = response.cart;
+    updateItem: async (productId, quantity) => {
+      const response = await updateCartItem(productId, quantity);
 
-    set({
-      cart,
-      quantity: cart.items.reduce(
-        (sum: number, item: ICartItem) => sum + item.quantity,
-        0,
-      ),
-    });
-  },
+      updateCartState(response.cart ?? null);
+    },
 
-  updateItem: async (productId, quantity) => {
-    const response = await updateCartItem(productId, quantity);
+    deleteItem: async (productId) => {
+      const response = await deleteCartItem(productId);
 
-    const cart = response.cart;
+      updateCartState(response.cart ?? null);
+    },
 
-    set({
-      cart,
-      quantity: cart.items.reduce(
-        (sum: number, item: ICartItem) => sum + item.quantity,
-        0,
-      ),
-    });
-  },
-
-  deleteItem: async (productId) => {
-    const response = await deleteCartItem(productId);
-
-    const cart = response.cart;
-
-    set({
-      cart,
-      quantity: cart.items.reduce(
-        (sum: number, item: ICartItem) => sum + item.quantity,
-        0,
-      ),
-    });
-  },
-
-  clearCart: () => {
-    set({
-      cart: null,
-      quantity: 0,
-    });
-  },
-}));
+    clearCart: () => {
+      updateCartState(null);
+    },
+  };
+});
