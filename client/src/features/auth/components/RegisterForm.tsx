@@ -32,7 +32,7 @@ const RegisterForm = ({ switchMode }: Props) => {
   const onSubmit = async (data: RegisterFormData) => {
     try {
       const response = await registerUser(data);
-      login(response);
+      login(response.user);
       toast.success("User registered successfully");
     } catch (error) {
       toast.error(getErrorMessage(error));

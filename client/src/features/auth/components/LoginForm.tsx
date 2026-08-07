@@ -31,7 +31,7 @@ const LoginForm = ({ switchMode }: Props) => {
   const onSubmit = async (data: LoginFormData) => {
     try {
       const response = await loginUser(data);
-      login(response);
+      login(response.user);
       toast.success("User logged in successfully");
     } catch (error) {
       toast.error(getErrorMessage(error));

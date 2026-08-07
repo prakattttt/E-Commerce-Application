@@ -1,6 +1,6 @@
 import expressAsyncHandler from "express-async-handler";
 import type { RequestHandler } from "express";
-import {registerSchema, loginSchema} from "../validators/users.validators.js"
+import { registerSchema, loginSchema } from "../validators/users.validators.js";
 
 import {
   registerUserService,
@@ -44,6 +44,7 @@ export const registerUser: RequestHandler = expressAsyncHandler(
           name: user.name,
           email: user.email,
           avatar: user.avatar,
+          role: user.role,
         },
       });
   },
@@ -72,6 +73,7 @@ export const loginUser: RequestHandler = expressAsyncHandler(
           name: user.name,
           email: user.email,
           avatar: user.avatar,
+          role: user.role,
         },
       });
   },
