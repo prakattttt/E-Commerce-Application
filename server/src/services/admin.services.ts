@@ -3,13 +3,18 @@ import { Category } from "../models/categories.models.js";
 import AppError from "../utils/AppError.js";
 import { User } from "../models/users.models.js";
 import type { PipelineStage } from "mongoose";
-import { uploadToCloudinary, uploadImages } from "../utils/uploadToCloudinary.js";
+import {
+  uploadToCloudinary,
+  uploadImages,
+} from "../utils/uploadToCloudinary.js";
 import {
   createProductSchema,
   updateProductSchema,
 } from "../validators/products.validators.js";
 import { deleteFromCloudinary } from "../utils/deleteFromCloudinary.js";
 import z from "zod";
+import { Cart } from "../models/carts.models.js";
+import { deleteCart } from "./carts.services.js";
 
 interface GetAllProductsOptions {
   skip?: number;
@@ -287,6 +292,12 @@ export const deleteUser = async (id: string) => {
   const user = await User.findById(id);
   if (!user) {
     throw new AppError("User not found", 400);
+  }
+
+  const cart = await Cart.find({ userId: id });
+
+  if (cart) {
+    await deleteCart(id);
   }
 
   if (user.role === "admin") {

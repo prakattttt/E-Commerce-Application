@@ -83,3 +83,7 @@ export const clearCart = async (userId: string) => {
 
   return getCart(userId);
 };
+
+export const deleteCart = async (userId: string) => {
+  await Cart.findOneAndDelete({ user: userId }, { runValidators: true });
+};
