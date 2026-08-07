@@ -6,9 +6,10 @@ import { menus, moreMenus } from "./menus.data"
 
 interface Props {
   open: boolean;
+  closeMenu: () => void;
 }
 
-const MobileMenu = ({ open }: Props) => {
+const MobileMenu = ({ open, closeMenu }: Props) => {
   const { isAuthenticated, logout } = useAuth();
   return (
     <div
@@ -26,6 +27,7 @@ const MobileMenu = ({ open }: Props) => {
             <li key={item.name}>
               <NavLink
                 to={item.path}
+                onClick={closeMenu}
                 className={({ isActive }) =>
                   `flex items-center justify-between text-sm transition-colors duration-200 ${
                     isActive

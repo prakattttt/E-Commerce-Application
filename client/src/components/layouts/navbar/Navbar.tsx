@@ -93,7 +93,7 @@ const Navbar = () => {
       </nav>
 
       {/* Mobile Menu */}
-      <MobileMenu open={open} />
+      <MobileMenu open={open} closeMenu={() => setOpen(false)}/>
     </>
   );
 };
