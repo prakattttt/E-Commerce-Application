@@ -1,30 +1,21 @@
 import { motion } from "framer-motion";
 import { Star, Zap } from "lucide-react";
+import type { UseFormRegister } from "react-hook-form";
 
 import { fadeUp } from "../../../animations";
+import type { ProductFormValues } from "../types/schemas/products.schemas";
 
 interface ProductVisibilityFormProps {
-  featured: boolean;
-  onFeaturedChange: (value: boolean) => void;
-
-  flashSale: boolean;
-  onFlashSaleChange: (value: boolean) => void;
+  register: UseFormRegister<ProductFormValues>;
 }
 
-const ProductVisibilityForm = ({
-  featured,
-  onFeaturedChange,
-  flashSale,
-  onFlashSaleChange,
-}: ProductVisibilityFormProps) => {
+const ProductVisibilityForm = ({ register }: ProductVisibilityFormProps) => {
   return (
     <motion.div
       variants={fadeUp}
       className="rounded-2xl border border-border bg-card p-6 shadow-sm"
     >
-      <h2 className="mb-6 font-display text-xl font-bold">
-        Product Visibility
-      </h2>
+      <h2 className="mb-6 font-display text-xl font-bold">Product Visibility</h2>
 
       <div className="space-y-4">
         <div className="flex items-center justify-between rounded-xl border border-border bg-background px-4 py-4">
@@ -44,8 +35,7 @@ const ProductVisibilityForm = ({
 
           <input
             type="checkbox"
-            checked={featured}
-            onChange={(e) => onFeaturedChange(e.target.checked)}
+            {...register("featured")}
             className="h-5 w-5 accent-primary"
           />
         </div>
@@ -67,8 +57,7 @@ const ProductVisibilityForm = ({
 
           <input
             type="checkbox"
-            checked={flashSale}
-            onChange={(e) => onFlashSaleChange(e.target.checked)}
+            {...register("flashSale")}
             className="h-5 w-5 accent-primary"
           />
         </div>

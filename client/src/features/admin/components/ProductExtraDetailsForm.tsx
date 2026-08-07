@@ -1,16 +1,14 @@
 import { motion } from "framer-motion";
+import type { UseFormRegister } from "react-hook-form";
 
 import { fadeUp } from "../../../animations";
+import type { ProductFormValues } from "../types/schemas/products.schemas";
 
 interface ProductExtraDetailsFormProps {
-  badge: string;
-  onBadgeChange: (value: string) => void;
+  register: UseFormRegister<ProductFormValues>;
 }
 
-const ProductExtraDetailsForm = ({
-  badge,
-  onBadgeChange,
-}: ProductExtraDetailsFormProps) => {
+const ProductExtraDetailsForm = ({ register }: ProductExtraDetailsFormProps) => {
   return (
     <motion.div
       variants={fadeUp}
@@ -23,9 +21,8 @@ const ProductExtraDetailsForm = ({
 
         <input
           type="text"
-          value={badge}
-          onChange={(e) => onBadgeChange(e.target.value)}
           placeholder="Best Seller"
+          {...register("badge")}
           className="min-w-80 rounded-xl border border-border bg-background px-4 py-3 outline-none transition focus:border-primary"
         />
       </div>

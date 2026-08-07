@@ -1,26 +1,20 @@
 import { motion } from "framer-motion";
+import type { FieldErrors, UseFormRegister } from "react-hook-form";
 
 import { fadeUp } from "../../../animations";
+import type { ProductFormValues } from "../types/schemas/products.schemas";
 
 interface ProductPricingFormProps {
-  price: string;
-  onPriceChange: (value: string) => void;
-  originalPrice: string;
-  onOriginalPriceChange: (value: string) => void;
-  stock: string;
-  onStockChange: (value: string) => void;
+  register: UseFormRegister<ProductFormValues>;
+  errors: FieldErrors<ProductFormValues>;
 }
 
-const ProductPricingForm = ({
-  price,
-  onPriceChange,
-  originalPrice,
-  onOriginalPriceChange,
-  stock,
-  onStockChange,
-}: ProductPricingFormProps) => {
+const ProductPricingForm = ({ register, errors }: ProductPricingFormProps) => {
   return (
-    <motion.div variants={fadeUp} className="rounded-2xl border border-border bg-card p-6 shadow-sm">
+    <motion.div
+      variants={fadeUp}
+      className="rounded-2xl border border-border bg-card p-6 shadow-sm"
+    >
       <h2 className="mb-6 font-display text-xl font-bold">Pricing & Inventory</h2>
 
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -29,11 +23,14 @@ const ProductPricingForm = ({
 
           <input
             type="number"
-            value={price}
-            onChange={(e) => onPriceChange(e.target.value)}
+            step="0.01"
             placeholder="999"
+            {...register("price")}
             className="w-full rounded-xl border border-border bg-background px-4 py-3 outline-none transition focus:border-primary"
           />
+          {errors.price && (
+            <p className="mt-2 text-sm text-error">{errors.price.message}</p>
+          )}
         </div>
 
         <div>
@@ -41,11 +38,14 @@ const ProductPricingForm = ({
 
           <input
             type="number"
-            value={originalPrice}
-            onChange={(e) => onOriginalPriceChange(e.target.value)}
+            step="0.01"
             placeholder="1199"
+            {...register("originalPrice")}
             className="w-full rounded-xl border border-border bg-background px-4 py-3 outline-none transition focus:border-primary"
           />
+          {errors.originalPrice && (
+            <p className="mt-2 text-sm text-red-500">{errors.originalPrice.message}</p>
+          )}
         </div>
 
         <div>
@@ -53,11 +53,14 @@ const ProductPricingForm = ({
 
           <input
             type="number"
-            value={stock}
-            onChange={(e) => onStockChange(e.target.value)}
+            min="0"
             placeholder="20"
+            {...register("stock")}
             className="w-full rounded-xl border border-border bg-background px-4 py-3 outline-none transition focus:border-primary"
           />
+          {errors.stock && (
+            <p className="mt-2 text-sm text-red-500">{errors.stock.message}</p>
+          )}
         </div>
       </div>
     </motion.div>

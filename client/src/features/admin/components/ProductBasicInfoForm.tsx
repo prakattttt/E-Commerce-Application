@@ -1,33 +1,26 @@
 import { motion } from "framer-motion";
+import type { FieldErrors, UseFormRegister } from "react-hook-form";
 
 import { fadeUp } from "../../../animations";
 import type { ICategory } from "../../shop/types/categories.types";
+import type { ProductFormValues } from "../types/schemas/products.schemas";
 
 interface ProductBasicInfoFormProps {
-  productName: string;
-  onProductNameChange: (value: string) => void;
-  brand: string;
-  onBrandChange: (value: string) => void;
-  category: string;
-  onCategoryChange: (value: string) => void;
+  register: UseFormRegister<ProductFormValues>;
+  errors: FieldErrors<ProductFormValues>;
   categories: ICategory[];
-  description: string;
-  onDescriptionChange: (value: string) => void;
 }
 
 const ProductBasicInfoForm = ({
-  productName,
-  onProductNameChange,
-  brand,
-  onBrandChange,
-  category,
-  onCategoryChange,
+  register,
+  errors,
   categories,
-  description,
-  onDescriptionChange,
 }: ProductBasicInfoFormProps) => {
   return (
-    <motion.div variants={fadeUp} className="rounded-2xl border border-border bg-card p-6 shadow-sm">
+    <motion.div
+      variants={fadeUp}
+      className="rounded-2xl border border-border bg-card p-6 shadow-sm"
+    >
       <h2 className="mb-6 font-display text-xl font-bold">Basic Information</h2>
 
       <div className="space-y-5">
@@ -37,11 +30,13 @@ const ProductBasicInfoForm = ({
 
             <input
               type="text"
-              value={productName}
-              onChange={(e) => onProductNameChange(e.target.value)}
               placeholder="iPhone 16 Pro"
+              {...register("name")}
               className="w-full rounded-xl border border-border bg-background px-4 py-3 outline-none transition focus:border-primary"
             />
+            {errors.name && (
+              <p className="mt-2 text-sm text-error">{errors.name.message}</p>
+            )}
           </div>
 
           <div>
@@ -49,11 +44,13 @@ const ProductBasicInfoForm = ({
 
             <input
               type="text"
-              value={brand}
-              onChange={(e) => onBrandChange(e.target.value)}
               placeholder="Apple"
+              {...register("brand")}
               className="w-full rounded-xl border border-border bg-background px-4 py-3 outline-none transition focus:border-primary"
             />
+            {errors.brand && (
+              <p className="mt-2 text-sm text-error">{errors.brand.message}</p>
+            )}
           </div>
         </div>
 
@@ -62,8 +59,7 @@ const ProductBasicInfoForm = ({
             <label className="mb-2 block text-sm font-medium">Category</label>
 
             <select
-              value={category}
-              onChange={(e) => onCategoryChange(e.target.value)}
+              {...register("category")}
               className="w-full rounded-xl border border-border bg-background px-4 py-3 outline-none transition focus:border-primary"
             >
               <option value="">Select Category</option>
@@ -74,6 +70,9 @@ const ProductBasicInfoForm = ({
                 </option>
               ))}
             </select>
+            {errors.category && (
+              <p className="mt-2 text-sm text-error">{errors.category.message}</p>
+            )}
           </div>
         </div>
 
@@ -82,11 +81,13 @@ const ProductBasicInfoForm = ({
 
           <textarea
             rows={5}
-            value={description}
-            onChange={(e) => onDescriptionChange(e.target.value)}
             placeholder="Write product description..."
+            {...register("description")}
             className="w-full resize-none rounded-xl border border-border bg-background px-4 py-3 outline-none transition focus:border-primary"
           />
+          {errors.description && (
+            <p className="mt-2 text-sm text-error">{errors.description.message}</p>
+          )}
         </div>
       </div>
     </motion.div>

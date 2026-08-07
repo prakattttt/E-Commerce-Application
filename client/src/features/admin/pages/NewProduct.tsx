@@ -2,6 +2,9 @@ import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
 
 import { fadeUp } from "../../../animations";
 import ProductBasicInfoForm from "../components/ProductBasicInfoForm";
@@ -14,28 +17,37 @@ import { createProduct } from "../api/admin.api";
 import { getCategories } from "../../shop/api/categories.api";
 import { getErrorMessage } from "../../../utils/getErrorMessage";
 import type { ICategory } from "../../shop/types/categories.types";
-import { toast } from "sonner";
+import { productSchema } from "../types/schemas/products.schemas";
+import type { ProductFormValues } from "../types/schemas/products.schemas";
 
 const NewProduct = () => {
   const navigate = useNavigate();
 
-  const [productName, setProductName] = useState("");
-  const [description, setDescription] = useState("");
-  const [brand, setBrand] = useState("");
-  const [category, setCategory] = useState("");
-  const [price, setPrice] = useState("");
-  const [originalPrice, setOriginalPrice] = useState("");
-  const [stock, setStock] = useState("");
-  const [featured, setFeatured] = useState(false);
-  const [flashSale, setFlashSale] = useState(false);
+  const form = useForm<ProductFormValues>({
+    resolver: zodResolver(productSchema),
+    defaultValues: {
+      name: "",
+      description: "",
+      brand: "",
+      category: "",
+      price: 0,
+      originalPrice: undefined,
+      stock: 0,
+      badge: "",
+      featured: false,
+      flashSale: false,
+    },
+  });
 
-  const [badge, setBadge] = useState("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = form;
 
   const [categories, setCategories] = useState<ICategory[]>([]);
-
   const [imageCover, setImageCover] = useState<File | null>(null);
   const [images, setImages] = useState<File[]>([]);
-
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
@@ -51,38 +63,13 @@ const NewProduct = () => {
     fetchCategories();
   }, []);
 
-  const handleSave = async () => {
-    if (
-      !productName.trim() ||
-      !description.trim() ||
-      !brand.trim() ||
-      !category ||
-      !price ||
-      !stock
-    ) {
-      toast.error(
-        getErrorMessage(new Error("Please fill in all required fields.")),
-      );
-      return;
-    }
-
+  const onSubmit = async (data: ProductFormValues) => {
     const formData = new FormData();
 
-    const fields: Record<string, string | boolean | undefined> = {
-      name: productName.trim(),
-      description: description.trim(),
-      brand: brand.trim(),
-      category,
-      price,
-      stock,
-      originalPrice: originalPrice || price,
-      badge: badge.trim() || "",
-      featured,
-      flashSale,
-    };
-
-    Object.entries(fields).forEach(([key, value]) => {
-      formData.append(key, String(value));
+    Object.entries(data).forEach(([key, value]) => {
+      if (value !== undefined) {
+        formData.append(key, String(value));
+      }
     });
 
     if (imageCover) {
@@ -95,11 +82,8 @@ const NewProduct = () => {
 
     try {
       setSubmitting(true);
-
-      const response = await createProduct(formData);
-
-      console.log(response);
-
+      await createProduct(formData);
+      toast.success("Product created successfully");
       navigate("/admin/products");
     } catch (error) {
       toast.error(getErrorMessage(error));
@@ -109,11 +93,12 @@ const NewProduct = () => {
   };
 
   return (
-    <motion.section
+    <motion.form
       variants={fadeUp}
       initial="hidden"
       animate="visible"
       className="mx-auto max-w-5xl space-y-8"
+      onSubmit={handleSubmit(onSubmit)}
     >
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
@@ -134,34 +119,16 @@ const NewProduct = () => {
       </div>
 
       <ProductBasicInfoForm
-        productName={productName}
-        onProductNameChange={setProductName}
-        brand={brand}
-        onBrandChange={setBrand}
-        category={category}
-        onCategoryChange={setCategory}
+        register={register}
+        errors={errors}
         categories={categories}
-        description={description}
-        onDescriptionChange={setDescription}
       />
 
-      <ProductPricingForm
-        price={price}
-        onPriceChange={setPrice}
-        originalPrice={originalPrice}
-        onOriginalPriceChange={setOriginalPrice}
-        stock={stock}
-        onStockChange={setStock}
-      />
+      <ProductPricingForm register={register} errors={errors} />
 
-      <ProductExtraDetailsForm badge={badge} onBadgeChange={setBadge} />
+      <ProductExtraDetailsForm register={register} />
 
-      <ProductVisibilityForm
-        featured={featured}
-        onFeaturedChange={setFeatured}
-        flashSale={flashSale}
-        onFlashSaleChange={setFlashSale}
-      />
+      <ProductVisibilityForm register={register} />
 
       <ProductImagesForm
         imageCover={imageCover}
@@ -173,10 +140,9 @@ const NewProduct = () => {
       <FormActions
         cancelTo="/admin/products"
         saveLabel="Save Product"
-        onSave={handleSave}
         loading={submitting}
       />
-    </motion.section>
+    </motion.form>
   );
 };
 
