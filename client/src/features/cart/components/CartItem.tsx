@@ -10,7 +10,27 @@ interface Props {
 }
 
 const CartItem = ({ item }: Props) => {
-  const { deleteItem } = useCart();
+  const { updateItem, deleteItem } = useCart();
+  const increaseItem = async () => {
+    try {
+      await updateItem(item.product._id, item.quantity + 1);
+    } catch (error) {
+      toast.error(getErrorMessage(error));
+    }
+  };
+
+  const decreaseItem = async () => {
+    try {
+      if (item.quantity > 1) {
+        await updateItem(item.product._id, item.quantity - 1);
+      } else {
+        await deleteItem(item.product._id);
+      }
+    } catch (error) {
+      toast.error(getErrorMessage(error));
+    }
+  };
+
   const deleteItemHandler = async () => {
     try {
       await deleteItem(item.product._id);
@@ -41,7 +61,7 @@ const CartItem = ({ item }: Props) => {
             <div className="flex items-center rounded-xl border border-border bg-secondary/40 p-1">
               <button
                 className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground transition hover:bg-card hover:text-primary"
-                onClick={() => console.log("-")}
+                onClick={decreaseItem}
               >
                 <Minus size={15} />
               </button>
@@ -52,7 +72,7 @@ const CartItem = ({ item }: Props) => {
 
               <button
                 className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground transition hover:bg-card hover:text-primary"
-                onClick={() => console.log("+")}
+                onClick={increaseItem}
               >
                 <Plus size={15} />
               </button>
@@ -65,7 +85,7 @@ const CartItem = ({ item }: Props) => {
 
               <button
                 className="text-muted-foreground hover:text-error"
-                onClick={ deleteItemHandler}
+                onClick={deleteItemHandler}
               >
                 <Trash2 size={18} />
               </button>

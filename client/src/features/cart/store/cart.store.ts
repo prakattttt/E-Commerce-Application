@@ -1,6 +1,11 @@
 import { create } from "zustand";
 
-import { addToCart, getCart, deleteCartItem } from "../api/cart.api";
+import {
+  addToCart,
+  getCart,
+  updateCartItem,
+  deleteCartItem,
+} from "../api/cart.api";
 import type { ICart, ICartItem } from "../types/cart.types";
 
 interface CartStore {
@@ -10,7 +15,8 @@ interface CartStore {
 
   fetchCart: () => Promise<void>;
   addItem: (productId: string, quantity?: number) => Promise<void>;
-  deleteItem: (productId: string, quantity?: number) => Promise<void>;
+  updateItem: (productId: string, quantity: number) => Promise<void>;
+  deleteItem: (productId: string) => Promise<void>;
 
   clearCart: () => void;
 }
@@ -47,6 +53,20 @@ export const useCartStore = create<CartStore>((set) => ({
       productId,
       quantity,
     });
+
+    const cart = response.cart;
+
+    set({
+      cart,
+      quantity: cart.items.reduce(
+        (sum: number, item: ICartItem) => sum + item.quantity,
+        0,
+      ),
+    });
+  },
+
+  updateItem: async (productId, quantity) => {
+    const response = await updateCartItem(productId, quantity);
 
     const cart = response.cart;
 

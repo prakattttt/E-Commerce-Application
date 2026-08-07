@@ -7,6 +7,7 @@ const useCart = () => {
 
   const fetchCart = useCartStore((state) => state.fetchCart);
   const addItem = useCartStore((state) => state.addItem);
+  const updateItem = useCartStore((state) => state.updateItem);
   const deleteItem = useCartStore((state) => state.deleteItem);
   const clearCart = useCartStore((state) => state.clearCart);
 
@@ -17,6 +18,7 @@ const useCart = () => {
 
     fetchCart,
     addItem,
+    updateItem,
     deleteItem,
     clearCart,
   };
