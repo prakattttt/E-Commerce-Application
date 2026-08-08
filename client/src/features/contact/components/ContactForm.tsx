@@ -2,37 +2,50 @@ import { motion } from "framer-motion";
 import { Check, Send } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
-
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { contactSchema } from "../types/schemas/contact.schemas";
+import type { ContactFormValues } from "../types/schemas/contact.schemas";
 import { fadeUp } from "../../../animations";
+
+
+
+const options = [
+  { value: "order", label: "Order Support" },
+  { value: "product", label: "Product Question" },
+  { value: "payment", label: "Payment Issue" },
+  { value: "account", label: "Account Support" },
+  { value: "other", label: "Other" },
+];
 
 const ContactForm = () => {
   const [submitted, setSubmitted] = useState(false);
 
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    subject: "",
-    message: "",
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<ContactFormValues>({
+    resolver: zodResolver(contactSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      subject: "",
+      message: "",
+    },
   });
 
-  const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >,
-  ) => {
-    const { name, value } = e.target;
-
-    setForm((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = (e: React.SubmitEvent) => {
-    e.preventDefault();
+  const onSubmit = (data: ContactFormValues) => {
+    console.log(data);
 
     setSubmitted(true);
     toast.success("Message sent successfully!");
+  };
+
+  const handleNewMessage = () => {
+    setSubmitted(false);
+    reset();
   };
 
   if (submitted) {
@@ -51,24 +64,12 @@ const ContactForm = () => {
         </h2>
 
         <p className="mt-2 max-w-sm text-sm leading-6 text-muted-foreground">
-          Thanks for reaching out. We'll get back to you at{" "}
-          <span className="font-semibold text-foreground">
-            {form.email}
-          </span>{" "}
-          as soon as possible.
+          Thanks for reaching out. We'll get back to you as soon as possible.
         </p>
 
         <button
           type="button"
-          onClick={() => {
-            setSubmitted(false);
-            setForm({
-              name: "",
-              email: "",
-              subject: "",
-              message: "",
-            });
-          }}
+          onClick={handleNewMessage}
           className="mt-6 text-sm font-semibold text-primary hover:underline"
         >
           Send another message
@@ -83,104 +84,108 @@ const ContactForm = () => {
       className="rounded-3xl border border-border bg-card p-6 shadow-sm sm:p-8"
     >
       <div className="mb-7">
-        <h2 className="font-display text-2xl font-bold">
-          Send us a message
-        </h2>
+        <h2 className="font-display text-2xl font-bold">Send us a message</h2>
 
         <p className="mt-2 text-sm text-muted-foreground">
           Fill out the form and we'll get back to you.
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-5">
-        {/* Name + Email */}
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         <div className="grid gap-5 sm:grid-cols-2">
           <div>
-            <label
-              htmlFor="name"
-              className="mb-2 block text-sm font-semibold"
-            >
+            <label htmlFor="name" className="mb-2 block text-sm font-semibold">
               Full Name
             </label>
 
             <input
               id="name"
-              name="name"
               type="text"
-              required
-              value={form.name}
-              onChange={handleChange}
               placeholder="Your name"
-              className="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/10"
+              {...register("name")}
+              className={`w-full rounded-xl border bg-background px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/10 ${
+                errors.name ? "border-destructive" : "border-border"
+              }`}
             />
+
+            {errors.name && (
+              <p className="mt-1.5 text-xs text-destructive">
+                {errors.name.message}
+              </p>
+            )}
           </div>
 
           <div>
-            <label
-              htmlFor="email"
-              className="mb-2 block text-sm font-semibold"
-            >
+            <label htmlFor="email" className="mb-2 block text-sm font-semibold">
               Email
             </label>
 
             <input
               id="email"
-              name="email"
               type="email"
-              required
-              value={form.email}
-              onChange={handleChange}
               placeholder="you@example.com"
-              className="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/10"
+              {...register("email")}
+              className={`w-full rounded-xl border bg-background px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/10 ${
+                errors.email ? "border-destructive" : "border-border"
+              }`}
             />
+
+            {errors.email && (
+              <p className="mt-1.5 text-xs text-destructive">
+                {errors.email.message}
+              </p>
+            )}
           </div>
         </div>
 
-        {/* Subject */}
         <div>
-          <label
-            htmlFor="subject"
-            className="mb-2 block text-sm font-semibold"
-          >
+          <label htmlFor="subject" className="mb-2 block text-sm font-semibold">
             Subject
           </label>
 
           <select
             id="subject"
-            name="subject"
-            required
-            value={form.subject}
-            onChange={handleChange}
-            className="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/10"
+            {...register("subject")}
+            className={`w-full rounded-xl border bg-background px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/10 ${
+              errors.subject ? "border-destructive" : "border-border"
+            }`}
           >
             <option value="">Select a topic</option>
-            <option value="order">Order Support</option>
-            <option value="product">Product Question</option>
-            <option value="payment">Payment Issue</option>
-            <option value="account">Account Support</option>
-            <option value="other">Other</option>
+
+            {options.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
           </select>
+
+          {errors.subject && (
+            <p className="mt-1.5 text-xs text-destructive">
+              {errors.subject.message}
+            </p>
+          )}
         </div>
 
-        {/* Message */}
         <div>
-          <label
-            htmlFor="message"
-            className="mb-2 block text-sm font-semibold"
-          >
+          <label htmlFor="message" className="mb-2 block text-sm font-semibold">
             Message
           </label>
 
           <textarea
             id="message"
-            name="message"
-            required
             rows={11}
-            value={form.message}
-            onChange={handleChange}
             placeholder="Tell us how we can help..."
-            className="w-full resize-none rounded-xl border border-border bg-background px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/10"
+            {...register("message")}
+            className={`w-full resize-none rounded-xl border bg-background px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/10 ${
+              errors.message ? "border-destructive" : "border-border"
+            }`}
           />
+
+          {errors.message && (
+            <p className="mt-1.5 text-xs text-destructive">
+              {errors.message.message}
+            </p>
+          )}
         </div>
 
         <button
