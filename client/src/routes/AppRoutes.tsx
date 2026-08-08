@@ -24,6 +24,7 @@ import FAQPage from "../pages/FAQPage";
 import EditProduct from "../features/admin/pages/EditProduct";
 import EditCategory from "../features/admin/pages/EditCategory";
 import CartPage from "../pages/CartPage";
+import Contact from "../pages/ContactPage";
 
 const AppRoutes = () => {
   return (
@@ -37,6 +38,8 @@ const AppRoutes = () => {
         <Route path="shop" element={<Shop />} />
 
         <Route path="profile" element={<Profile />} />
+
+        <Route path="contact" element={<Contact />} />
 
         <Route path="faq" element={<FAQPage />} />
 
