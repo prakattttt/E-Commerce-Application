@@ -23,7 +23,7 @@ const ProductPricingForm = ({ register, errors }: ProductPricingFormProps) => {
 
           <input
             type="number"
-            step="0.01"
+            step="1"
             placeholder="999"
             {...register("price")}
             className="w-full rounded-xl border border-border bg-background px-4 py-3 outline-none transition focus:border-primary"
@@ -38,7 +38,7 @@ const ProductPricingForm = ({ register, errors }: ProductPricingFormProps) => {
 
           <input
             type="number"
-            step="0.01"
+            step="1"
             placeholder="1199"
             {...register("originalPrice")}
             className="w-full rounded-xl border border-border bg-background px-4 py-3 outline-none transition focus:border-primary"
