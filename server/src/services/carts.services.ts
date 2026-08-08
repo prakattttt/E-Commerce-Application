@@ -87,3 +87,16 @@ export const clearCart = async (userId: string) => {
 export const deleteCart = async (userId: string) => {
   await Cart.findOneAndDelete({ user: userId }, { runValidators: true });
 };
+
+export const removeProduct = async (productId: string) => {
+  await Cart.updateMany(
+    { "items.product": productId },
+    {
+      $pull: {
+        items: {
+          product: productId,
+        },
+      },
+    },
+  );
+};

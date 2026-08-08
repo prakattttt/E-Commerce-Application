@@ -14,7 +14,7 @@ import {
 import { deleteFromCloudinary } from "../utils/deleteFromCloudinary.js";
 import z from "zod";
 import { Cart } from "../models/carts.models.js";
-import { deleteCart } from "./carts.services.js";
+import { deleteCart, removeProduct } from "./carts.services.js";
 
 interface GetAllProductsOptions {
   skip?: number;
@@ -233,6 +233,8 @@ export const deleteProduct = async (id: string) => {
   if (!product) {
     throw new AppError("Product not found.", 404);
   }
+
+  await removeProduct(id);
 
   if (product.imageCover?.publicId) {
     await deleteFromCloudinary(product.imageCover.publicId);
