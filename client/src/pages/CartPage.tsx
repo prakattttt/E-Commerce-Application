@@ -8,9 +8,16 @@ import CartSummary from "../features/cart/components/CartSummary";
 import useCart from "../features/cart/hooks/useCart";
 import Loader from "../components/ui/Loader";
 import ClearCart from "../features/cart/components/ClearCart";
+import useAuth from "../features/auth/hooks/useAuth";
+import SecondaryUi from "../features/profile/components/SecondaryUi";
 
 const CartPage = () => {
+  const { isAuthenticated } = useAuth();
   const { cart, loading, quantity } = useCart();
+
+  if(!isAuthenticated) {
+    return <SecondaryUi />
+  }
 
   if (loading) {
     return <Loader fullScreen />;
