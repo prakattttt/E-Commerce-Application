@@ -16,12 +16,15 @@ import StockStatus from "./StockStatus";
 import QuantitySelector from "./QuantitySelector";
 import { toast } from "sonner";
 import useCart from "../../../cart/hooks/useCart";
+import useAuth from "../../../auth/hooks/useAuth";
 
 interface ProductInfoProps {
   product: IProduct;
 }
 
 const ProductInfo = ({ product }: ProductInfoProps) => {
+  const { isAuthenticated } = useAuth();
+
   const [quantity, setQuantity] = useState(1);
   const { addItem } = useCart();
 
@@ -57,29 +60,34 @@ const ProductInfo = ({ product }: ProductInfoProps) => {
         <h3 className="mt-7 mb-2 font-semibold">Description</h3>
         <p className="leading-7 text-muted-foreground">{product.description}</p>
       </div>
-      <QuantitySelector
-        quantity={quantity}
-        onChange={setQuantity}
-        max={product.stock > 0 ? product.stock : 1}
-      />
-      {/* Buttons */}
-      <div className="flex flex-wrap gap-3">
-        <button
-          className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-primary px-3 lg:px-6 py-4 font-semibold text-primary-foreground transition hover:opacity-90"
-          onClick={addCart}
-        >
-          <ShoppingCart size={20} />
-          Add to Cart
-        </button>
+      {isAuthenticated && (
+        <>
+          <QuantitySelector
+            quantity={quantity}
+            onChange={setQuantity}
+            max={product.stock > 0 ? product.stock : 1}
+          />
+          {/* Buttons */}
 
-        <button className="rounded-xl border border-border p-4 transition hover:bg-secondary">
-          <Heart size={20} />
-        </button>
+          <div className="flex flex-wrap gap-3">
+            <button
+              className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-primary px-3 lg:px-6 py-4 font-semibold text-primary-foreground transition hover:opacity-90"
+              onClick={addCart}
+            >
+              <ShoppingCart size={20} />
+              Add to Cart
+            </button>
 
-        <button className="rounded-xl border border-border p-4 transition hover:bg-secondary">
-          <Share2 size={20} />
-        </button>
-      </div>
+            <button className="rounded-xl border border-border p-4 transition hover:bg-secondary">
+              <Heart size={20} />
+            </button>
+
+            <button className="rounded-xl border border-border p-4 transition hover:bg-secondary">
+              <Share2 size={20} />
+            </button>
+          </div>
+        </>
+      )}
       Benefits
       <div className="space-y-4 rounded-2xl border border-border bg-card p-5">
         <div className="flex items-center gap-3">
