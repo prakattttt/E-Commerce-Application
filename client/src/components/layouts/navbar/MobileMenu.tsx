@@ -54,6 +54,7 @@ const MobileMenu = ({ open, closeMenu }: Props) => {
             <li key={item.name}>
               <NavLink
                 to={item.path}
+                onClick={closeMenu}
                 className={({ isActive }) =>
                   `flex items-center justify-between text-sm transition-colors duration-200 ${
                     isActive
@@ -73,7 +74,10 @@ const MobileMenu = ({ open, closeMenu }: Props) => {
         {isAuthenticated ? (
           <button
             className="flex w-full items-center justify-center rounded-full bg-primary p-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-secondary-foreground"
-            onClick={logout}
+            onClick={() => {
+              logout();
+              closeMenu();
+            }}
           >
             <LogOut size={18} className="mr-2" />
             Log Out
@@ -81,6 +85,7 @@ const MobileMenu = ({ open, closeMenu }: Props) => {
         ) : (
           <Link
             to="/login"
+            onClick={closeMenu}
             className="flex w-full items-center justify-center rounded-full bg-primary p-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-secondary-foreground"
           >
             <User size={18} className="mr-2" />
