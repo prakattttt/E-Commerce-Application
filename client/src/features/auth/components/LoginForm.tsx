@@ -1,25 +1,26 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { loginSchema, type LoginFormData } from "../schemas/auth.schema";
-import { loginUser } from "../api/auth.api";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
-import { fadeUp } from "../../../animations";
 import { motion } from "framer-motion";
-import Error from "../../../components/common/Error";
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { getErrorMessage } from "../../../utils/getErrorMessage";
+
+import { loginSchema, type LoginFormData } from "../schemas/auth.schema";
+
+import { loginUser } from "../api/auth.api";
 import useAuth from "../hooks/useAuth";
 
-interface Props {
-  switchMode: () => void;
-}
+import { fadeUp } from "../../../animations";
+import Error from "../../../components/common/Error";
+import { getErrorMessage } from "../../../utils/getErrorMessage";
 
-const LoginForm = ({ switchMode }: Props) => {
+const LoginForm = () => {
   const { login } = useAuth();
+  const navigate = useNavigate();
+
   const [showPassword, setShowPassword] = useState(false);
 
-  // use react0hook-form together with zod to handle form and validation
   const {
     register,
     handleSubmit,
@@ -31,8 +32,12 @@ const LoginForm = ({ switchMode }: Props) => {
   const onSubmit = async (data: LoginFormData) => {
     try {
       const response = await loginUser(data);
+
       login(response.user);
+
       toast.success("User logged in successfully");
+
+      navigate("/");
     } catch (error) {
       toast.error(getErrorMessage(error));
     }
@@ -40,6 +45,7 @@ const LoginForm = ({ switchMode }: Props) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+      {/* Email */}
       <motion.div
         variants={fadeUp}
         initial="hidden"
@@ -57,10 +63,11 @@ const LoginForm = ({ switchMode }: Props) => {
             className="w-full bg-transparent px-3 py-3 outline-none"
           />
         </div>
-        {/* custom error encountered through the zod validation */}
+
         {errors.email && <Error message={errors.email.message!} />}
       </motion.div>
 
+      {/* Password */}
       <motion.div
         variants={fadeUp}
         initial="hidden"
@@ -69,7 +76,7 @@ const LoginForm = ({ switchMode }: Props) => {
       >
         <label className="mb-2 block text-sm font-medium">Password</label>
 
-        <div className="flex items-center rounded-xl border border-border bg-background px-4">
+        <div className="flex items-center rounded-xl border border-border bg-background px-4 focus-within:border-primary focus-within:ring-4 focus-within:ring-primary/10">
           <Lock size={18} className="text-muted-foreground" />
 
           <input
@@ -82,6 +89,7 @@ const LoginForm = ({ switchMode }: Props) => {
           <button
             type="button"
             onClick={() => setShowPassword((prev) => !prev)}
+            className="text-muted-foreground"
           >
             {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
           </button>
@@ -90,20 +98,39 @@ const LoginForm = ({ switchMode }: Props) => {
         {errors.password && <Error message={errors.password.message!} />}
       </motion.div>
 
-      <button className="w-full rounded-xl bg-primary py-3 font-semibold text-primary-foreground">
-        Sign in
-      </button>
-
-      <p className="text-center text-sm text-muted-foreground">
-        Don't have an account?
+      {/* Submit */}
+      <motion.div
+        variants={fadeUp}
+        initial="hidden"
+        animate="visible"
+        custom={3}
+      >
         <button
-          type="button"
-          onClick={switchMode}
-          className="ml-2 font-semibold text-primary hover:underline"
+          type="submit"
+          className="w-full rounded-xl bg-primary py-3 font-semibold text-primary-foreground transition-opacity hover:opacity-90"
         >
-          Sign up
+          Sign in
         </button>
-      </p>
+      </motion.div>
+
+      {/* Register link */}
+      <motion.div
+        variants={fadeUp}
+        initial="hidden"
+        animate="visible"
+        custom={4}
+      >
+        <p className="text-center text-sm text-muted-foreground">
+          Don't have an account?
+          <button
+            type="button"
+            onClick={() => navigate("/register")}
+            className="ml-2 font-semibold text-primary hover:underline"
+          >
+            Sign up
+          </button>
+        </p>
+      </motion.div>
     </form>
   );
 };

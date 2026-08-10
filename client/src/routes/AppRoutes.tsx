@@ -6,7 +6,8 @@ import AdminLayout from "../layouts/AdminLayout";
 import HomePage from "../pages/HomePage";
 import Shop from "../pages/Shop";
 import Profile from "../pages/Profile";
-import AuthPage from "../pages/AuthPage";
+import LoginPage from "../pages/LoginPage";
+import RegisterPage from "../pages/RegisterPage";
 import AboutPage from "../pages/AboutPage";
 import ErrorPage from "../pages/ErrorPage";
 import AdminProducts from "../features/admin/pages/AdminProducts";
@@ -47,7 +48,8 @@ const AppRoutes = () => {
 
         <Route path="cart" element={<CartPage />} />
 
-        <Route path="auth" element={<AuthPage />} />
+        <Route path="login" element={<LoginPage />} />
+        <Route path="register" element={<RegisterPage />} />
       </Route>
 
       {/* Admin */}

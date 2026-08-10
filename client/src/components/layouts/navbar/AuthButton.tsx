@@ -18,7 +18,7 @@ const AuthButton = ({ isAuthenticated, logout }: Props) => {
 
   if (!isAuthenticated) {
     return (
-      <Link to="/auth" className={commonClasses}>
+      <Link to="/login" className={commonClasses}>
         <User
           size={18}
           className="transition-transform duration-300 group-hover:scale-110"

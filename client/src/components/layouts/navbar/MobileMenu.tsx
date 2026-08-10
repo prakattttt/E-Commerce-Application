@@ -80,7 +80,7 @@ const MobileMenu = ({ open, closeMenu }: Props) => {
           </button>
         ) : (
           <Link
-            to="/auth"
+            to="/login"
             className="flex w-full items-center justify-center rounded-full bg-primary p-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-secondary-foreground"
           >
             <User size={18} className="mr-2" />

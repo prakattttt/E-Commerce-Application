@@ -31,7 +31,7 @@ const SecondaryUi = () => {
 
           <div className="mt-8 flex flex-wrap items-center gap-4">
             <Link
-              to="/auth"
+              to="/login"
               className="btn-primary inline-flex items-center gap-2"
             >
               <LogIn size={18} />
@@ -50,7 +50,7 @@ const SecondaryUi = () => {
           <p className="mt-5 text-sm text-muted-foreground">
             Don't have an account?{" "}
             <Link
-              to="/auth"
+              to="/register"
               className="font-semibold text-primary hover:underline"
             >
               Create one
