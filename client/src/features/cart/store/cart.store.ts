@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { isAxiosError } from "axios";
 
 import {
   addToCart,
@@ -8,6 +9,7 @@ import {
 } from "../api/cart.api";
 
 import type { ICart, ICartItem } from "../types/cart.types";
+import { toast } from "sonner";
 
 interface CartStore {
   cart: ICart | null;
@@ -46,7 +48,15 @@ export const useCartStore = create<CartStore>((set) => {
 
       try {
         const response = await getCart();
+
         updateCartState(response.cart ?? null);
+      } catch (error) {
+        if (isAxiosError(error) && error.response?.status === 401) {
+          updateCartState(null);
+          return;
+        }
+
+        toast.error("Something went wrong");
       } finally {
         set({ loading: false });
       }

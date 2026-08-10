@@ -2,6 +2,7 @@ import { ShoppingCartIcon } from "lucide-react";
 import { useEffect } from "react";
 import useCart from "../../../features/cart/hooks/useCart";
 import { Link } from "react-router-dom";
+import useAuth from "../../../features/auth/hooks/useAuth";
 
 interface Props {
   isTransparent: boolean;
@@ -10,13 +11,17 @@ interface Props {
 const ShoppingCart = ({ isTransparent }: Props) => {
   const { quantity, fetchCart } = useCart();
 
+  const { isAuthenticated } = useAuth();
+
   useEffect(() => {
+    if(!isAuthenticated) return;
+
     fetchCart();
-  }, [fetchCart]);
+  }, [fetchCart, isAuthenticated]);
 
   return (
     <Link
-    to={"/cart"}
+      to={"/cart"}
       className={`relative rounded-full p-1.5 transition-colors ${
         isTransparent
           ? "backdrop-blur-md hover:bg-white/20"
