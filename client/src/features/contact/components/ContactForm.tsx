@@ -4,11 +4,14 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+
 import { contactSchema } from "../types/schemas/contact.schemas";
-import type { ContactFormValues } from "../types/schemas/contact.schemas";
+import type { ContactData } from "../types/schemas/contact.schemas";
+
+import { submitContactMessage } from "../api/contact.api";
+
 import { fadeUp } from "../../../animations";
-
-
+import { getErrorMessage } from "../../../utils/getErrorMessage";
 
 const options = [
   { value: "order", label: "Order Support" },
@@ -20,27 +23,38 @@ const options = [
 
 const ContactForm = () => {
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<ContactFormValues>({
+  } = useForm<ContactData>({
     resolver: zodResolver(contactSchema),
     defaultValues: {
       name: "",
       email: "",
-      subject: "",
+      subject: undefined,
       message: "",
     },
   });
 
-  const onSubmit = (data: ContactFormValues) => {
-    console.log(data);
+  const onSubmit = async (data: ContactData) => {
+    try {
+      setSubmitting(true);
 
-    setSubmitted(true);
-    toast.success("Message sent successfully!");
+      const response = await submitContactMessage(data);
+
+      toast.success(response.message);
+
+      setSubmitted(true);
+      reset();
+    } catch (error) {
+      toast.error(getErrorMessage(error));
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const handleNewMessage = () => {
@@ -55,8 +69,8 @@ const ContactForm = () => {
         animate={{ opacity: 1, scale: 1 }}
         className="flex min-h-130 flex-col items-center justify-center rounded-3xl border border-border bg-card p-8 text-center shadow-sm"
       >
-        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-success/10">
-          <Check size={30} className="text-success" />
+        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
+          <Check size={30} className="text-primary" />
         </div>
 
         <h2 className="mt-5 font-display text-2xl font-bold">
@@ -83,7 +97,7 @@ const ContactForm = () => {
       variants={fadeUp}
       className="rounded-3xl border border-border bg-card p-6 shadow-sm sm:p-8"
     >
-      <div className="mb-7">
+      <div className="mb-8">
         <h2 className="font-display text-2xl font-bold">Send us a message</h2>
 
         <p className="mt-2 text-sm text-muted-foreground">
@@ -190,10 +204,12 @@ const ContactForm = () => {
 
         <button
           type="submit"
-          className="btn-primary flex w-full items-center justify-center gap-2"
+          disabled={submitting}
+          className="btn-primary flex w-full items-center justify-center gap-2 disabled:cursor-not-allowed disabled:opacity-60"
         >
           <Send size={17} />
-          Send Message
+
+          {submitting ? "Sending..." : "Send Message"}
         </button>
       </form>
     </motion.div>
