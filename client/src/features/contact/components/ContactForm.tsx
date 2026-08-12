@@ -123,7 +123,7 @@ const ContactForm = () => {
             />
 
             {errors.name && (
-              <p className="mt-1.5 text-xs text-destructive">
+              <p className="mt-1.5 text-xs text-error">
                 {errors.name.message}
               </p>
             )}
@@ -145,7 +145,7 @@ const ContactForm = () => {
             />
 
             {errors.email && (
-              <p className="mt-1.5 text-xs text-destructive">
+              <p className="mt-1.5 text-xs text-error">
                 {errors.email.message}
               </p>
             )}
@@ -174,7 +174,7 @@ const ContactForm = () => {
           </select>
 
           {errors.subject && (
-            <p className="mt-1.5 text-xs text-destructive">
+            <p className="mt-1.5 text-xs text-error">
               {errors.subject.message}
             </p>
           )}
@@ -196,7 +196,7 @@ const ContactForm = () => {
           />
 
           {errors.message && (
-            <p className="mt-1.5 text-xs text-destructive">
+            <p className="mt-1.5 text-xs text-error">
               {errors.message.message}
             </p>
           )}
