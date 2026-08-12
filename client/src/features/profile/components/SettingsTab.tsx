@@ -1,26 +1,33 @@
 import { User, Lock, Camera, Trash2, ChevronRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const SettingsTab = () => {
+  const navigate = useNavigate();
+
   const items = [
     {
       icon: User,
       title: "Edit Profile",
       description: "Update your name and email",
+      path: "/profile/settings/edit",
     },
     {
       icon: Camera,
       title: "Change Profile Picture",
       description: "Upload a new avatar",
+      path: "/profile/settings/picture",
     },
     {
       icon: Lock,
       title: "Change Password",
       description: "Keep your account secure",
+      path: "/profile/settings/password",
     },
     {
       icon: Trash2,
       title: "Delete Account",
       description: "This action cannot be undone",
+      path: "/profile/settings/delete",
       danger: true,
     },
   ];
@@ -33,6 +40,8 @@ const SettingsTab = () => {
         return (
           <button
             key={item.title}
+            type="button"
+            onClick={() => navigate(item.path)}
             className={`flex w-full items-center justify-between rounded-2xl border bg-card p-5 text-left transition hover:shadow-sm ${
               item.danger
                 ? "border-error/20 hover:bg-error/5"
@@ -51,7 +60,9 @@ const SettingsTab = () => {
               </div>
 
               <div>
-                <h3 className={`font-semibold ${item.danger && "text-error"}`}>
+                <h3
+                  className={`font-semibold ${item.danger ? "text-error" : ""}`}
+                >
                   {item.title}
                 </h3>
 

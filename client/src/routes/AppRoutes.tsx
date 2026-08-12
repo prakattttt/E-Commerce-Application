@@ -26,6 +26,10 @@ import EditProduct from "../features/admin/pages/EditProduct";
 import EditCategory from "../features/admin/pages/EditCategory";
 import CartPage from "../pages/CartPage";
 import Contact from "../pages/ContactPage";
+import EditProfile from "../features/profile/pages/EditProfile";
+import ChangeProfilePicture from "../features/profile/pages/ChangeProfilePicture";
+import ChangePassword from "../features/profile/pages/ChangePassword";
+import DeleteAccount from "../features/profile/pages/DeleteAccount";
 
 const AppRoutes = () => {
   return (
@@ -39,6 +43,13 @@ const AppRoutes = () => {
         <Route path="shop" element={<Shop />} />
 
         <Route path="profile" element={<Profile />} />
+
+        <Route path="profile/settings">
+          <Route path="edit" element={<EditProfile />} />
+          <Route path="picture" element={<ChangeProfilePicture />} />
+          <Route path="password" element={<ChangePassword />} />
+          <Route path="delete" element={<DeleteAccount />} />
+        </Route>
 
         <Route path="contact" element={<Contact />} />
 
