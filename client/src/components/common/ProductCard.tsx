@@ -87,7 +87,9 @@ function ProductCard({ product }: { product: IProduct }) {
         {/* Price */}
         <div className="flex items-center justify-between pt-2">
           <div className="flex items-center gap-2">
-            <span className="font-bold text-foreground">Rs. {product.price}</span>
+            <span className="font-bold text-foreground">
+              Rs. {product.price}
+            </span>
 
             {product.originalPrice && (
               <span className="text-xs text-muted-foreground line-through">
@@ -99,7 +101,7 @@ function ProductCard({ product }: { product: IProduct }) {
           {/* Button UI only */}
           {isAuthenticated && (
             <button
-              className="rounded-full bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground cursor-pointer"
+              className="rounded-full bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground cursor-pointer transition-transform hover:scale-105"
               onClick={addCart}
             >
               Add

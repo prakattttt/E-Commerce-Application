@@ -43,7 +43,7 @@ const SecondaryUi = () => {
               to="/shop"
               className="text-sm font-semibold text-muted-foreground transition-colors border-2 border-muted p-3 rounded-xl hover:text-primary"
             >
-              Continue Shopping
+              Continue Browsing
             </Link>
           </div>
 
