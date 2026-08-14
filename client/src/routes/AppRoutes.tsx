@@ -25,7 +25,7 @@ import FAQPage from "../pages/FAQPage";
 import EditProduct from "../features/admin/pages/EditProduct";
 import EditCategory from "../features/admin/pages/EditCategory";
 import CartPage from "../pages/CartPage";
-import Contact from "../pages/ContactPage";
+import ContactPage from "../pages/ContactPage";
 import EditProfile from "../features/profile/pages/EditProfile";
 import ChangeProfilePicture from "../features/profile/pages/ChangeProfilePicture";
 import ChangePassword from "../features/profile/pages/ChangePassword";
@@ -51,7 +51,7 @@ const AppRoutes = () => {
           <Route path="delete" element={<DeleteAccount />} />
         </Route>
 
-        <Route path="contact" element={<Contact />} />
+        <Route path="contact" element={<ContactPage />} />
 
         <Route path="faq" element={<FAQPage />} />
 

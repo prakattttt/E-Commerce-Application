@@ -67,13 +67,14 @@ const ContactForm = () => {
       <motion.div
         initial={{ opacity: 0, scale: 0.98 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="flex min-h-130 flex-col items-center justify-center rounded-3xl border border-border bg-card p-8 text-center shadow-sm"
+        className="flex min-h-112.5 flex-col items-center justify-center rounded-3xl border border-border bg-card p-6 text-center shadow-sm sm:min-h-130 sm:p-8 lg:min-h-162.5"
       >
-        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
-          <Check size={30} className="text-primary" />
+        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 sm:h-16 sm:w-16">
+          <Check size={28} className="text-primary sm:hidden" />
+          <Check size={30} className="hidden text-primary sm:block" />
         </div>
 
-        <h2 className="mt-5 font-display text-2xl font-bold">
+        <h2 className="mt-5 font-display text-xl font-bold sm:text-2xl">
           Message received!
         </h2>
 
@@ -84,7 +85,7 @@ const ContactForm = () => {
         <button
           type="button"
           onClick={handleNewMessage}
-          className="mt-6 text-sm font-semibold text-primary hover:underline"
+          className="mt-6 text-sm font-semibold text-primary transition hover:underline"
         >
           Send another message
         </button>
@@ -95,19 +96,22 @@ const ContactForm = () => {
   return (
     <motion.div
       variants={fadeUp}
-      className="rounded-3xl border border-border bg-card p-6 shadow-sm sm:p-8"
+      className="rounded-3xl border border-border bg-card p-5 shadow-sm sm:p-6 md:p-8 lg:min-h-162.5"
     >
-      <div className="mb-8">
-        <h2 className="font-display text-2xl font-bold">Send us a message</h2>
+      <div className="mb-7 sm:mb-8">
+        <h2 className="font-display text-xl font-bold sm:text-2xl">
+          Send us a message
+        </h2>
 
-        <p className="mt-2 text-sm text-muted-foreground">
+        <p className="mt-2 text-sm leading-6 text-muted-foreground">
           Fill out the form and we'll get back to you.
         </p>
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+        {/* Name and Email */}
         <div className="grid gap-5 sm:grid-cols-2">
-          <div>
+          <div className="min-w-0">
             <label htmlFor="name" className="mb-2 block text-sm font-semibold">
               Full Name
             </label>
@@ -123,13 +127,11 @@ const ContactForm = () => {
             />
 
             {errors.name && (
-              <p className="mt-1.5 text-xs text-error">
-                {errors.name.message}
-              </p>
+              <p className="mt-1.5 text-xs text-error">{errors.name.message}</p>
             )}
           </div>
 
-          <div>
+          <div className="min-w-0">
             <label htmlFor="email" className="mb-2 block text-sm font-semibold">
               Email
             </label>
@@ -152,6 +154,7 @@ const ContactForm = () => {
           </div>
         </div>
 
+        {/* Subject */}
         <div>
           <label htmlFor="subject" className="mb-2 block text-sm font-semibold">
             Subject
@@ -180,6 +183,7 @@ const ContactForm = () => {
           )}
         </div>
 
+        {/* Message */}
         <div>
           <label htmlFor="message" className="mb-2 block text-sm font-semibold">
             Message
@@ -187,10 +191,10 @@ const ContactForm = () => {
 
           <textarea
             id="message"
-            rows={11}
+            rows={8}
             placeholder="Tell us how we can help..."
             {...register("message")}
-            className={`w-full resize-none rounded-xl border bg-background px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/10 ${
+            className={`w-full resize-none rounded-xl border bg-background px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/10 sm:rows-[10] ${
               errors.message ? "border-destructive" : "border-border"
             }`}
           />
