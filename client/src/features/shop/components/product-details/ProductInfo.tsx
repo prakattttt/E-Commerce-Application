@@ -17,6 +17,7 @@ import QuantitySelector from "./QuantitySelector";
 import { toast } from "sonner";
 import useCart from "../../../cart/hooks/useCart";
 import useAuth from "../../../auth/hooks/useAuth";
+import { getErrorMessage } from "../../../../utils/getErrorMessage";
 
 interface ProductInfoProps {
   product: IProduct;
@@ -31,9 +32,13 @@ const ProductInfo = ({ product }: ProductInfoProps) => {
   const addCart = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
 
-    await addItem(product._id, quantity);
+    try {
+      await addItem(product._id, quantity);
 
-    toast.success(`${product.name} added to cart`);
+      toast.success(`${product.name} added to cart`);
+    } catch (error) {
+      toast.error(getErrorMessage(error));
+    }
   };
 
   return (

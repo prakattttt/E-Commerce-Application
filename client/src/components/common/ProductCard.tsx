@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import useAuth from "../../features/auth/hooks/useAuth";
 import useCart from "../../features/cart/hooks/useCart";
 import { toast } from "sonner";
+import { getErrorMessage } from "../../utils/getErrorMessage";
 
 function ProductCard({ product }: { product: IProduct }) {
   const { isAuthenticated } = useAuth();
@@ -14,9 +15,13 @@ function ProductCard({ product }: { product: IProduct }) {
   const addCart = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
 
-    await addItem(product._id);
+    try {
+      await addItem(product._id);
 
-    toast.success(`${product.name} added to cart`);
+      toast.success(`${product.name} added to cart`);
+    } catch (error) {
+      toast.error(getErrorMessage(error));
+    }
   };
 
   return (

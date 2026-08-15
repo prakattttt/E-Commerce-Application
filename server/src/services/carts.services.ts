@@ -1,4 +1,6 @@
 import { Cart } from "../models/carts.models.js";
+import { Product } from "../models/products.models.js";
+import AppError from "../utils/AppError.js";
 
 export const getCart = async (userId: string) => {
   return Cart.findOne({ user: userId }).populate(
@@ -12,6 +14,12 @@ export const addToCart = async (
   productId: string,
   quantity: number,
 ) => {
+  const product = await Product.findById(productId);
+
+  if (!product) {
+    throw new AppError("Product not found", 404);
+  }
+
   let cart = await Cart.findOne({ user: userId });
 
   if (!cart) {
@@ -26,8 +34,24 @@ export const addToCart = async (
   );
 
   if (existingItem) {
-    existingItem.quantity += quantity;
+    const newQuantity = existingItem.quantity + quantity;
+
+    if (newQuantity > product.stock) {
+      throw new AppError(
+        `Only ${product.stock} item(s) available in stock`,
+        400,
+      );
+    }
+
+    existingItem.quantity = newQuantity;
   } else {
+    if (quantity > product.stock) {
+      throw new AppError(
+        `Only ${product.stock} item(s) available in stock`,
+        400,
+      );
+    }
+
     cart.items.push({
       product: productId as any,
       quantity,
@@ -46,11 +70,25 @@ export const updateCartItem = async (
 ) => {
   const cart = await Cart.findOne({ user: userId });
 
-  if (!cart) return null;
+  if (!cart) {
+    throw new AppError("Cart not found", 404);
+  }
 
   const item = cart.items.find((item) => item.product.toString() === productId);
 
-  if (!item) return null;
+  if (!item) {
+    throw new AppError("Item not found in cart", 404);
+  }
+
+  const product = await Product.findById(productId);
+
+  if (!product) {
+    throw new AppError("Product not found", 404);
+  }
+
+  if (quantity > product.stock) {
+    throw new AppError(`Only ${product.stock} item(s) available in stock`, 400);
+  }
 
   item.quantity = quantity;
 
