@@ -23,7 +23,7 @@ export const addToCart = async (
   let cart = await Cart.findOne({ user: userId });
 
   if (!cart) {
-    cart = await Cart.create({
+    cart = new Cart({
       user: userId,
       items: [],
     });
@@ -33,27 +33,19 @@ export const addToCart = async (
     (item) => item.product.toString() === productId,
   );
 
+  const newQuantity = existingItem
+    ? existingItem.quantity + quantity
+    : quantity;
+
+  if (newQuantity > product.stock) {
+    throw new AppError(`Only ${product.stock} item(s) available in stock`, 400);
+  }
+
   if (existingItem) {
-    const newQuantity = existingItem.quantity + quantity;
-
-    if (newQuantity > product.stock) {
-      throw new AppError(
-        `Only ${product.stock} item(s) available in stock`,
-        400,
-      );
-    }
-
     existingItem.quantity = newQuantity;
   } else {
-    if (quantity > product.stock) {
-      throw new AppError(
-        `Only ${product.stock} item(s) available in stock`,
-        400,
-      );
-    }
-
     cart.items.push({
-      product: productId as any,
+      product: product._id,
       quantity,
     });
   }
