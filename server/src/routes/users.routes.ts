@@ -7,9 +7,13 @@ import {
   getMe,
   updateUser,
   deleteUser,
+  changePassword,
+  updateAvatar,
 } from "../controllers/users.controllers.js";
 
 import { protect } from "../middlewares/authentication.js";
+
+import upload from "../middlewares/multer.js";
 
 const router: Router = Router();
 
@@ -32,6 +36,14 @@ router.post("/login", loginUser);
 router.post("/logout", logoutUser);
 
 router.get("/me", protect, getMe);
+
+router.patch("/me", protect, updateUser);
+
+router.patch("/me/avatar", protect, upload.single("avatar"), updateAvatar);
+
+router.patch("/me/password", protect, changePassword);
+
+router.delete("/me", protect, deleteUser);
 
 router.patch("/update", protect, updateUser);
 

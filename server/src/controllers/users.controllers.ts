@@ -1,12 +1,17 @@
 import expressAsyncHandler from "express-async-handler";
 import type { RequestHandler } from "express";
 import { registerSchema, loginSchema } from "../validators/users.validators.js";
+import AppError from "../utils/AppError.js";
+import { uploadToCloudinary } from "../utils/uploadToCloudinary.js";
+import { deleteFromCloudinary } from "../utils/deleteFromCloudinary.js";
+import { User } from "../models/users.models.js";
 
 import {
   registerUserService,
   loginUserService,
   getMeService,
   updateUserService,
+  changePasswordService,
   deleteUserService,
 } from "../services/users.services.js";
 
@@ -111,10 +116,69 @@ export const updateUser: RequestHandler = expressAsyncHandler(
 
     res.status(200).json({
       success: true,
-
-      message: "Profile updated",
-
+      message: "Profile updated successfully",
       user,
+    });
+  },
+);
+
+// CHANGE AVATAR
+
+export const updateAvatar: RequestHandler = expressAsyncHandler(
+  async (req, res) => {
+    if (!req.file) {
+      throw new AppError("Please upload an image", 400);
+    }
+
+    const userId = req.user._id.toString();
+
+    const currentUser = await User.findById(userId);
+
+    if (!currentUser) {
+      throw new AppError("User not found", 404);
+    }
+
+    const previousAvatarPublicId = currentUser.avatar?.publicId;
+
+    const uploadedImage = await uploadToCloudinary(
+      req.file,
+      "shopsphere/avatars",
+    );
+
+    const user = await updateUserService(userId, {
+      avatar: {
+        url: uploadedImage.secure_url,
+        publicId: uploadedImage.public_id,
+      },
+    });
+
+    if (previousAvatarPublicId) {
+      await deleteFromCloudinary(previousAvatarPublicId);
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Profile picture updated successfully",
+      user,
+    });
+  },
+);
+
+// CHANGE PASSWORD
+
+export const changePassword: RequestHandler = expressAsyncHandler(
+  async (req, res) => {
+    const { currentPassword, newPassword } = req.body;
+
+    await changePasswordService(
+      req.user._id.toString(),
+      currentPassword,
+      newPassword,
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Password changed successfully",
     });
   },
 );
@@ -123,12 +187,13 @@ export const updateUser: RequestHandler = expressAsyncHandler(
 
 export const deleteUser: RequestHandler = expressAsyncHandler(
   async (req, res) => {
-    await deleteUserService(req.user._id.toString());
+    const { password } = req.body;
+
+    await deleteUserService(req.user._id.toString(), password);
 
     res.clearCookie("token", cookieOptions).status(200).json({
       success: true,
-
-      message: "Account deleted",
+      message: "Account deleted successfully",
     });
   },
 );
