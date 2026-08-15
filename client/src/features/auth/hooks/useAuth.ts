@@ -26,7 +26,7 @@ const useAuth = () => {
   const logout = async () => {
     await logoutStore();
     clearCart();
-    navigate("/auth", { replace: true });
+    navigate("/login", { replace: true });
   };
 
   return {
