@@ -29,7 +29,7 @@ const Confirmation = ({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-foreground/40 px-6 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-foreground/40 px-4 backdrop-blur-sm sm:px-6"
           onMouseDown={(event) => {
             if (event.target === event.currentTarget && !loading) {
               onClose();
@@ -61,23 +61,22 @@ const Confirmation = ({
               <AlertTriangle size={24} />
             </div>
 
-            {/* Heading */}
-            <h2 className="mt-5 font-display text-2xl font-bold">
+            <h2 className="mt-5 pr-8 font-display text-2xl font-bold">
               Confirm account deletion
             </h2>
 
             <p className="mt-2 text-sm leading-6 text-muted-foreground">
-              This is your final confirmation. Enter the code below to
-              permanently delete your account.
+              Enter the confirmation code below to permanently delete your
+              account.
             </p>
 
-            {/* Confirmation code */}
+            {/* Code */}
             <div className="mt-6 rounded-2xl border border-error/20 bg-error/5 p-5 text-center">
               <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
                 Confirmation code
               </p>
 
-              <p className="mt-2 select-none font-mono text-2xl font-bold tracking-[0.3em] text-error">
+              <p className="mt-2 select-none break-all font-mono text-xl font-bold tracking-[0.2em] text-error sm:text-2xl sm:tracking-[0.3em]">
                 {confirmationCode}
               </p>
             </div>
@@ -115,7 +114,7 @@ const Confirmation = ({
             </div>
 
             {/* Actions */}
-            <div className="mt-7 flex gap-3">
+            <div className="mt-7 flex flex-col gap-3 sm:flex-row">
               <button
                 type="button"
                 onClick={onClose}

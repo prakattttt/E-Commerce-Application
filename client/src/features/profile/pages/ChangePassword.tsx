@@ -10,6 +10,8 @@ import {
   changePasswordSchema,
   type ChangePasswordFormValues,
 } from "../types/schemas/profile.schema";
+import { changePassword } from "../api/profile.api";
+import { getErrorMessage } from "../../../utils/getErrorMessage";
 
 const ChangePassword = () => {
   const {
@@ -28,13 +30,16 @@ const ChangePassword = () => {
 
   const onSubmit = async (data: ChangePasswordFormValues) => {
     try {
-      console.log(data);
+      const response = await changePassword({
+        currentPassword: data.currentPassword,
+        newPassword: data.newPassword,
+      });
 
-      toast.success("Password changed successfully");
+      toast.success(response.message);
 
       reset();
-    } catch {
-      toast.error("Failed to change password");
+    } catch (error) {
+      toast.error(getErrorMessage(error));
     }
   };
 

@@ -1,6 +1,6 @@
 import { ArrowLeft, Save, UserRound } from "lucide-react";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
@@ -11,9 +11,13 @@ import {
   editProfileSchema,
   type EditProfileFormValues,
 } from "../types/schemas/profile.schema";
+import { updateProfile } from "../api/profile.api";
+import { getErrorMessage } from "../../../utils/getErrorMessage";
 
 const EditProfile = () => {
   const { user, setUser } = useAuth();
+
+  const navigate = useNavigate();
 
   const {
     register,
@@ -29,7 +33,10 @@ const EditProfile = () => {
 
   const onSubmit = async (data: EditProfileFormValues) => {
     try {
-      console.log(data);
+      const response = await updateProfile({
+        name: data.name,
+        email: data.email,
+      });
 
       if (user) {
         setUser({
@@ -39,9 +46,11 @@ const EditProfile = () => {
         });
       }
 
-      toast.success("Profile updated successfully");
-    } catch {
-      toast.error("Failed to update profile");
+      navigate(-1);
+
+      toast.success(response.message);
+    } catch (error) {
+      toast.error(getErrorMessage(error));
     }
   };
 

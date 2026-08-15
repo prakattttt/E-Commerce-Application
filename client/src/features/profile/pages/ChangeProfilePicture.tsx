@@ -1,17 +1,23 @@
 import { ArrowLeft, Camera, Upload, X } from "lucide-react";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { toast } from "sonner";
 
 import { fadeUp } from "../../../animations";
+import { updateProfilePicture } from "../api/profile.api";
+import { getErrorMessage } from "../../../utils/getErrorMessage";
+import { compressImage } from "../../../utils/compressImage";
+import useAuth from "../../auth/hooks/useAuth";
 
 const ChangeProfilePicture = () => {
+  const { user, setUser } = useAuth();
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const navigate = useNavigate();
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
 
     if (!selectedFile) return;
@@ -21,16 +27,26 @@ const ChangeProfilePicture = () => {
       return;
     }
 
-    if (selectedFile.size > 5 * 1024 * 1024) {
+    const compressedFile = await compressImage(selectedFile);
+
+    if (compressedFile.size > 5 * 1024 * 1024) {
       toast.error("Image must be smaller than 5MB");
       return;
     }
 
-    setFile(selectedFile);
-    setPreview(URL.createObjectURL(selectedFile));
+    if (preview) {
+      URL.revokeObjectURL(preview);
+    }
+
+    setFile(compressedFile);
+    setPreview(URL.createObjectURL(compressedFile));
   };
 
   const removeFile = () => {
+    if (preview) {
+      URL.revokeObjectURL(preview);
+    }
+
     setFile(null);
     setPreview(null);
   };
@@ -44,14 +60,28 @@ const ChangeProfilePicture = () => {
     try {
       setSubmitting(true);
 
-      const formData = new FormData();
-      formData.append("avatar", file);
+      const response = await updateProfilePicture(file);
 
-      console.log(formData);
+      if (user) {
+        const temporaryUrl = URL.createObjectURL(file);
 
-      toast.success("Profile picture updated successfully");
-    } catch {
-      toast.error("Failed to update profile picture");
+        setUser({
+          ...user,
+          avatar: {
+            ...user.avatar,
+            url: temporaryUrl,
+            publicId: user.avatar?.publicId ?? "",
+          },
+        });
+      }
+
+      toast.success(response.message);
+
+      navigate(-1);
+
+      removeFile();
+    } catch (error) {
+      toast.error(getErrorMessage(error));
     } finally {
       setSubmitting(false);
     }
@@ -62,7 +92,7 @@ const ChangeProfilePicture = () => {
       variants={fadeUp}
       initial="hidden"
       animate="visible"
-      className="mx-auto max-w-3xl px-6 py-10"
+      className="mx-auto w-full max-w-3xl px-4 py-8 sm:px-6 sm:py-10"
     >
       <Link
         to="/profile"
@@ -86,10 +116,10 @@ const ChangeProfilePicture = () => {
         </p>
       </div>
 
-      <div className="rounded-3xl border border-border bg-card p-6 shadow-sm sm:p-8">
+      <div className="rounded-3xl border border-border bg-card p-5 shadow-sm sm:p-8">
         <div className="flex flex-col items-center">
           <div className="relative">
-            <div className="flex h-40 w-40 items-center justify-center overflow-hidden rounded-full bg-primary/10">
+            <div className="flex h-32 w-32 items-center justify-center overflow-hidden rounded-full bg-primary/10 sm:h-40 sm:w-40">
               {preview ? (
                 <img
                   src={preview}
@@ -106,6 +136,7 @@ const ChangeProfilePicture = () => {
                 type="button"
                 onClick={removeFile}
                 className="absolute -right-1 -top-1 flex h-9 w-9 items-center justify-center rounded-full bg-card shadow-md transition hover:bg-secondary"
+                aria-label="Remove selected image"
               >
                 <X size={17} />
               </button>
@@ -121,27 +152,27 @@ const ChangeProfilePicture = () => {
             <input
               id="avatar"
               type="file"
-              accept="image/*"
+              accept="image/jpeg,image/png,image/webp"
               onChange={handleFileChange}
               className="hidden"
             />
           </label>
 
-          <p className="mt-3 text-xs text-muted-foreground">
+          <p className="mt-3 text-center text-xs text-muted-foreground">
             JPG, PNG or WEBP. Maximum size 5MB.
           </p>
 
           {file && (
-            <p className="mt-2 text-sm font-medium text-foreground">
+            <p className="mt-2 max-w-full truncate text-sm font-medium text-foreground">
               {file.name}
             </p>
           )}
         </div>
 
-        <div className="mt-8 flex justify-start gap-3 border-t border-border pt-6">
+        <div className="mt-8 flex flex-col-reverse gap-3 border-t border-border pt-6 sm:flex-row sm:justify-end">
           <Link
             to="/profile"
-            className="rounded-xl border border-border px-5 py-3 text-sm font-semibold transition hover:bg-secondary"
+            className="rounded-xl border border-border px-5 py-3 text-center text-sm font-semibold transition hover:bg-secondary"
           >
             Cancel
           </Link>

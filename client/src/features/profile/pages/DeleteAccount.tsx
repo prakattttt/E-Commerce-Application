@@ -16,8 +16,10 @@ import {
 import useAuth from "../../auth/hooks/useAuth";
 
 import { generateCode } from "../../../utils/generateCode";
+import { getErrorMessage } from "../../../utils/getErrorMessage";
 
 import Confirmation from "../components/Confirmation";
+import { deleteAccount } from "../api/profile.api";
 
 const DeleteAccount = () => {
   const navigate = useNavigate();
@@ -63,17 +65,21 @@ const DeleteAccount = () => {
     }
 
     try {
-      console.log(data);
+      const response = await deleteAccount({
+        password: data.password,
+      });
 
-      toast.success("Account deleted successfully");
+      toast.success(response.message || "Account deleted successfully");
+
+      setShowConfirmation(false);
 
       await logout();
 
       navigate("/login", {
         replace: true,
       });
-    } catch {
-      toast.error("Failed to delete account");
+    } catch (error) {
+      toast.error(getErrorMessage(error));
     }
   };
 
@@ -83,7 +89,7 @@ const DeleteAccount = () => {
         variants={fadeUp}
         initial="hidden"
         animate="visible"
-        className="mx-auto max-w-3xl px-6 py-10"
+        className="mx-auto max-w-3xl px-4 py-8 sm:px-6 sm:py-10"
       >
         {/* Back */}
         <Link
@@ -127,9 +133,8 @@ const DeleteAccount = () => {
             </div>
           </div>
 
-          {/* Form */}
-          <form onSubmit={handleSubmit(onSubmit)} className="mt-8 space-y-6">
-            {/* Password */}
+          {/* Password form */}
+          <div className="mt-8 space-y-6">
             <div>
               <label
                 htmlFor="password"
@@ -144,7 +149,7 @@ const DeleteAccount = () => {
                 {...register("password")}
                 placeholder="Enter your current password"
                 className={`w-full rounded-xl border bg-background px-4 py-3 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/10 ${
-                  errors.password ? "border-destructive" : "border-border"
+                  errors.password ? "border-error" : "border-border"
                 }`}
               />
 
@@ -156,25 +161,25 @@ const DeleteAccount = () => {
             </div>
 
             {/* Actions */}
-            <div className="flex justify-start gap-3 border-t border-border pt-6">
+            <div className="flex flex-col-reverse gap-3 border-t border-border pt-6 sm:flex-row">
               <Link
                 to="/profile"
-                className="rounded-xl border border-border px-5 py-3 text-sm font-semibold transition hover:bg-secondary"
+                className="rounded-xl border border-border px-5 py-3 text-center text-sm font-semibold transition hover:bg-secondary"
               >
                 Cancel
               </Link>
 
               <button
                 type="button"
-                onClick={handleDeleteClick}
+                onClick={handleSubmit(handleDeleteClick)}
                 disabled={isSubmitting}
-                className="inline-flex items-center gap-2 rounded-xl bg-error px-5 py-3 text-sm font-semibold text-white transition hover:bg-error/90 disabled:cursor-not-allowed disabled:opacity-50"
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-error px-5 py-3 text-sm font-semibold text-white transition hover:bg-error/90 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 <Trash2 size={17} />
                 Delete Account
               </button>
             </div>
-          </form>
+          </div>
         </div>
       </motion.section>
 
