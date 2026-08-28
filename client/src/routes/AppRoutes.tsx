@@ -17,6 +17,7 @@ import AdminUsers from "../features/admin/pages/AdminUsers";
 import NewProduct from "../features/admin/pages/NewProduct";
 import NewCategory from "../features/admin/pages/NewCategory";
 import ProductDetails from "../pages/ProductDetails";
+import Checkout from "../pages/Checkout";
 
 import AdminHome from "../features/admin/pages/AdminDashboard";
 
@@ -58,6 +59,8 @@ const AppRoutes = () => {
         <Route path="product/:slug" element={<ProductDetails />} />
 
         <Route path="cart" element={<CartPage />} />
+
+        <Route path="checkout" element={<Checkout />} />
 
         <Route path="login" element={<LoginPage />} />
         <Route path="register" element={<RegisterPage />} />

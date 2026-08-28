@@ -1,5 +1,7 @@
 import { CreditCard, Truck } from "lucide-react";
+
 import type { ICart } from "../types/cart.types";
+import { Link } from "react-router-dom";
 
 interface Props {
   cart: ICart;
@@ -12,16 +14,13 @@ const CartSummary = ({ cart }: Props) => {
   );
 
   const shipping = subtotal >= 5000 ? 0 : 250;
-
   const tax = subtotal * 0.13;
-
   const total = subtotal + shipping + tax;
 
   return (
     <div className="sticky top-24 rounded-3xl border border-border bg-card p-7 shadow-lg">
       <h2 className="mb-6 font-display text-2xl font-bold">Order Summary</h2>
 
-      {/* Free Shipping Notice */}
       {shipping === 0 && (
         <div className="mb-6 flex items-center gap-2 rounded-xl border border-success/20 bg-success/10 p-3 text-sm text-success">
           <Truck size={18} />
@@ -32,6 +31,7 @@ const CartSummary = ({ cart }: Props) => {
       <div className="space-y-4">
         <div className="flex items-center justify-between text-muted-foreground">
           <span>Subtotal</span>
+
           <span className="font-medium text-foreground">
             Rs. {subtotal.toFixed(2)}
           </span>
@@ -52,7 +52,9 @@ const CartSummary = ({ cart }: Props) => {
         <div className="flex items-center justify-between text-muted-foreground">
           <span>Tax (13%)</span>
 
-          <span className="font-medium text-foreground">Rs. {tax.toFixed(2)}</span>
+          <span className="font-medium text-foreground">
+            Rs. {tax.toFixed(2)}
+          </span>
         </div>
 
         <div className="my-2 border-t border-border" />
@@ -66,13 +68,16 @@ const CartSummary = ({ cart }: Props) => {
         </div>
       </div>
 
-      <button className="btn-primary mt-8 flex w-full items-center justify-center gap-2 py-3 text-base font-semibold">
+      <Link
+        to="/checkout"
+        className="btn-primary mt-8 flex w-full items-center justify-center gap-2 py-3 text-base font-semibold"
+      >
         <CreditCard size={20} />
         Proceed to Checkout
-      </button>
+      </Link>
 
       <p className="mt-4 text-center text-xs text-muted-foreground">
-        Taxes calculated at checkout. Secure payments powered by Stripe.
+        Taxes calculated at checkout.
       </p>
     </div>
   );
