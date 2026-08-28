@@ -1,16 +1,10 @@
-import { PackageOpen } from "lucide-react";
+import { Link } from "react-router-dom";
+import { PackageOpen, ChevronRight } from "lucide-react";
 
-interface Order {
-  _id: string;
-  orderNumber: string;
-  totalAmount: number;
-  totalItems: number;
-  status: "Pending" | "Processing" | "Shipped" | "Delivered" | "Cancelled";
-  createdAt: string;
-}
+import type { IOrderSummary } from "../types/order.types";
 
 interface OrdersTabProps {
-  orders: Order[];
+  orders: IOrderSummary[];
 }
 
 const statusStyles = {
@@ -24,10 +18,15 @@ const statusStyles = {
 const OrdersTab = ({ orders }: OrdersTabProps) => {
   if (orders.length === 0) {
     return (
-      <div className="rounded-3xl border border-border bg-card py-20 text-center">
-        <PackageOpen size={48} className="mx-auto mb-4 text-muted-foreground" />
+      <div className="rounded-3xl border border-border bg-card px-6 py-20 text-center shadow-sm">
+        <PackageOpen
+          size={48}
+          className="mx-auto mb-4 text-muted-foreground"
+        />
 
-        <h3 className="font-display text-2xl font-bold">No Orders Yet</h3>
+        <h3 className="font-display text-2xl font-bold">
+          No Orders Yet
+        </h3>
 
         <p className="mt-2 text-muted-foreground">
           Looks like you haven't purchased anything.
@@ -37,44 +36,60 @@ const OrdersTab = ({ orders }: OrdersTabProps) => {
   }
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-4">
       {orders.map((order) => (
         <div
           key={order._id}
-          className="rounded-2xl border border-border bg-card p-6 shadow-sm"
+          className="rounded-2xl border border-border bg-card p-5 shadow-sm transition hover:shadow-md sm:p-6"
         >
           <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+            {/* Order information */}
             <div>
-              <h3 className="font-semibold">Order #{order.orderNumber}</h3>
+              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                Order
+              </p>
+
+              <h3 className="mt-1 font-display text-lg font-bold">
+                #{order.orderNumber}
+              </h3>
 
               <p className="mt-1 text-sm text-muted-foreground">
-                {new Date(order.createdAt).toLocaleDateString()}
+                {new Date(order.createdAt).toLocaleDateString("en-NP", {
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric",
+                })}
               </p>
             </div>
 
-            <div className="flex flex-wrap items-center gap-4">
+            {/* Order status + amount + action */}
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
               <span
-                className={`rounded-full px-3 py-1 text-sm font-semibold ${
+                className={`w-fit rounded-full px-3 py-1 text-sm font-semibold ${
                   statusStyles[order.status]
                 }`}
               >
                 {order.status}
               </span>
 
-              <div className="text-right">
-                <p className="font-semibold">
+              <div className="sm:text-right">
+                <p className="font-display text-lg font-bold">
                   Rs. {order.totalAmount.toLocaleString()}
                 </p>
 
                 <p className="text-sm text-muted-foreground">
-                  {order.totalItems} item
-                  {order.totalItems > 1 ? "s" : ""}
+                  {order.totalItems}{" "}
+                  {order.totalItems === 1 ? "item" : "items"}
                 </p>
               </div>
 
-              <button className="rounded-xl border border-border px-4 py-2 text-sm font-medium transition hover:bg-secondary">
+              <Link
+                to={`/orders/${order._id}`}
+                className="inline-flex items-center justify-center gap-1.5 rounded-xl border border-border px-4 py-2.5 text-sm font-semibold transition hover:bg-secondary"
+              >
                 View Details
-              </button>
+                <ChevronRight size={16} />
+              </Link>
             </div>
           </div>
         </div>
