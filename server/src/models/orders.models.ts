@@ -1,14 +1,8 @@
 import mongoose, { Schema, Types } from "mongoose";
 
-/* Payment Method */
-
-export type PaymentMethod = "eSewa" | "Khalti";
-
-/* Payment Status */
+export type PaymentMethod = "COD" | "eSewa" | "Khalti";
 
 export type PaymentStatus = "Pending" | "Paid";
-
-/* Order Status */
 
 export type OrderStatus =
   | "Pending"
@@ -17,64 +11,48 @@ export type OrderStatus =
   | "Delivered"
   | "Cancelled";
 
-/* Single Product inside an Order */
-
 export interface IOrderItem {
-  /* Reference to original product */
   product: Types.ObjectId;
 
-  /* Snapshot of product information */
   name: string;
   image: string;
   price: number;
 
-  /* Quantity ordered */
   quantity: number;
 }
-
-/* Shipping Address */
 
 export interface IShippingAddress {
   fullName: string;
   phone: string;
-
   address: string;
   city: string;
-
-  country: string;
+  province: string;
 }
-
-/* Order */
 
 export interface IOrder {
   _id: Types.ObjectId;
 
-  /* User who placed the order */
+  orderNumber: string;
+
   user: Types.ObjectId;
 
-  /* Purchased products */
   items: IOrderItem[];
 
-  /* Price Summary */
   subtotal: number;
   shippingCost: number;
+  tax: number;
   total: number;
 
-  /* Delivery Information */
   shippingAddress: IShippingAddress;
 
-  /* Payment */
   paymentMethod: PaymentMethod;
   paymentStatus: PaymentStatus;
 
-  /* Delivery Progress */
   orderStatus: OrderStatus;
 
   createdAt: Date;
   updatedAt: Date;
 }
-
-/* ---------------- Order Item ---------------- */
 
 const orderItemSchema = new Schema<IOrderItem>(
   {
@@ -84,10 +62,10 @@ const orderItemSchema = new Schema<IOrderItem>(
       required: true,
     },
 
-    /* Stored as snapshot */
     name: {
       type: String,
       required: true,
+      trim: true,
     },
 
     image: {
@@ -111,8 +89,6 @@ const orderItemSchema = new Schema<IOrderItem>(
     _id: false,
   },
 );
-
-/* ---------------- Shipping Address ---------------- */
 
 const shippingAddressSchema = new Schema<IShippingAddress>(
   {
@@ -140,7 +116,7 @@ const shippingAddressSchema = new Schema<IShippingAddress>(
       trim: true,
     },
 
-    country: {
+    province: {
       type: String,
       required: true,
       trim: true,
@@ -151,10 +127,15 @@ const shippingAddressSchema = new Schema<IShippingAddress>(
   },
 );
 
-/* ---------------- Order ---------------- */
-
 const orderSchema = new Schema<IOrder>(
   {
+    orderNumber: {
+      type: String,
+      required: true,
+      unique: true,
+      index: true,
+    },
+
     user: {
       type: Schema.Types.ObjectId,
       ref: "User",
@@ -165,6 +146,10 @@ const orderSchema = new Schema<IOrder>(
     items: {
       type: [orderItemSchema],
       required: true,
+      validate: {
+        validator: (items: IOrderItem[]) => items.length > 0,
+        message: "Order must contain at least one item",
+      },
     },
 
     subtotal: {
@@ -175,7 +160,14 @@ const orderSchema = new Schema<IOrder>(
 
     shippingCost: {
       type: Number,
-      default: 0,
+      required: true,
+      min: 0,
+    },
+
+    tax: {
+      type: Number,
+      required: true,
+      min: 0,
     },
 
     total: {
@@ -191,7 +183,7 @@ const orderSchema = new Schema<IOrder>(
 
     paymentMethod: {
       type: String,
-      enum: ["eSewa", "Khalti"],
+      enum: ["COD", "eSewa", "Khalti"],
       required: true,
     },
 
@@ -217,8 +209,6 @@ const orderSchema = new Schema<IOrder>(
     timestamps: true,
   },
 );
-
-/* Indexes */
 
 orderSchema.index({
   user: 1,
