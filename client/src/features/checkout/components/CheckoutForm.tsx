@@ -1,21 +1,45 @@
-import { CreditCard, MapPin, User } from "lucide-react";
-import { useState } from "react";
-import { toast } from "sonner";
+import { MapPin, User } from "lucide-react";
+import { useForm, useWatch } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-import type { CheckoutFormValues } from "../types/checkout.types";
+import PaymentMethod from "./PaymentMethod";
+
+import {
+  checkoutSchema,
+  type CheckoutFormValues,
+} from "../types/checkout.schema";
 
 const CheckoutForm = () => {
-  const [paymentMethod, setPaymentMethod] =
-    useState<CheckoutFormValues["paymentMethod"]>("cod");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    control,
+  } = useForm<CheckoutFormValues>({
+    resolver: zodResolver(checkoutSchema),
 
-  const handleSubmit = (event: React.SubmitEvent<HTMLFormElement>) => {
-    event.preventDefault();
+    defaultValues: {
+      name: "",
+      phone: "",
+      address: "",
+      city: "",
+      province: undefined,
+      payment: "cod",
+    },
+  });
 
-    toast.info("Order placement will be connected to the backend later.");
+  const selectedPayment = useWatch({
+    control,
+    name: "payment",
+    defaultValue: "cod",
+  });
+
+  const onSubmit = async (data: CheckoutFormValues) => {
+    console.log("Checkout data:", data);
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       {/* Delivery Information */}
       <section className="rounded-3xl border border-border bg-card p-6 shadow-sm sm:p-8">
         <div className="mb-7 flex items-center gap-3">
@@ -37,20 +61,23 @@ const CheckoutForm = () => {
         <div className="space-y-5">
           {/* Full Name */}
           <div>
-            <label
-              htmlFor="fullName"
-              className="mb-2 block text-sm font-semibold"
-            >
+            <label htmlFor="name" className="mb-2 block text-sm font-semibold">
               Full Name
             </label>
 
             <input
-              id="fullName"
-              name="fullName"
+              id="name"
               type="text"
               placeholder="Enter your full name"
-              className="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/10"
+              {...register("name")}
+              className={`w-full rounded-xl border bg-background px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/10 ${
+                errors.name ? "border-error" : "border-border"
+              }`}
             />
+
+            {errors.name && (
+              <p className="mt-1.5 text-xs text-error">{errors.name.message}</p>
+            )}
           </div>
 
           {/* Phone */}
@@ -61,11 +88,20 @@ const CheckoutForm = () => {
 
             <input
               id="phone"
-              name="phone"
               type="tel"
+              inputMode="numeric"
               placeholder="98XXXXXXXX"
-              className="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/10"
+              {...register("phone")}
+              className={`w-full rounded-xl border bg-background px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/10 ${
+                errors.phone ? "border-error" : "border-border"
+              }`}
             />
+
+            {errors.phone && (
+              <p className="mt-1.5 text-xs text-error">
+                {errors.phone.message}
+              </p>
+            )}
           </div>
 
           {/* Address */}
@@ -79,15 +115,24 @@ const CheckoutForm = () => {
 
             <textarea
               id="address"
-              name="address"
               rows={3}
               placeholder="Street address, house number, landmark..."
-              className="w-full resize-none rounded-xl border border-border bg-background px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/10"
+              {...register("address")}
+              className={`w-full resize-none rounded-xl border bg-background px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/10 ${
+                errors.address ? "border-error" : "border-border"
+              }`}
             />
+
+            {errors.address && (
+              <p className="mt-1.5 text-xs text-error">
+                {errors.address.message}
+              </p>
+            )}
           </div>
 
           {/* City + Province */}
           <div className="grid gap-5 sm:grid-cols-2">
+            {/* City */}
             <div>
               <label
                 htmlFor="city"
@@ -98,13 +143,22 @@ const CheckoutForm = () => {
 
               <input
                 id="city"
-                name="city"
                 type="text"
                 placeholder="Kathmandu"
-                className="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/10"
+                {...register("city")}
+                className={`w-full rounded-xl border bg-background px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/10 ${
+                  errors.city ? "border-error" : "border-border"
+                }`}
               />
+
+              {errors.city && (
+                <p className="mt-1.5 text-xs text-error">
+                  {errors.city.message}
+                </p>
+              )}
             </div>
 
+            {/* Province */}
             <div>
               <label
                 htmlFor="province"
@@ -115,14 +169,12 @@ const CheckoutForm = () => {
 
               <select
                 id="province"
-                name="province"
-                defaultValue=""
-                className="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/10"
+                {...register("province")}
+                className={`w-full rounded-xl border bg-background px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/10 ${
+                  errors.province ? "border-error" : "border-border"
+                }`}
               >
-                <option value="" disabled>
-                  Select province
-                </option>
-
+                <option value="">Select province</option>
                 <option value="Koshi">Koshi</option>
                 <option value="Madhesh">Madhesh</option>
                 <option value="Bagmati">Bagmati</option>
@@ -131,115 +183,29 @@ const CheckoutForm = () => {
                 <option value="Karnali">Karnali</option>
                 <option value="Sudurpashchim">Sudurpashchim</option>
               </select>
+
+              {errors.province && (
+                <p className="mt-1.5 text-xs text-error">
+                  {errors.province.message}
+                </p>
+              )}
             </div>
           </div>
         </div>
       </section>
 
       {/* Payment */}
-      <section className="rounded-3xl border border-border bg-card p-6 shadow-sm sm:p-8">
-        <div className="mb-7 flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
-            <CreditCard size={20} />
-          </div>
+      <PaymentMethod register={register} selectedPayment={selectedPayment} />
 
-          <div>
-            <h2 className="font-display text-xl font-bold">Payment Method</h2>
-
-            <p className="text-sm text-muted-foreground">
-              Choose how you'd like to pay.
-            </p>
-          </div>
-        </div>
-
-        <div className="space-y-3">
-          {/* COD */}
-          <label
-            className={`flex cursor-pointer items-center gap-4 rounded-2xl border p-4 transition ${
-              paymentMethod === "cod"
-                ? "border-primary bg-primary/5"
-                : "border-border hover:bg-secondary"
-            }`}
-          >
-            <input
-              type="radio"
-              name="paymentMethod"
-              value="cod"
-              checked={paymentMethod === "cod"}
-              onChange={() => setPaymentMethod("cod")}
-              className="h-4 w-4 accent-primary"
-            />
-
-            <div className="flex-1">
-              <p className="text-sm font-semibold">Cash on Delivery</p>
-
-              <p className="mt-1 text-xs text-muted-foreground">
-                Pay when your order arrives.
-              </p>
-            </div>
-          </label>
-
-          {/* eSewa */}
-          <label
-            className={`flex cursor-pointer items-center gap-4 rounded-2xl border p-4 transition ${
-              paymentMethod === "esewa"
-                ? "border-primary bg-primary/5"
-                : "border-border hover:bg-secondary"
-            }`}
-          >
-            <input
-              type="radio"
-              name="paymentMethod"
-              value="esewa"
-              checked={paymentMethod === "esewa"}
-              onChange={() => setPaymentMethod("esewa")}
-              className="h-4 w-4 accent-primary"
-            />
-
-            <div className="flex-1">
-              <p className="text-sm font-semibold">eSewa</p>
-
-              <p className="mt-1 text-xs text-muted-foreground">
-                Pay securely using eSewa.
-              </p>
-            </div>
-          </label>
-
-          {/* Khalti */}
-          <label
-            className={`flex cursor-pointer items-center gap-4 rounded-2xl border p-4 transition ${
-              paymentMethod === "khalti"
-                ? "border-primary bg-primary/5"
-                : "border-border hover:bg-secondary"
-            }`}
-          >
-            <input
-              type="radio"
-              name="paymentMethod"
-              value="khalti"
-              checked={paymentMethod === "khalti"}
-              onChange={() => setPaymentMethod("khalti")}
-              className="h-4 w-4 accent-primary"
-            />
-
-            <div className="flex-1">
-              <p className="text-sm font-semibold">Khalti</p>
-
-              <p className="mt-1 text-xs text-muted-foreground">
-                Pay securely using Khalti.
-              </p>
-            </div>
-          </label>
-        </div>
-      </section>
-
-      {/* Mobile submit */}
+      {/* Mobile Submit */}
       <button
         type="submit"
-        className="btn-primary flex w-full items-center justify-center gap-2 py-3.5 text-base font-semibold lg:hidden"
+        disabled={isSubmitting}
+        className="btn-primary flex w-full items-center justify-center gap-2 py-3.5 text-base font-semibold disabled:cursor-not-allowed disabled:opacity-60 lg:hidden"
       >
         <User size={18} />
-        Place Order
+
+        {isSubmitting ? "Processing..." : "Place Order"}
       </button>
     </form>
   );

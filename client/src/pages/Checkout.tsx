@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowLeft, ShieldCheck } from "lucide-react";
-import { Link } from "react-router-dom";
+import { ShieldCheck } from "lucide-react";
 
 import { fadeUp } from "../animations";
 import CheckoutForm from "../features/checkout/components/CheckoutForm";
@@ -15,15 +14,7 @@ const Checkout = () => {
       className="container px-4 py-10 sm:px-6 sm:py-14"
     >
       {/* Header */}
-      <div className="mx-auto max-w-6xl">
-        <Link
-          to="/cart"
-          className="mb-6 inline-flex items-center gap-2 text-sm font-semibold text-muted-foreground transition hover:text-primary"
-        >
-          <ArrowLeft size={17} />
-          Back to Cart
-        </Link>
-
+      <div className="mx-auto mt-10 max-w-6xl">
         <div className="mb-10">
           <span className="text-xs font-bold uppercase tracking-[0.2em] text-primary">
             Checkout
@@ -34,8 +25,8 @@ const Checkout = () => {
           </h1>
 
           <p className="mt-2 max-w-xl text-muted-foreground">
-            Enter your delivery information and choose your preferred
-            payment method.
+            Enter your delivery information and choose your preferred payment
+            method.
           </p>
         </div>
 
@@ -48,19 +39,14 @@ const Checkout = () => {
 
         {/* Security notice */}
         <div className="mt-8 flex items-start gap-3 rounded-2xl border border-primary/10 bg-primary/5 p-4">
-          <ShieldCheck
-            size={20}
-            className="mt-0.5 shrink-0 text-primary"
-          />
+          <ShieldCheck size={20} className="mt-0.5 shrink-0 text-primary" />
 
           <div>
-            <p className="text-sm font-semibold">
-              Your information is secure
-            </p>
+            <p className="text-sm font-semibold">Your information is secure</p>
 
             <p className="mt-1 text-xs leading-5 text-muted-foreground">
-              Your personal and payment information is securely handled
-              during checkout.
+              Your personal and payment information is securely handled during
+              checkout.
             </p>
           </div>
         </div>
