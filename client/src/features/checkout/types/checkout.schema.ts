@@ -39,7 +39,7 @@ export const checkoutSchema = z.object({
     },
   ),
 
-  payment: z.enum(["COD", "esewa", "khalti"], {
+  payment: z.enum(["COD", "eSewa", "Khalti"], {
     error: "Please select a payment method",
   }),
 });
