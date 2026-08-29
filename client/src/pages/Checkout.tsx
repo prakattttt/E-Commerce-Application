@@ -4,8 +4,22 @@ import { ShieldCheck } from "lucide-react";
 import { fadeUp } from "../animations";
 import CheckoutForm from "../features/checkout/components/CheckoutForm";
 import CheckoutSummary from "../features/checkout/components/CheckoutSummary";
+import { useMutation } from "@tanstack/react-query";
+import { createOrder } from "../features/checkout/api/checkout.api";
+import { toast } from "sonner";
 
 const Checkout = () => {
+    const { mutate, isPending } = useMutation({
+      mutationFn: createOrder,
+  
+      onSuccess: (data) => {
+        toast.success(data.message);
+      },
+  
+      onError: (error) => {
+        toast.error(error.message);
+      },
+    });
   return (
     <motion.main
       variants={fadeUp}
@@ -32,9 +46,9 @@ const Checkout = () => {
 
         {/* Checkout content */}
         <div className="grid gap-8 lg:grid-cols-[1.4fr_0.8fr] lg:items-start">
-          <CheckoutForm />
+          <CheckoutForm mutate={mutate} />
 
-          <CheckoutSummary />
+          <CheckoutSummary isPending={isPending}/>
         </div>
 
         {/* Security notice */}

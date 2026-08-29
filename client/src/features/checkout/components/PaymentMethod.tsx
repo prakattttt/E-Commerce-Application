@@ -14,7 +14,7 @@ const paymentOptions: {
   description: string;
 }[] = [
   {
-    value: "cod",
+    value: "COD",
     label: "Cash on Delivery",
     description: "Pay when your order arrives.",
   },

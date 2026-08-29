@@ -1,4 +1,4 @@
-import { MapPin, User } from "lucide-react";
+import { MapPin } from "lucide-react";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -9,11 +9,15 @@ import {
   type CheckoutFormValues,
 } from "../types/checkout.schema";
 
-const CheckoutForm = () => {
+interface Props {
+  mutate: (data: CheckoutFormValues) => void;
+}
+
+const CheckoutForm = ({mutate}: Props) => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
     control,
   } = useForm<CheckoutFormValues>({
     resolver: zodResolver(checkoutSchema),
@@ -24,22 +28,27 @@ const CheckoutForm = () => {
       address: "",
       city: "",
       province: undefined,
-      payment: "cod",
+      payment: "COD",
     },
   });
 
   const selectedPayment = useWatch({
     control,
     name: "payment",
-    defaultValue: "cod",
+    defaultValue: "COD",
   });
 
-  const onSubmit = async (data: CheckoutFormValues) => {
-    console.log("Checkout data:", data);
+
+  const onSubmit = (data: CheckoutFormValues) => {
+    mutate(data);
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+    <form
+      id="checkout-form"
+      onSubmit={handleSubmit(onSubmit)}
+      className="space-y-6"
+    >
       {/* Delivery Information */}
       <section className="rounded-3xl border border-border bg-card p-6 shadow-sm sm:p-8">
         <div className="mb-7 flex items-center gap-3">
@@ -76,7 +85,9 @@ const CheckoutForm = () => {
             />
 
             {errors.fullName && (
-              <p className="mt-1.5 text-xs text-error">{errors.fullName.message}</p>
+              <p className="mt-1.5 text-xs text-error">
+                {errors.fullName.message}
+              </p>
             )}
           </div>
 
@@ -196,17 +207,6 @@ const CheckoutForm = () => {
 
       {/* Payment */}
       <PaymentMethod register={register} selectedPayment={selectedPayment} />
-
-      {/* Mobile Submit */}
-      <button
-        type="submit"
-        disabled={isSubmitting}
-        className="btn-primary flex w-full items-center justify-center gap-2 py-3.5 text-base font-semibold disabled:cursor-not-allowed disabled:opacity-60 lg:hidden"
-      >
-        <User size={18} />
-
-        {isSubmitting ? "Processing..." : "Place Order"}
-      </button>
     </form>
   );
 };

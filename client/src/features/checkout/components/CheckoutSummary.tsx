@@ -1,23 +1,27 @@
 import { CreditCard, Truck } from "lucide-react";
 
-const CheckoutSummary = () => {
-  const items = [
-    {
-      id: "1",
-      name: "Sample Product",
-      quantity: 2,
-      price: 1500,
-      image: "https://via.placeholder.com/80",
-    },
-    {
-      id: "2",
-      name: "Another Product",
-      quantity: 1,
-      price: 1000,
-      image: "https://via.placeholder.com/80",
-    },
-  ];
+const items = [
+  {
+    id: "1",
+    name: "Sample Product",
+    quantity: 2,
+    price: 1500,
+    image: "https://via.placeholder.com/80",
+  },
+  {
+    id: "2",
+    name: "Another Product",
+    quantity: 1,
+    price: 1000,
+    image: "https://via.placeholder.com/80",
+  },
+];
 
+interface Props {
+  isPending: boolean;
+}
+
+const CheckoutSummary = ({ isPending }: Props) => {
   const subtotal = items.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0,
@@ -121,10 +125,24 @@ const CheckoutSummary = () => {
         {/* Desktop submit */}
         <button
           type="button"
+          form="checkout-form"
+          disabled={isPending}
           className="btn-primary mt-7 hidden w-full items-center justify-center gap-2 py-3.5 text-base font-semibold lg:flex"
         >
           <CreditCard size={18} />
-          Place Order
+          {isPending ? "Processing..." : "Place Order"}
+        </button>
+
+        {/* Mobile Submit */}
+        <button
+          type="submit"
+          form="checkout-form"
+          disabled={isPending}
+          className="btn-primary mt-5 flex w-full items-center justify-center gap-2 py-3.5 text-base font-semibold disabled:cursor-not-allowed disabled:opacity-60 lg:hidden"
+        >
+          <CreditCard size={18} />
+
+          {isPending ? "Processing..." : "Place Order"}
         </button>
 
         <p className="mt-4 text-center text-xs leading-5 text-muted-foreground">
