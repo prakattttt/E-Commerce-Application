@@ -124,7 +124,7 @@ const CheckoutSummary = ({ isPending }: Props) => {
 
         {/* Desktop submit */}
         <button
-          type="button"
+          type="submit"
           form="checkout-form"
           disabled={isPending}
           className="btn-primary mt-7 hidden w-full items-center justify-center gap-2 py-3.5 text-base font-semibold lg:flex"
