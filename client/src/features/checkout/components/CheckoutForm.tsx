@@ -19,7 +19,7 @@ const CheckoutForm = () => {
     resolver: zodResolver(checkoutSchema),
 
     defaultValues: {
-      name: "",
+      fullName: "",
       phone: "",
       address: "",
       city: "",
@@ -69,14 +69,14 @@ const CheckoutForm = () => {
               id="name"
               type="text"
               placeholder="Enter your full name"
-              {...register("name")}
+              {...register("fullName")}
               className={`w-full rounded-xl border bg-background px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/10 ${
-                errors.name ? "border-error" : "border-border"
+                errors.fullName ? "border-error" : "border-border"
               }`}
             />
 
-            {errors.name && (
-              <p className="mt-1.5 text-xs text-error">{errors.name.message}</p>
+            {errors.fullName && (
+              <p className="mt-1.5 text-xs text-error">{errors.fullName.message}</p>
             )}
           </div>
 
