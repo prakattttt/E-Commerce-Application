@@ -19,12 +19,12 @@ const paymentOptions: {
     description: "Pay when your order arrives.",
   },
   {
-    value: "esewa",
+    value: "eSewa",
     label: "eSewa",
     description: "Pay securely using eSewa.",
   },
   {
-    value: "khalti",
+    value: "Khalti",
     label: "Khalti",
     description: "Pay securely using Khalti.",
   },
