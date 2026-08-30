@@ -14,7 +14,7 @@ import { getErrorMessage } from "../utils/getErrorMessage";
 import useAuth from "../features/auth/hooks/useAuth";
 
 const Checkout = () => {
-  const { cart, loading } = useCart();
+  const { cart, loading, clearCart } = useCart();
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
@@ -24,11 +24,14 @@ const Checkout = () => {
     }
   }, [isAuthenticated, navigate]);
 
-  const { mutate, isPending } = useMutation({
+  const { mutate, isPending, reset } = useMutation({
     mutationFn: createOrder,
 
     onSuccess: (data) => {
       toast.success(data.message);
+      reset();
+      clearCart();
+      navigate("/shop");
     },
 
     onError: (error) => {

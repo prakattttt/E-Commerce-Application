@@ -1,29 +1,53 @@
+import { useQuery } from "@tanstack/react-query";
 import { CreditCard, Truck } from "lucide-react";
-
-const items = [
-  {
-    id: "1",
-    name: "Sample Product",
-    quantity: 2,
-    price: 1500,
-    image: "https://via.placeholder.com/80",
-  },
-  {
-    id: "2",
-    name: "Another Product",
-    quantity: 1,
-    price: 1000,
-    image: "https://via.placeholder.com/80",
-  },
-];
+import { getCart } from "../../cart/api/cart.api";
+import type { ICart } from "../../cart/types/cart.types";
 
 interface Props {
   isPending: boolean;
 }
 
 const CheckoutSummary = ({ isPending }: Props) => {
-  const subtotal = items.reduce(
-    (sum, item) => sum + item.price * item.quantity,
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["cart"],
+    queryFn: getCart,
+    staleTime: 5 * 60 * 1000,
+  });
+
+  const cart = data?.cart as ICart | undefined;
+
+  if (isLoading) {
+    return (
+      <aside className="lg:sticky lg:top-24">
+        <div className="rounded-3xl border border-border bg-card p-6 shadow-lg sm:p-7">
+          <h2 className="font-display text-xl font-bold">Order Summary</h2>
+          <div className="mt-6 animate-pulse space-y-4">
+            <div className="h-16 rounded-xl bg-muted/50" />
+            <div className="h-16 rounded-xl bg-muted/50" />
+            <div className="h-10 rounded-xl bg-muted/50" />
+          </div>
+        </div>
+      </aside>
+    );
+  }
+
+  if (isError || !cart) {
+    return (
+      <aside className="lg:sticky lg:top-24">
+        <div className="rounded-3xl border border-border bg-card p-6 shadow-lg sm:p-7">
+          <h2 className="font-display text-xl font-bold">Order Summary</h2>
+          <p className="mt-4 text-sm text-muted-foreground">
+            Unable to load your order summary right now.
+          </p>
+        </div>
+      </aside>
+    );
+  }
+
+  const visibleItems = cart.items.slice(0, 6);
+
+  const subtotal = cart.items.reduce(
+    (sum, item) => sum + item.product.price * item.quantity,
     0,
   );
 
@@ -39,30 +63,32 @@ const CheckoutSummary = ({ isPending }: Props) => {
         <h2 className="font-display text-xl font-bold">Order Summary</h2>
 
         {/* Items */}
-        <div className="mt-6 space-y-4">
-          {items.map((item) => (
-            <div key={item.id} className="flex gap-3">
-              <div className="h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-secondary">
-                <img
-                  src={item.image}
-                  alt={item.name}
-                  className="h-full w-full object-cover"
-                />
-              </div>
+        <div className="mt-6 lg:max-h-97 lg:overflow-y-auto lg:scrollbar-none lg:pr-1">
+          <div className="space-y-4">
+            {visibleItems.map((item) => (
+              <div key={item.product._id} className="flex gap-3">
+                <div className="h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-secondary">
+                  <img
+                    src={item.product.imageCover.url}
+                    alt={item.product.name}
+                    className="h-full w-full object-cover"
+                  />
+                </div>
 
-              <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-semibold">{item.name}</p>
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-sm font-semibold">{item.product.name}</p>
 
-                <p className="mt-1 text-xs text-muted-foreground">
-                  Qty: {item.quantity}
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    Qty: {item.quantity}
+                  </p>
+                </div>
+
+                <p className="text-sm font-semibold">
+                  Rs. {(item.product.price * item.quantity).toLocaleString()}
                 </p>
               </div>
-
-              <p className="text-sm font-semibold">
-                Rs. {(item.price * item.quantity).toLocaleString()}
-              </p>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
 
         <div className="my-6 border-t border-border" />
