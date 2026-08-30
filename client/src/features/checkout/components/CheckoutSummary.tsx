@@ -44,8 +44,6 @@ const CheckoutSummary = ({ isPending }: Props) => {
     );
   }
 
-  const visibleItems = cart.items.slice(0, 6);
-
   const subtotal = cart.items.reduce(
     (sum, item) => sum + item.product.price * item.quantity,
     0,
@@ -63,10 +61,10 @@ const CheckoutSummary = ({ isPending }: Props) => {
         <h2 className="font-display text-xl font-bold">Order Summary</h2>
 
         {/* Items */}
-        <div className="mt-6 lg:max-h-97 lg:overflow-y-auto lg:scrollbar-none lg:pr-1">
+        <div className="mt-6 lg:max-h-112 lg:overflow-y-auto lg:scrollbar-none lg:pr-1">
           <div className="space-y-4">
-            {visibleItems.map((item) => (
-              <div key={item.product._id} className="flex gap-3">
+            {cart.items.map((item) => (
+              <div key={item.product._id} className="flex min-w-0 gap-3">
                 <div className="h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-secondary">
                   <img
                     src={item.product.imageCover.url}
@@ -76,14 +74,15 @@ const CheckoutSummary = ({ isPending }: Props) => {
                 </div>
 
                 <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-semibold">{item.product.name}</p>
-
+                  <p className="truncate text-sm font-semibold">
+                    {item.product.name}
+                  </p>
                   <p className="mt-1 text-xs text-muted-foreground">
                     Qty: {item.quantity}
                   </p>
                 </div>
 
-                <p className="text-sm font-semibold">
+                <p className="shrink-0 text-sm font-semibold">
                   Rs. {(item.product.price * item.quantity).toLocaleString()}
                 </p>
               </div>

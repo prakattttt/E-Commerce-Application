@@ -96,9 +96,12 @@ const Checkout = () => {
 
         {/* Checkout content */}
         <div className="grid gap-8 lg:grid-cols-[1.4fr_0.8fr] lg:items-start">
-          <CheckoutForm mutate={mutate} />
-
-          <CheckoutSummary isPending={isPending} />
+          <div className="min-w-0">
+            <CheckoutForm mutate={mutate} />
+          </div>
+          <div className="min-w-0">
+            <CheckoutSummary isPending={isPending} />
+          </div>
         </div>
 
         {/* Security notice */}
