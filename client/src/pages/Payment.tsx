@@ -1,21 +1,56 @@
 import { motion } from "framer-motion";
-import { CreditCard, ShieldCheck, ArrowLeft, LockKeyhole } from "lucide-react";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { CreditCard, ShieldCheck, ArrowLeft, LockKeyhole, Package, ArrowRight } from "lucide-react";
+import Loader from "../components/ui/Loader";
+import { Link, useParams } from "react-router-dom";
 import { fadeUp } from "../animations";
-
-interface PaymentState {
-  orderNumber?: string;
-  total?: number;
-  paymentMethod?: "eSewa" | "Khalti";
-}
+import { useQuery } from "@tanstack/react-query";
+import { getOrder } from "../features/checkout/api/checkout.api";
+import { getErrorMessage } from "../utils/getErrorMessage";
 
 const Payment = () => {
   const { orderId } = useParams();
-  const location = useLocation();
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["order", orderId],
+    queryFn: () => getOrder(orderId!),
+    enabled: Boolean(orderId),
+  });
 
-  const state = location.state as PaymentState | null;
+  if (isLoading) {
+    return <Loader fullScreen />;
+  }
 
-  const paymentMethod = state?.paymentMethod;
+  if (isError || !data?.order) {
+    return (
+      <motion.main
+        variants={fadeUp}
+        initial="hidden"
+        animate="visible"
+        className="container flex min-h-screen items-center justify-center px-4 py-14 sm:px-6"
+      >
+        <div className="w-full max-w-lg rounded-3xl border border-border bg-card p-8 text-center shadow-lg">
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-error/10 text-error">
+            <Package size={32} />
+          </div>
+
+          <h1 className="mt-6 font-display text-2xl font-bold">
+            Unable to load your order
+          </h1>
+
+          <p className="mt-3 text-sm text-muted-foreground">
+            {getErrorMessage(error)}
+          </p>
+
+          <Link
+            to="/profile?tab=orders"
+            className="btn-primary mt-7 inline-flex items-center gap-2"
+          >
+            View My Orders
+            <ArrowRight size={17} />
+          </Link>
+        </div>
+      </motion.main>
+    );
+  }
 
   return (
     <motion.main
@@ -52,18 +87,18 @@ const Payment = () => {
                 </p>
 
                 <p className="mt-1 font-semibold">
-                  {state?.orderNumber ?? `#${orderId}`}
+                  {data.order.orderNumber ?? `#${orderId}`}
                 </p>
               </div>
 
-              {state?.total !== undefined && (
+              {data.order.total !== undefined && (
                 <div className="text-right">
                   <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
                     Amount
                   </p>
 
                   <p className="mt-1 font-display text-xl font-bold text-primary">
-                    Rs. {state.total.toLocaleString()}
+                    Rs. {data.order.total.toLocaleString()}
                   </p>
                 </div>
               )}
@@ -81,7 +116,7 @@ const Payment = () => {
 
               <div>
                 <p className="font-semibold">
-                  {paymentMethod ?? "Online Payment"}
+                  {data.order.paymentMethod ?? "Online Payment"}
                 </p>
 
                 <p className="mt-1 text-xs text-muted-foreground">
@@ -112,7 +147,7 @@ const Payment = () => {
           >
             <LockKeyhole size={18} />
             Pay Rs.{" "}
-            {state?.total !== undefined ? state.total.toLocaleString() : "Now"}
+            {data.order.total !== undefined ? data.order.total.toLocaleString() : "Now"}
           </button>
 
           {/* Back */}
