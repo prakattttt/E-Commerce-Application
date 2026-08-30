@@ -187,17 +187,16 @@ const Payment = () => {
               : "Now"}
           </button>
 
-          {/* Back */}
+          {/* Cancel Order */}
           <div className="mt-4 flex justify-center">
             <button
               type="button"
               onClick={cancelOrderHandler}
               disabled={isCancelling}
-              className="flex items-center justify-center gap-2 text-sm font-medium text-muted-foreground transition hover:text-foreground disabled:cursor-not-allowed disabled:opacity-50"
+              className="flex items-center justify-center gap-2 text-sm font-semibold text-error transition hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-50"
             >
               <ArrowLeft size={16} />
-
-              {isCancelling ? "Cancelling order..." : "Continue Shopping"}
+              {isCancelling ? "Cancelling order..." : "Cancel Order"}
             </button>
           </div>
         </div>
