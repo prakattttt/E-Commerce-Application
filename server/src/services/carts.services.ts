@@ -37,6 +37,11 @@ export const addToCart = async (
     ? existingItem.quantity + quantity
     : quantity;
 
+
+  if(product.stock === 0) {
+        throw new AppError("Item out of stock.", 400);
+  }
+
   if (newQuantity > product.stock) {
     throw new AppError(`Only ${product.stock} item(s) available in stock`, 400);
   }
