@@ -18,6 +18,8 @@ import NewProduct from "../features/admin/pages/NewProduct";
 import NewCategory from "../features/admin/pages/NewCategory";
 import ProductDetails from "../pages/ProductDetails";
 import Checkout from "../pages/Checkout";
+import OrderConfirmation from "../pages/OrderConfirmation";
+import Payment from "../pages/Payment";
 
 import AdminHome from "../features/admin/pages/AdminDashboard";
 
@@ -61,6 +63,12 @@ const AppRoutes = () => {
         <Route path="cart" element={<CartPage />} />
 
         <Route path="checkout" element={<Checkout />} />
+        <Route path="/payment/:orderId" element={<Payment />} />
+
+        <Route
+          path="/order-confirmation/:orderId"
+          element={<OrderConfirmation />}
+        />
 
         <Route path="login" element={<LoginPage />} />
         <Route path="register" element={<RegisterPage />} />
