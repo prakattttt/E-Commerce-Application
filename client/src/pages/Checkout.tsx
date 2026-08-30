@@ -24,14 +24,25 @@ const Checkout = () => {
     }
   }, [isAuthenticated, navigate]);
 
-  const { mutate, isPending, reset } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: createOrder,
 
     onSuccess: (data) => {
       toast.success(data.message);
-      reset();
+
       clearCart();
-      navigate("/shop");
+
+      if (data.order.paymentMethod === "COD") {
+        navigate(`/order-confirmation/${data.order._id}`, {
+          replace: true,
+        });
+
+        return;
+      }
+
+      navigate(`/payment/${data.order._id}`, {
+        replace: true,
+      });
     },
 
     onError: (error) => {
@@ -77,8 +88,8 @@ const Checkout = () => {
       animate="visible"
       className="container px-4 py-10 sm:px-6 sm:py-14"
     >
-      {/* Header */}
       <div className="mx-auto mt-10 max-w-6xl">
+        {/* Header */}
         <div className="mb-10">
           <span className="text-xs font-bold uppercase tracking-[0.2em] text-primary">
             Checkout
@@ -99,6 +110,7 @@ const Checkout = () => {
           <div className="min-w-0">
             <CheckoutForm mutate={mutate} />
           </div>
+
           <div className="min-w-0">
             <CheckoutSummary isPending={isPending} />
           </div>
