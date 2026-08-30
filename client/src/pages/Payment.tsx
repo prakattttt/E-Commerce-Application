@@ -1,19 +1,54 @@
 import { motion } from "framer-motion";
-import { CreditCard, ShieldCheck, ArrowLeft, LockKeyhole, Package, ArrowRight } from "lucide-react";
+import {
+  CreditCard,
+  ShieldCheck,
+  ArrowLeft,
+  LockKeyhole,
+  Package,
+  ArrowRight,
+} from "lucide-react";
 import Loader from "../components/ui/Loader";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { fadeUp } from "../animations";
-import { useQuery } from "@tanstack/react-query";
-import { getOrder } from "../features/checkout/api/checkout.api";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { cancelOrder, getOrder } from "../features/checkout/api/checkout.api";
 import { getErrorMessage } from "../utils/getErrorMessage";
+import { toast } from "sonner";
 
 const Payment = () => {
   const { orderId } = useParams();
+  const navigate = useNavigate();
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["order", orderId],
     queryFn: () => getOrder(orderId!),
     enabled: Boolean(orderId),
   });
+
+  const queryClient = useQueryClient();
+
+  const { mutate: cancelOrderMutation, isPending: isCancelling } = useMutation({
+    mutationFn: cancelOrder,
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({
+        queryKey: ["order", orderId],
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ["orders"],
+      });
+      toast.success(data.message);
+      navigate("/shop");
+    },
+    onError: (error) => {
+      toast.error(getErrorMessage(error));
+    },
+  });
+
+  const cancelOrderHandler = () => {
+    if (!orderId) return;
+
+    cancelOrderMutation(orderId);
+  };
 
   if (isLoading) {
     return <Loader fullScreen />;
@@ -147,17 +182,24 @@ const Payment = () => {
           >
             <LockKeyhole size={18} />
             Pay Rs.{" "}
-            {data.order.total !== undefined ? data.order.total.toLocaleString() : "Now"}
+            {data.order.total !== undefined
+              ? data.order.total.toLocaleString()
+              : "Now"}
           </button>
 
           {/* Back */}
-          <Link
-            to="/shop"
-            className="mt-4 flex items-center justify-center gap-2 text-sm font-medium text-muted-foreground transition hover:text-foreground"
-          >
-            <ArrowLeft size={16} />
-            Continue Shopping
-          </Link>
+          <div className="mt-4 flex justify-center">
+            <button
+              type="button"
+              onClick={cancelOrderHandler}
+              disabled={isCancelling}
+              className="flex items-center justify-center gap-2 text-sm font-medium text-muted-foreground transition hover:text-foreground disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              <ArrowLeft size={16} />
+
+              {isCancelling ? "Cancelling order..." : "Continue Shopping"}
+            </button>
+          </div>
         </div>
       </div>
     </motion.main>

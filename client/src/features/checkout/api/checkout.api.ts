@@ -19,6 +19,13 @@ export interface CreateOrderResponse {
   order: Order;
 }
 
+interface CancelOrderResponse {
+  success: boolean;
+  message: string;
+  order: Order;
+}
+
+
 export const createOrder = async (
   data: CheckoutFormValues,
 ): Promise<CreateOrderResponse> => {
@@ -43,6 +50,14 @@ export const getOrders = async (): Promise<IOrdersResponse> => {
 
 export const getOrder = async (orderId: string): Promise<IOrderResponse> => {
   const response = await api.get<IOrderResponse>(`/orders/${orderId}`);
+
+  return response.data;
+};
+
+export const cancelOrder = async (
+  orderId: string,
+): Promise<CancelOrderResponse> => {
+  const response = await api.patch<CancelOrderResponse>(`/orders/${orderId}/cancel`);
 
   return response.data;
 };
