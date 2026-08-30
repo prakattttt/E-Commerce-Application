@@ -6,6 +6,7 @@ import {
   createOrderService,
   getMyOrderService,
   getMyOrdersService,
+  getPendingPaymentOrderService
 } from "../services/orders.services.js";
 
 export const createOrder: RequestHandler = expressAsyncHandler(
@@ -35,6 +36,17 @@ export const getMyOrder: RequestHandler = expressAsyncHandler(
   async (req, res) => {
     const orderId = req.params.orderId as string;
     const order = await getMyOrderService(req.user._id.toString(), orderId);
+
+    res.status(200).json({
+      success: true,
+      order,
+    });
+  },
+);
+
+export const getPendingPaymentOrder: RequestHandler = expressAsyncHandler(
+  async (req, res) => {
+    const order = await getPendingPaymentOrderService(req.user._id.toString());
 
     res.status(200).json({
       success: true,

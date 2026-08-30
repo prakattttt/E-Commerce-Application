@@ -14,6 +14,20 @@ export const createOrderService = async (
   try {
     session.startTransaction();
 
+    const existingPendingOrder = await Order.findOne({
+      user: userId,
+      paymentMethod: { $in: ["eSewa", "Khalti"] },
+      paymentStatus: "Pending",
+      orderStatus: "Pending",
+    }).session(session);
+
+    if (existingPendingOrder) {
+      throw new AppError(
+        "You already have an unpaid order. Please complete or cancel it first.",
+        400,
+      );
+    }
+
     const cart = await Cart.findOne({ user: userId }).session(session);
 
     if (!cart || cart.items.length === 0) {
@@ -145,6 +159,17 @@ export const getMyOrderService = async (userId: string, orderId: string) => {
   if (!order) {
     throw new AppError("Order not found", 404);
   }
+
+  return order;
+};
+
+export const getPendingPaymentOrderService = async (userId: string) => {
+  const order = await Order.findOne({
+    user: userId,
+    paymentMethod: { $in: ["eSewa", "Khalti"] },
+    paymentStatus: "Pending",
+    orderStatus: "Pending",
+  }).sort({ createdAt: -1 });
 
   return order;
 };
