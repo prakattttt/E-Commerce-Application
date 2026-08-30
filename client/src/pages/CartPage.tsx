@@ -69,7 +69,7 @@ const CartPage = () => {
       variants={fadeUp}
       initial="hidden"
       animate="visible"
-      className="mx-auto max-w-7xl px-6 pt-24 pb-12"
+      className="mx-auto max-w-7xl min-h-screen px-6 pt-20 pb-12"
     >
       {/* Header */}
       <div className="mb-8">
