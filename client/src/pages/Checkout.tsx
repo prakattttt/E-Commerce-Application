@@ -30,17 +30,19 @@ const Checkout = () => {
     onSuccess: (data) => {
       toast.success(data.message);
 
-      clearCart();
+      const order = data.order;
 
-      if (data.order.paymentMethod === "COD") {
-        navigate(`/order-confirmation/${data.order._id}`, {
+      if (order.paymentMethod === "COD") {
+        clearCart();
+
+        navigate(`/order-confirmation/${order._id}`, {
           replace: true,
         });
 
         return;
       }
 
-      navigate(`/payment/${data.order._id}`, {
+      navigate(`/payment/${order._id}`, {
         replace: true,
       });
     },

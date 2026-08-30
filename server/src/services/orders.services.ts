@@ -67,25 +67,15 @@ export const createOrderService = async (
       [
         {
           orderNumber,
-
           user: userId,
-
           items: orderItems,
-
           subtotal: Number(subtotal.toFixed(2)),
-
           shippingCost: Number(shippingCost.toFixed(2)),
-
           tax: Number(tax.toFixed(2)),
-
           total: Number(total.toFixed(2)),
-
           shippingAddress: data.shippingAddress,
-
           paymentMethod: data.paymentMethod,
-
           paymentStatus: "Pending",
-
           orderStatus: "Pending",
         },
       ],
@@ -114,9 +104,11 @@ export const createOrderService = async (
       }
     }
 
-    cart.items = [];
-
-    await cart.save({ session });
+    // Clear cart only for COD
+    if (data.paymentMethod === "COD") {
+      cart.items = [];
+      await cart.save({ session });
+    }
 
     await session.commitTransaction();
 

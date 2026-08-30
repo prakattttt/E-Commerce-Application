@@ -6,14 +6,14 @@ import PaymentMethod from "./PaymentMethod";
 
 import {
   checkoutSchema,
-  type CheckoutFormValues,
+  type CheckoutFormValues,  
 } from "../types/checkout.schema";
 
 interface Props {
   mutate: (data: CheckoutFormValues) => void;
 }
 
-const CheckoutForm = ({mutate}: Props) => {
+const CheckoutForm = ({ mutate }: Props) => {
   const {
     register,
     handleSubmit,
@@ -37,7 +37,6 @@ const CheckoutForm = ({mutate}: Props) => {
     name: "payment",
     defaultValue: "COD",
   });
-
 
   const onSubmit = (data: CheckoutFormValues) => {
     mutate(data);
