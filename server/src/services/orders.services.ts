@@ -174,6 +174,44 @@ export const getPendingPaymentOrderService = async (userId: string) => {
   return order;
 };
 
+export const simulatePaymentService = async (
+  orderId: string,
+  userId: string,
+) => {
+  const order = await Order.findOneAndUpdate(
+    {
+      _id: orderId,
+      paymentStatus: "Pending",
+      orderStatus: "Pending",
+    },
+    {
+      $set: {
+        paymentStatus: "Paid",
+      },
+    },
+    {
+      new: true,
+    },
+  );
+
+  if (!order) {
+    throw new AppError("Cannot find the unpaid order.", 400);
+  }
+
+  const cart = await Cart.findOne({
+    user: userId,
+  });
+
+  if (!cart) {
+    throw new AppError("Cannot find the user cart.", 400);
+  }
+
+  cart.items = [];
+  await cart.save();
+
+  return order;
+};
+
 export const cancelOrderService = async (userId: string, orderId: string) => {
   if (!mongoose.Types.ObjectId.isValid(orderId)) {
     throw new AppError("Invalid order ID", 400);

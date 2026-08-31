@@ -5,7 +5,8 @@ import {
   createOrder,
   getMyOrder,
   getMyOrders,
-  getPendingPaymentOrder
+  getPendingPaymentOrder,
+  simulatePayment
 } from "../controllers/orders.controllers.js";
 
 import { protect } from "../middlewares/authentication.js";
@@ -21,6 +22,8 @@ router.get("/", getMyOrders);
 router.get("/pending-payment", getPendingPaymentOrder);
 
 router.get("/:orderId", getMyOrder);
+
+router.patch("/pay/:orderId", simulatePayment);
 
 router.patch("/:orderId/cancel", cancelOrder);
 

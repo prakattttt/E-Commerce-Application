@@ -11,13 +11,19 @@ import Loader from "../components/ui/Loader";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { fadeUp } from "../animations";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { cancelOrder, getOrder } from "../features/checkout/api/checkout.api";
+import {
+  cancelOrder,
+  getOrder,
+  simulatePayment,
+} from "../features/checkout/api/checkout.api";
 import { getErrorMessage } from "../utils/getErrorMessage";
 import { toast } from "sonner";
+import useCart from "../features/cart/hooks/useCart";
 
 const Payment = () => {
   const { orderId } = useParams();
   const navigate = useNavigate();
+  const { clearCart } = useCart();
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["order", orderId],
     queryFn: () => getOrder(orderId!),
@@ -44,6 +50,28 @@ const Payment = () => {
     },
   });
 
+  const { mutate } = useMutation({
+    mutationFn: simulatePayment,
+
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({
+        queryKey: ["order", orderId],
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ["orders"],
+      });
+
+    clearCart();
+
+      toast.success(data.messagge);
+      navigate("/shop");
+    },
+    onError: (error) => {
+      toast.error(getErrorMessage(error));
+    },
+  });
+
   const cancelOrderHandler = () => {
     if (!orderId) return;
 
@@ -53,6 +81,16 @@ const Payment = () => {
   if (isLoading) {
     return <Loader fullScreen />;
   }
+
+  const simulatePaymentHandler = () => {
+    if (!orderId) return;
+
+    mutate(orderId);
+
+    navigate(`/order-confirmation/${orderId}`, {
+      replace: true,
+    });
+  };
 
   if (isError || !data?.order) {
     return (
@@ -178,6 +216,7 @@ const Payment = () => {
           {/* Payment Button */}
           <button
             type="button"
+            onClick={simulatePaymentHandler}
             className="btn-primary mt-7 flex w-full items-center justify-center gap-2 py-3.5 text-base font-semibold"
           >
             <LockKeyhole size={18} />

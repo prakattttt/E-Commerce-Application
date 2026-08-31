@@ -62,6 +62,18 @@ export const getPendingPaymentOrder = async (): Promise<{
   return response.data;
 };
 
+export const simulatePayment = async (
+  id: string,
+): Promise<{
+  success: boolean;
+  messagge: string;
+  order: Order | null;
+}> => {
+  const response = await api.patch(`/orders/pay/${id}`);
+
+  return response.data;
+};
+
 export const cancelOrder = async (
   orderId: string,
 ): Promise<CancelOrderResponse> => {

@@ -6,7 +6,8 @@ import {
   createOrderService,
   getMyOrderService,
   getMyOrdersService,
-  getPendingPaymentOrderService
+  getPendingPaymentOrderService,
+  simulatePaymentService,
 } from "../services/orders.services.js";
 
 export const createOrder: RequestHandler = expressAsyncHandler(
@@ -50,6 +51,19 @@ export const getPendingPaymentOrder: RequestHandler = expressAsyncHandler(
 
     res.status(200).json({
       success: true,
+      order,
+    });
+  },
+);
+
+export const simulatePayment: RequestHandler = expressAsyncHandler(
+  async (req, res) => {
+    const orderId = req.params.orderId as string;
+    const order = await simulatePaymentService(orderId, req.user._id.toString());
+
+    res.status(200).json({
+      success: true,
+      messagge: "Payment successful.",
       order,
     });
   },
