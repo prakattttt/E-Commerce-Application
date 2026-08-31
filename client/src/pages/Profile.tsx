@@ -14,31 +14,20 @@ import SecondaryUi from "../features/profile/components/SecondaryUi";
 import type { IProduct } from "../features/shop/types/products.types";
 
 import { container, item } from "../animations";
-
-// Dummy orders
-const orders = [
-  {
-    _id: "1",
-    orderNumber: "SS10001",
-    totalAmount: 5499,
-    totalItems: 2,
-    status: "Delivered" as const,
-    createdAt: "2026-08-01",
-  },
-  {
-    _id: "2",
-    orderNumber: "SS10002",
-    totalAmount: 2499,
-    totalItems: 1,
-    status: "Shipped" as const,
-    createdAt: "2026-07-28",
-  },
-];
+import { useQuery } from "@tanstack/react-query";
+import { getOrders } from "../features/checkout/api/checkout.api";
 
 const Profile = () => {
   const { user } = useAuth();
 
   const [activeTab, setActiveTab] = useState("orders");
+
+  const { data: ordersData } = useQuery({
+    queryKey: ["orders"],
+    queryFn: getOrders,
+  });
+
+  const orders = ordersData?.orders ?? [];
 
   const wishlist: IProduct[] = [];
 

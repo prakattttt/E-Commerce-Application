@@ -1,11 +1,6 @@
 import { Link } from "react-router-dom";
 import { PackageOpen, ChevronRight } from "lucide-react";
-
-import type { IOrderSummary } from "../types/order.types";
-
-interface OrdersTabProps {
-  orders: IOrderSummary[];
-}
+import type { Order } from "../../checkout/types/ordres.schema";
 
 const statusStyles = {
   Pending: "bg-warning/10 text-warning",
@@ -15,7 +10,11 @@ const statusStyles = {
   Cancelled: "bg-error/10 text-error",
 };
 
-const OrdersTab = ({ orders }: OrdersTabProps) => {
+interface Props {
+  orders: Order[];
+}
+
+const OrdersTab = ({ orders }: Props) => {
   if (orders.length === 0) {
     return (
       <div className="rounded-3xl border border-border bg-card px-6 py-20 text-center shadow-sm">
@@ -63,23 +62,23 @@ const OrdersTab = ({ orders }: OrdersTabProps) => {
             </div>
 
             {/* Order status + amount + action */}
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+            <div className="flex flex-col gap-8 sm:flex-row sm:items-center">
               <span
                 className={`w-fit rounded-full px-3 py-1 text-sm font-semibold ${
-                  statusStyles[order.status]
+                  statusStyles[order.orderStatus as keyof typeof statusStyles]
                 }`}
               >
-                {order.status}
+                {order.orderStatus}
               </span>
 
               <div className="sm:text-right">
                 <p className="font-display text-lg font-bold">
-                  Rs. {order.totalAmount.toLocaleString()}
+                  Rs. {order.total.toLocaleString()}
                 </p>
 
                 <p className="text-sm text-muted-foreground">
-                  {order.totalItems}{" "}
-                  {order.totalItems === 1 ? "item" : "items"}
+                  {order.items.length}{" "}
+                  {order.items.length === 1 ? "item" : "items"}
                 </p>
               </div>
 
