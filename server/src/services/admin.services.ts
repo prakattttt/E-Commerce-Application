@@ -303,6 +303,12 @@ export const deleteUser = async (id: string) => {
     await deleteCart(id);
   }
 
+  const order = await Order.find({ user: id });
+
+  if (order) {
+    await Order.deleteMany({ user: id });
+  }
+
   if (user.role === "admin") {
     throw new AppError("Admin users cannot be deleted", 400);
   }
