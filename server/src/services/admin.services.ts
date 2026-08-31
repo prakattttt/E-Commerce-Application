@@ -251,16 +251,26 @@ export const deleteProduct = async (id: string) => {
 };
 
 export const getDashboard = async () => {
-  const [products, users, categories] = await Promise.all([
-    Product.countDocuments(),
-    User.countDocuments(),
-    Category.countDocuments(),
-  ]);
+  const [products, users, categories, orders, recentOrders] = await Promise.all(
+    [
+      Product.countDocuments(),
+      User.countDocuments(),
+      Category.countDocuments(),
+      Order.countDocuments(),
+      Order.find()
+        .populate("user", "name email")
+        .sort({ createdAt: -1 })
+        .limit(3)
+        .lean(),
+    ],
+  );
 
   return {
     products,
     users,
     categories,
+    orders,
+    recentOrders,
   };
 };
 

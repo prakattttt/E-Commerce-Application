@@ -9,13 +9,15 @@ import StatCard from "../components/StatCard";
 import RecentOrdersCard from "../components/RecentOrdersCard";
 import QuickActionsCard from "../components/QuickActionsCard";
 import Loader from "../../../components/ui/Loader";
+import type { DashboardData } from "../types/dashboard.types";
 
 const AdminDashboard = () => {
-  const [dashboard, setDashboard] = useState({
+  const [dashboard, setDashboard] = useState<DashboardData>({
     products: 0,
     categories: 0,
     users: 0,
     orders: 0,
+    recentOrders: [],
   });
   const [loading, setLoading] = useState(false);
 
@@ -25,8 +27,11 @@ const AdminDashboard = () => {
       try {
         const data = await getDashboard();
         setDashboard({
-          ...data,
-          orders: 0,
+          products: data.products,
+          categories: data.categories,
+          users: data.users,
+          orders: data.orders,
+          recentOrders: data.recentOrders,
         });
       } catch (error) {
         getErrorMessage(error);
@@ -65,7 +70,7 @@ const AdminDashboard = () => {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 overflow-y-hidden">
       {/* Dashboard Heading */}
       <motion.div variants={fadeUp} initial="hidden" animate="visible">
         <h1 className="font-display text-4xl font-bold">Dashboard</h1>
@@ -84,7 +89,7 @@ const AdminDashboard = () => {
 
       {/* Dashboard Grid */}
       <section className="grid gap-6 xl:grid-cols-[2fr_1fr]">
-        <RecentOrdersCard />
+        <RecentOrdersCard orders={dashboard.recentOrders} />{" "}
         <QuickActionsCard />
       </section>
     </div>
