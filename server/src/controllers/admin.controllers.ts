@@ -171,3 +171,16 @@ export const deleteUser: RequestHandler = expressAsyncHandler(
     });
   },
 );
+
+export const getAllOrders: RequestHandler = expressAsyncHandler(
+  async (req, res) => {
+    const skip = Number(req.query.skip) || 0;
+
+    const orders = await AdminService.getAllOrdersService(skip);
+
+    res.status(200).json({
+      success: true,
+      orders,
+    });
+  },
+);

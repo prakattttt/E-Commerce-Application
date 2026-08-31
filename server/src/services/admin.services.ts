@@ -15,6 +15,7 @@ import { deleteFromCloudinary } from "../utils/deleteFromCloudinary.js";
 import z from "zod";
 import { Cart } from "../models/carts.models.js";
 import { deleteCart, removeProduct } from "./carts.services.js";
+import { Order } from "../models/orders.models.js";
 
 interface GetAllProductsOptions {
   skip?: number;
@@ -315,4 +316,13 @@ export const deleteUser = async (id: string) => {
   const deletedUser = await User.findByIdAndDelete(id);
 
   return deletedUser;
+};
+
+export const getAllOrdersService = async (skip: number) => {
+  const orders = await Order.find()
+    .sort({ createdAt: -1 })
+    .skip(skip)
+    .limit(12);
+
+  return orders;
 };

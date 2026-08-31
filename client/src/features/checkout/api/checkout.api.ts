@@ -53,6 +53,16 @@ export const getOrder = async (orderId: string): Promise<IOrderResponse> => {
   return response.data;
 };
 
+export const getAllOrders = async (skip: number = 0): Promise<IOrdersResponse> => {
+  const response = await api.get<IOrdersResponse>("/admin/orders/all", {
+    params: {
+      skip,
+    },
+  });
+
+  return response.data;
+};
+
 export const getPendingPaymentOrder = async (): Promise<{
   success: boolean;
   order: Order | null;

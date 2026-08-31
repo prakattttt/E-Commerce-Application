@@ -10,6 +10,7 @@ import {
   getAllUsers,
   getCategories,
   deleteUser,
+  getAllOrders,
 } from "../controllers/admin.controllers.js";
 
 import {
@@ -78,5 +79,7 @@ router.post("/categories", upload.single("image"), createCategory);
 router.patch("/categories/:slug", upload.single("image"), updateCategory);
 
 router.delete("/categories/:slug", deleteCategory);
+
+router.get("/orders/all", getAllOrders);
 
 export default router;

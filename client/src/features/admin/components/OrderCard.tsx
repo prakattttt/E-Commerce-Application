@@ -2,27 +2,24 @@ import { motion } from "framer-motion";
 import { Eye, Package, User, Calendar, CreditCard } from "lucide-react";
 
 import { fadeUp } from "../../../animations";
-
-export interface IOrderSummary {
-  id: string;
-  customer: string;
-  total: string;
-  status: "Delivered" | "Pending" | "Cancelled";
-  date: string;
-}
+import type { Order } from "../../checkout/types/ordres.schema";
 
 interface OrderCardProps {
-  order: IOrderSummary;
+  order: Order;
   index: number;
 }
 
-const statusStyles: Record<IOrderSummary["status"], string> = {
-  Delivered: "bg-success/15 text-success",
-  Pending: "bg-warning/15 text-warning",
-  Cancelled: "bg-error/15 text-error",
+const statusStyles: Record<Order["orderStatus"], string> = {
+  Pending: "bg-warning/10 text-warning",
+  Processing: "bg-primary/10 text-primary",
+  Shipped: "bg-info/10 text-info",
+  Delivered: "bg-success/10 text-success",
+  Cancelled: "bg-error/10 text-error",
 };
 
 const OrderCard = ({ order, index }: OrderCardProps) => {
+  const createdAt = new Date(order.createdAt);
+
   return (
     <motion.div
       variants={fadeUp}
@@ -37,18 +34,24 @@ const OrderCard = ({ order, index }: OrderCardProps) => {
       </div>
 
       {/* Order ID */}
-      <h2 className="mt-5 font-display text-xl font-bold">{order.id}</h2>
+      <h2 className="mt-5 font-display text-xl font-bold">
+        {order.orderNumber}
+      </h2>
 
       {/* Customer */}
       <div className="mt-4 flex items-center gap-2 text-sm text-muted-foreground">
         <User size={16} />
-        {order.customer}
+        {order.shippingAddress.fullName}
       </div>
 
       {/* Date */}
       <div className="mt-3 flex items-center gap-2 text-sm text-muted-foreground">
         <Calendar size={16} />
-        {order.date}
+        {createdAt.toLocaleDateString("en-NP", {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+        })}
       </div>
 
       {/* Total */}
@@ -59,8 +62,10 @@ const OrderCard = ({ order, index }: OrderCardProps) => {
 
       {/* Status */}
       <div className="mt-6">
-        <span className={`rounded-full px-4 py-2 text-sm font-medium ${statusStyles[order.status]}`}>
-          {order.status}
+        <span
+          className={`rounded-full px-4 py-2 text-sm font-medium ${statusStyles[order.orderStatus]}`}
+        >
+          {order.orderStatus}
         </span>
       </div>
 
