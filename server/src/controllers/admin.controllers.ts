@@ -199,6 +199,24 @@ export const getOrderById: RequestHandler = expressAsyncHandler(
   },
 );
 
+export const updateOrderPaymentStatus: RequestHandler = expressAsyncHandler(
+  async (req, res) => {
+    const orderId = req.params.orderId as string;
+    const paymentStatus = req.body.paymentStatus as "Pending" | "Paid";
+
+    const order = await AdminService.updateOrderPaymentStatusService(
+      orderId,
+      paymentStatus,
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Payment status updated successfully",
+      order,
+    });
+  },
+);
+
 export const updateOrderStatus: RequestHandler = expressAsyncHandler(
   async (req, res) => {
     const orderId = req.params.orderId as string;

@@ -358,6 +358,43 @@ export const getOrderByIdService = async (orderId: string) => {
   return order;
 };
 
+export const updateOrderPaymentStatusService = async (
+  orderId: string,
+  paymentStatus: "Pending" | "Paid",
+) => {
+  if (!orderId || !mongoose.Types.ObjectId.isValid(orderId)) {
+    throw new AppError("Invalid order ID", 400);
+  }
+
+  const allowedStatuses = ["Pending", "Paid"] as const;
+
+  if (!allowedStatuses.includes(paymentStatus)) {
+    throw new AppError("Invalid payment status", 400);
+  }
+
+  const existingOrder = await Order.findById(orderId);
+
+  if (!existingOrder) {
+    throw new AppError("Order not found", 404);
+  }
+
+  if (existingOrder.paymentStatus === "Paid" && paymentStatus === "Pending") {
+    throw new AppError("Paid orders cannot be changed back to pending", 400);
+  }
+
+  const order = await Order.findByIdAndUpdate(
+    orderId,
+    { paymentStatus },
+    { new: true },
+  );
+
+  if (!order) {
+    throw new AppError("Order not found", 404);
+  }
+
+  return order;
+};
+
 export const updateOrderStatusService = async (
   orderId: string,
   orderStatus: "Pending" | "Processing" | "Shipped" | "Delivered" | "Cancelled",
@@ -376,6 +413,19 @@ export const updateOrderStatusService = async (
 
   if (!allowedStatuses.includes(orderStatus)) {
     throw new AppError("Invalid order status", 400);
+  }
+
+  const existingOrder = await Order.findById(orderId);
+
+  if (!existingOrder) {
+    throw new AppError("Order not found", 404);
+  }
+
+  if (existingOrder.orderStatus === "Cancelled") {
+    throw new AppError(
+      "Cancelled orders cannot have their status changed",
+      400,
+    );
   }
 
   const order = await Order.findByIdAndUpdate(

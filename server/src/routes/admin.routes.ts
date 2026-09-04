@@ -12,6 +12,7 @@ import {
   deleteUser,
   getAllOrders,
   getOrderById,
+  updateOrderPaymentStatus,
   updateOrderStatus,
 } from "../controllers/admin.controllers.js";
 
@@ -85,6 +86,8 @@ router.delete("/categories/:slug", deleteCategory);
 router.get("/orders/all", getAllOrders);
 
 router.get("/orders/:orderId", getOrderById);
+
+router.patch("/orders/:orderId/payment-status", updateOrderPaymentStatus);
 
 router.patch("/orders/:orderId/status", updateOrderStatus);
 
