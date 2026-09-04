@@ -20,6 +20,7 @@ import ProductDetails from "../pages/ProductDetails";
 import Checkout from "../pages/Checkout";
 import OrderConfirmation from "../pages/OrderConfirmation";
 import Payment from "../pages/Payment";
+import OrderDetails from "../pages/OrderDetails";
 
 import AdminHome from "../features/admin/pages/AdminDashboard";
 
@@ -46,6 +47,8 @@ const AppRoutes = () => {
         <Route path="shop" element={<Shop />} />
 
         <Route path="profile" element={<Profile />} />
+
+        <Route path="/orders/:orderId" element={<OrderDetails />} />
 
         <Route path="profile/settings">
           <Route path="edit" element={<EditProfile />} />
