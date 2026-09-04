@@ -165,9 +165,9 @@ const AdminOrderDetails = () => {
       </div>
 
       {/* Main content */}
-      <div className="grid gap-6 xl:grid-cols-[2fr_1fr]">
+      <div className="grid gap-6 xl:grid-cols-[minmax(0,2fr)_minmax(320px,1fr)] xl:items-start">
         {/* Left column */}
-        <div className="space-y-6">
+        <div className="space-y-6 xl:sticky xl:top-24 xl:self-start">
           <OrderItems items={order.items} />
 
           {/* Customer */}

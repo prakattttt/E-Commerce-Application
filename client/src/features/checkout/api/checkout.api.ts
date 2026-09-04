@@ -83,6 +83,20 @@ export const updateOrderStatus = async (
   return response.data;
 };
 
+export const updateOrderPaymentStatus = async (
+  orderId: string,
+  paymentStatus: Order["paymentStatus"],
+): Promise<{ success: boolean; message: string; order: Order }> => {
+  const response = await api.patch<{ success: boolean; message: string; order: Order }>(
+    `/admin/orders/${orderId}/payment-status`,
+    {
+      paymentStatus,
+    },
+  );
+
+  return response.data;
+};
+
 export const getPendingPaymentOrder = async (): Promise<{
   success: boolean;
   order: Order | null;
