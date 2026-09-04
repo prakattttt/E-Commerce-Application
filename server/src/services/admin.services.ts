@@ -16,6 +16,7 @@ import z from "zod";
 import { Cart } from "../models/carts.models.js";
 import { deleteCart, removeProduct } from "./carts.services.js";
 import { Order } from "../models/orders.models.js";
+import mongoose from "mongoose";
 
 interface GetAllProductsOptions {
   skip?: number;
@@ -341,4 +342,37 @@ export const getAllOrdersService = async (skip: number) => {
     .limit(12);
 
   return orders;
+};
+
+export const updateOrderStatusService = async (
+  orderId: string,
+  orderStatus: "Pending" | "Processing" | "Shipped" | "Delivered" | "Cancelled",
+) => {
+  if (!orderId || !mongoose.Types.ObjectId.isValid(orderId)) {
+    throw new AppError("Invalid order ID", 400);
+  }
+
+  const allowedStatuses = [
+    "Pending",
+    "Processing",
+    "Shipped",
+    "Delivered",
+    "Cancelled",
+  ] as const;
+
+  if (!allowedStatuses.includes(orderStatus)) {
+    throw new AppError("Invalid order status", 400);
+  }
+
+  const order = await Order.findByIdAndUpdate(
+    orderId,
+    { orderStatus },
+    { new: true },
+  );
+
+  if (!order) {
+    throw new AppError("Order not found", 404);
+  }
+
+  return order;
 };

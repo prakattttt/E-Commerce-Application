@@ -186,3 +186,23 @@ export const getAllOrders: RequestHandler = expressAsyncHandler(
     });
   },
 );
+
+export const updateOrderStatus: RequestHandler = expressAsyncHandler(
+  async (req, res) => {
+    const orderId = req.params.orderId as string;
+    const orderStatus = req.body.orderStatus as
+      | "Pending"
+      | "Processing"
+      | "Shipped"
+      | "Delivered"
+      | "Cancelled";
+
+    const order = await AdminService.updateOrderStatusService(orderId, orderStatus);
+
+    res.status(200).json({
+      success: true,
+      message: "Order status updated successfully",
+      order,
+    });
+  },
+);

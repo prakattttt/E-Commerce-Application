@@ -63,6 +63,20 @@ export const getAllOrders = async (skip: number = 0): Promise<IOrdersResponse> =
   return response.data;
 };
 
+export const updateOrderStatus = async (
+  orderId: string,
+  orderStatus: Order["orderStatus"],
+): Promise<{ success: boolean; message: string; order: Order }> => {
+  const response = await api.patch<{ success: boolean; message: string; order: Order }>(
+    `/admin/orders/${orderId}/status`,
+    {
+      orderStatus,
+    },
+  );
+
+  return response.data;
+};
+
 export const getPendingPaymentOrder = async (): Promise<{
   success: boolean;
   order: Order | null;
