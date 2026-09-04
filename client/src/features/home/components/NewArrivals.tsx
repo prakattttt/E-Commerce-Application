@@ -41,7 +41,7 @@ const NewArrivals = () => {
 
   if (products.length === 0) return null;
   return (
-    <section className="mx-auto max-w-7xl px-6 pb-20">
+    <section className="mx-auto max-w-7xl px-6 pb-13">
       {/* Header */}
       <div className="mb-12 flex items-end justify-between">
         <div>
