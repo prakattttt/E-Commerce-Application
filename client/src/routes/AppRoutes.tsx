@@ -34,6 +34,7 @@ import EditProfile from "../features/profile/pages/EditProfile";
 import ChangeProfilePicture from "../features/profile/pages/ChangeProfilePicture";
 import ChangePassword from "../features/profile/pages/ChangePassword";
 import DeleteAccount from "../features/profile/pages/DeleteAccount";
+import AdminOrderDetails from "../features/admin/pages/AdminOrdersDetails";
 
 const AppRoutes = () => {
   return (
@@ -88,6 +89,7 @@ const AppRoutes = () => {
           <Route path="categories/new" element={<NewCategory />} />
           <Route path="categories/:slug/edit" element={<EditCategory />} />
           <Route path="orders" element={<AdminOrders />} />
+          <Route path="orders/:id" element={<AdminOrderDetails />} />
           <Route path="users" element={<AdminUsers />} />
         </Route>
       </Route>

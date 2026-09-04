@@ -1,7 +1,11 @@
 import { motion } from "framer-motion";
+
 import { Eye, Package, User, Calendar, CreditCard } from "lucide-react";
 
+import { Link } from "react-router-dom";
+
 import { fadeUp } from "../../../animations";
+
 import type { Order } from "../../checkout/types/ordres.schema";
 
 interface OrderCardProps {
@@ -33,48 +37,58 @@ const OrderCard = ({ order, index }: OrderCardProps) => {
         <Package size={30} />
       </div>
 
-      {/* Order ID */}
+      {/* Order number */}
       <h2 className="mt-5 font-display text-xl font-bold">
-        {order.orderNumber}
+        #{order.orderNumber}
       </h2>
 
       {/* Customer */}
       <div className="mt-4 flex items-center gap-2 text-sm text-muted-foreground">
         <User size={16} />
-        {order.shippingAddress.fullName}
+
+        <span>{order.shippingAddress.fullName}</span>
       </div>
 
       {/* Date */}
       <div className="mt-3 flex items-center gap-2 text-sm text-muted-foreground">
         <Calendar size={16} />
-        {createdAt.toLocaleDateString("en-NP", {
-          year: "numeric",
-          month: "short",
-          day: "numeric",
-        })}
+
+        <span>
+          {createdAt.toLocaleDateString("en-NP", {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+          })}
+        </span>
       </div>
 
       {/* Total */}
       <div className="mt-3 flex items-center gap-2 text-sm text-muted-foreground">
         <CreditCard size={16} />
-        {order.total}
+
+        <span>Rs. {order.total.toLocaleString()}</span>
       </div>
 
       {/* Status */}
       <div className="mt-6">
         <span
-          className={`rounded-full px-4 py-2 text-sm font-medium ${statusStyles[order.orderStatus]}`}
+          className={`rounded-full px-4 py-2 text-sm font-medium ${
+            statusStyles[order.orderStatus]
+          }`}
         >
           {order.orderStatus}
         </span>
       </div>
 
-      {/* Actions */}
-      <div className="mt-6 flex gap-3">
-        <button className="flex flex-1 items-center justify-center gap-2 rounded-xl border border-border py-3 transition hover:bg-secondary">
+      {/* Action */}
+      <div className="mt-6">
+        <Link
+          to={`/admin/orders/${order._id}`}
+          className="flex w-full items-center justify-center gap-2 rounded-xl border border-border py-3 transition hover:bg-secondary"
+        >
           <Eye size={18} />
           View Details
-        </button>
+        </Link>
       </div>
     </motion.div>
   );
