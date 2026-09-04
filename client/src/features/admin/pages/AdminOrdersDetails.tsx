@@ -22,7 +22,7 @@ import { fadeUp } from "../../../animations";
 import Loader from "../../../components/ui/Loader";
 import { getErrorMessage } from "../../../utils/getErrorMessage";
 
-import { getOrder } from "../../checkout/api/checkout.api";
+import { getAdminOrder } from "../../checkout/api/checkout.api";
 
 import type { Order } from "../../checkout/types/ordres.schema";
 
@@ -68,7 +68,7 @@ const AdminOrderDetails = () => {
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["admin-order", orderId],
-    queryFn: () => getOrder(orderId!),
+    queryFn: () => getAdminOrder(orderId!),
     enabled: Boolean(orderId),
   });
 

@@ -11,6 +11,7 @@ import {
   getCategories,
   deleteUser,
   getAllOrders,
+  getOrderById,
   updateOrderStatus,
 } from "../controllers/admin.controllers.js";
 
@@ -82,6 +83,8 @@ router.patch("/categories/:slug", upload.single("image"), updateCategory);
 router.delete("/categories/:slug", deleteCategory);
 
 router.get("/orders/all", getAllOrders);
+
+router.get("/orders/:orderId", getOrderById);
 
 router.patch("/orders/:orderId/status", updateOrderStatus);
 

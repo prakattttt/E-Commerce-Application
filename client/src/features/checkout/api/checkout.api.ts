@@ -53,6 +53,12 @@ export const getOrder = async (orderId: string): Promise<IOrderResponse> => {
   return response.data;
 };
 
+export const getAdminOrder = async (orderId: string): Promise<IOrderResponse> => {
+  const response = await api.get<IOrderResponse>(`/admin/orders/${orderId}`);
+
+  return response.data;
+};
+
 export const getAllOrders = async (skip: number = 0): Promise<IOrdersResponse> => {
   const response = await api.get<IOrdersResponse>("/admin/orders/all", {
     params: {

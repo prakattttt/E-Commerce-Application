@@ -89,7 +89,7 @@ const AppRoutes = () => {
           <Route path="categories/new" element={<NewCategory />} />
           <Route path="categories/:slug/edit" element={<EditCategory />} />
           <Route path="orders" element={<AdminOrders />} />
-          <Route path="orders/:id" element={<AdminOrderDetails />} />
+          <Route path="orders/:orderId" element={<AdminOrderDetails />} />
           <Route path="users" element={<AdminUsers />} />
         </Route>
       </Route>

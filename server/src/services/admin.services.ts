@@ -344,6 +344,20 @@ export const getAllOrdersService = async (skip: number) => {
   return orders;
 };
 
+export const getOrderByIdService = async (orderId: string) => {
+  if (!mongoose.Types.ObjectId.isValid(orderId)) {
+    throw new AppError("Invalid order ID", 400);
+  }
+
+  const order = await Order.findById(orderId);
+
+  if (!order) {
+    throw new AppError("Order not found", 404);
+  }
+
+  return order;
+};
+
 export const updateOrderStatusService = async (
   orderId: string,
   orderStatus: "Pending" | "Processing" | "Shipped" | "Delivered" | "Cancelled",

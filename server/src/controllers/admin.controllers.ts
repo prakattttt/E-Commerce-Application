@@ -187,6 +187,18 @@ export const getAllOrders: RequestHandler = expressAsyncHandler(
   },
 );
 
+export const getOrderById: RequestHandler = expressAsyncHandler(
+  async (req, res) => {
+    const orderId = req.params.orderId as string;
+    const order = await AdminService.getOrderByIdService(orderId);
+
+    res.status(200).json({
+      success: true,
+      order,
+    });
+  },
+);
+
 export const updateOrderStatus: RequestHandler = expressAsyncHandler(
   async (req, res) => {
     const orderId = req.params.orderId as string;
