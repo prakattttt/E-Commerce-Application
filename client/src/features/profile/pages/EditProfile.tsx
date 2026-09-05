@@ -125,7 +125,7 @@ const EditProfile = () => {
 
           <div className="flex justify-start gap-3 border-t border-border pt-6">
             <Link
-              to="/profile"
+              to="/profile/settings"
               className="rounded-xl border border-border px-5 py-3 text-sm font-semibold transition hover:bg-secondary"
             >
               Cancel

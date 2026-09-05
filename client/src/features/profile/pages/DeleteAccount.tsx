@@ -163,7 +163,7 @@ const DeleteAccount = () => {
             {/* Actions */}
             <div className="flex flex-col-reverse gap-3 border-t border-border pt-6 sm:flex-row">
               <Link
-                to="/profile"
+                to="/profile/settings"
                 className="rounded-xl border border-border px-5 py-3 text-center text-sm font-semibold transition hover:bg-secondary"
               >
                 Cancel

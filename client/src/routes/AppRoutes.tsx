@@ -1,4 +1,5 @@
 import { Routes, Route } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 import MainLayout from "../layouts/MainLayout";
 import AdminLayout from "../layouts/AdminLayout";
@@ -35,6 +36,9 @@ import ChangeProfilePicture from "../features/profile/pages/ChangeProfilePicture
 import ChangePassword from "../features/profile/pages/ChangePassword";
 import DeleteAccount from "../features/profile/pages/DeleteAccount";
 import AdminOrderDetails from "../features/admin/pages/AdminOrdersDetails";
+import ProfileOrders from "../features/profile/pages/ProfileOrders";
+import ProfileWishlist from "../features/profile/pages/ProfileWishlist";
+import ProfileSettings from "../features/profile/pages/ProfileSettings";
 
 const AppRoutes = () => {
   return (
@@ -47,9 +51,12 @@ const AppRoutes = () => {
 
         <Route path="shop" element={<Shop />} />
 
-        <Route path="profile" element={<Profile />} />
-
-        <Route path="/orders/:orderId" element={<OrderDetails />} />
+        <Route path="/profile" element={<Profile />}>
+          <Route index element={<Navigate to="orders" replace />} />
+          <Route path="orders" element={<ProfileOrders />} />
+          <Route path="wishlist" element={<ProfileWishlist />} />
+          <Route path="settings" element={<ProfileSettings />} />
+        </Route>
 
         <Route path="profile/settings">
           <Route path="edit" element={<EditProfile />} />
@@ -57,6 +64,8 @@ const AppRoutes = () => {
           <Route path="password" element={<ChangePassword />} />
           <Route path="delete" element={<DeleteAccount />} />
         </Route>
+
+        <Route path="/orders/:orderId" element={<OrderDetails />} />
 
         <Route path="contact" element={<ContactPage />} />
 

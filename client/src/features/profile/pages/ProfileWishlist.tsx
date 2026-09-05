@@ -3,8 +3,8 @@ import { Heart } from "lucide-react";
 import ProductCard from "../../../components/common/ProductCard";
 import useWishlist from "../../wishlist/hooks/useWishlist";
 
-const WishlistTab = () => {
-  const { wishlist, isLoading } = useWishlist();
+const ProfileWishlist = () => {
+const { wishlist, isLoading } = useWishlist();
 
   if (isLoading) {
     return (
@@ -39,4 +39,4 @@ const WishlistTab = () => {
   );
 };
 
-export default WishlistTab;
+export default ProfileWishlist;

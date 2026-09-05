@@ -16,7 +16,7 @@ export const menus = [
 export const moreMenus = [
   {
     name: "Profile",
-    path: "/profile",
+    path: "/profile/orders",
     description: "View and manage your account",
   },
   {

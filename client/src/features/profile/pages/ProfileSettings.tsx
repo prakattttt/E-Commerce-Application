@@ -1,7 +1,6 @@
 import { User, Lock, Camera, Trash2, ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-
-const SettingsTab = () => {
+const ProfileSettings = () => {
   const navigate = useNavigate();
 
   const items = [
@@ -80,4 +79,4 @@ const SettingsTab = () => {
   );
 };
 
-export default SettingsTab;
+export default ProfileSettings;
