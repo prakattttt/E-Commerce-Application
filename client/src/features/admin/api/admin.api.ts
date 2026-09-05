@@ -1,4 +1,5 @@
 import api from "../../../api/axios";
+import type { IOrderResponse } from "../../checkout/api/checkout.api";
 
 export interface ProductFilters {
   category?: string;
@@ -59,7 +60,7 @@ export const createProduct = async (data: FormData) => {
 export const updateProduct = async (data: FormData, slug: string) => {
   const response = await api.patch(`/admin/products/${slug}`, data);
   return response.data;
-}
+};
 
 export const createCategory = async (data: FormData) => {
   const response = await api.post("/admin/categories", data);
@@ -69,7 +70,7 @@ export const createCategory = async (data: FormData) => {
 export const updateCategory = async (data: FormData, slug: string) => {
   const response = await api.patch(`/admin/categories/${slug}`, data);
   return response.data;
-}
+};
 
 export const deleteProduct = async (id: string) => {
   const response = await api.delete(`/admin/products/${id}`);
@@ -83,5 +84,13 @@ export const deleteCategory = async (slug: string) => {
 
 export const deleteUser = async (id: string) => {
   const response = await api.delete(`/admin/users/${id}`);
+  return response.data;
+};
+
+export const getAdminOrder = async (
+  orderId: string,
+): Promise<IOrderResponse> => {
+  const response = await api.get<IOrderResponse>(`/admin/orders/${orderId}`);
+
   return response.data;
 };

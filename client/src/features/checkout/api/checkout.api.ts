@@ -8,7 +8,7 @@ interface IOrdersResponse {
   orders: Order[];
 }
 
-interface IOrderResponse {
+export interface IOrderResponse {
   success: boolean;
   order: Order;
 }
@@ -49,12 +49,6 @@ export const getOrders = async (): Promise<IOrdersResponse> => {
 
 export const getOrder = async (orderId: string): Promise<IOrderResponse> => {
   const response = await api.get<IOrderResponse>(`/orders/${orderId}`);
-
-  return response.data;
-};
-
-export const getAdminOrder = async (orderId: string): Promise<IOrderResponse> => {
-  const response = await api.get<IOrderResponse>(`/admin/orders/${orderId}`);
 
   return response.data;
 };

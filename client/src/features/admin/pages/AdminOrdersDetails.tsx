@@ -22,7 +22,7 @@ import { fadeUp } from "../../../animations";
 import Loader from "../../../components/ui/Loader";
 import { getErrorMessage } from "../../../utils/getErrorMessage";
 
-import { getAdminOrder } from "../../checkout/api/checkout.api";
+import { getAdminOrder } from "../api/admin.api";
 
 import type { Order } from "../../checkout/types/ordres.schema";
 
