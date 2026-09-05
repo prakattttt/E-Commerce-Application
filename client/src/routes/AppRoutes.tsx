@@ -26,6 +26,7 @@ import OrderDetails from "../pages/OrderDetails";
 import AdminHome from "../features/admin/pages/AdminDashboard";
 
 import ProtectAdmin from "../utils/ProtectAdmin";
+import PublicOnly from "../utils/PublicOnly";
 import FAQPage from "../pages/FAQPage";
 import EditProduct from "../features/admin/pages/EditProduct";
 import EditCategory from "../features/admin/pages/EditCategory";
@@ -83,6 +84,9 @@ const AppRoutes = () => {
           element={<OrderConfirmation />}
         />
 
+      </Route>
+
+      <Route element={<PublicOnly />}>
         <Route path="login" element={<LoginPage />} />
         <Route path="register" element={<RegisterPage />} />
       </Route>
