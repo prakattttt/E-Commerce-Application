@@ -5,12 +5,17 @@ import useAuth from "../../features/auth/hooks/useAuth";
 import useCart from "../../features/cart/hooks/useCart";
 import { toast } from "sonner";
 import { getErrorMessage } from "../../utils/getErrorMessage";
+import useWishlist from "../../features/wishlist/hooks/useWishlist";
 
 function ProductCard({ product }: { product: IProduct }) {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
   const { addItem } = useCart();
+
+  const { isWishlisted, toggleWishlist, isMutating } = useWishlist();
+
+  const wishlisted = isWishlisted(product._id);
 
   const addCart = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
@@ -45,8 +50,20 @@ function ProductCard({ product }: { product: IProduct }) {
           </span>
         )}
         {/* Wishlist Icon */}
-        <button className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-card/90 text-muted-foreground transition hover:text-accent">
-          <Heart size={16} />
+        <button
+          type="button"
+          disabled={isMutating}
+          onClick={(e) => {
+            e.stopPropagation();
+            toggleWishlist(product._id);
+          }}
+          className={`absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-card/90 transition ${
+            wishlisted
+              ? "text-accent"
+              : "text-muted-foreground hover:text-accent"
+          } disabled:cursor-not-allowed disabled:opacity-50`}
+        >
+          <Heart size={16} className={wishlisted ? "fill-current" : ""} />
         </button>
         Out of Stock
         {product.stock <= 0 && (

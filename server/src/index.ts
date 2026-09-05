@@ -17,6 +17,7 @@ import categoryRoutes from "./routes/categories.routes.js";
 import cartRoutes from "./routes/carts.routes.js";
 import contactRoutes from "./routes/contact.routes.js";
 import orderRoutes from "./routes/orders.routes.js";
+import wishlistRoutes from "./routes/wishlist.routes.js";
 
 import { errorHandler, notFoundHandler } from "./middlewares/errorHandler.js";
 
@@ -53,14 +54,6 @@ app.use(
 // Cookie parser
 app.use(cookieParser());
 
-// Health check
-app.get("/", (_req, res) => {
-  res.json({
-    success: true,
-    message: "API is running!",
-  });
-});
-
 // API Routes
 app.use("/api/users", userRoutes);
 app.use("/api/products", productRoutes);
@@ -69,6 +62,7 @@ app.use("/api/categories", categoryRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/orders", orderRoutes);
+app.use("/api/wishlist", wishlistRoutes);
 
 // 404 handler
 app.use(notFoundHandler);

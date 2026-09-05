@@ -18,6 +18,7 @@ import { toast } from "sonner";
 import useCart from "../../../cart/hooks/useCart";
 import useAuth from "../../../auth/hooks/useAuth";
 import { getErrorMessage } from "../../../../utils/getErrorMessage";
+import useWishlist from "../../../wishlist/hooks/useWishlist";
 
 interface ProductInfoProps {
   product: IProduct;
@@ -40,6 +41,10 @@ const ProductInfo = ({ product }: ProductInfoProps) => {
       toast.error(getErrorMessage(error));
     }
   };
+
+  const { isWishlisted, toggleWishlist, isMutating } = useWishlist();
+
+  const wishlisted = isWishlisted(product._id);
 
   return (
     <div className="space-y-7">
@@ -83,10 +88,21 @@ const ProductInfo = ({ product }: ProductInfoProps) => {
               Add to Cart
             </button>
 
-            <button className="rounded-xl border border-border p-4 transition hover:bg-secondary">
-              <Heart size={20} />
+            <button
+              type="button"
+              disabled={isMutating}
+              onClick={() => toggleWishlist(product._id)}
+              aria-label={
+                wishlisted ? "Remove from wishlist" : "Add to wishlist"
+              }
+              className={`rounded-xl border p-4 transition ${
+                wishlisted
+                  ? "border-accent bg-accent/10 text-accent"
+                  : "border-border hover:bg-secondary"
+              } disabled:cursor-not-allowed disabled:opacity-50`}
+            >
+              <Heart size={20} className={wishlisted ? "fill-current" : ""} />
             </button>
-
             <button className="rounded-xl border border-border p-4 transition hover:bg-secondary">
               <Share2 size={20} />
             </button>

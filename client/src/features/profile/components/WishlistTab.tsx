@@ -1,14 +1,20 @@
 import { Heart } from "lucide-react";
 
 import ProductCard from "../../../components/common/ProductCard";
-import type { IProduct } from "../../shop/types/products.types";
+import useWishlist from "../../wishlist/hooks/useWishlist";
 
-interface WishlistTabProps {
-  products: IProduct[];
-}
+const WishlistTab = () => {
+  const { wishlist, isLoading } = useWishlist();
 
-const WishlistTab = ({ products }: WishlistTabProps) => {
-  if (products.length === 0) {
+  if (isLoading) {
+    return (
+      <div className="rounded-3xl border border-border bg-card py-20 text-center">
+        <p className="text-muted-foreground">Loading your wishlist...</p>
+      </div>
+    );
+  }
+
+  if (wishlist.length === 0) {
     return (
       <div className="rounded-3xl border border-border bg-card py-20 text-center">
         <Heart size={48} className="mx-auto mb-4 text-muted-foreground" />
@@ -26,8 +32,8 @@ const WishlistTab = ({ products }: WishlistTabProps) => {
 
   return (
     <div className="grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-4">
-      {products.map((product) => (
-        <ProductCard key={product._id} product={product} />
+      {wishlist.map((item) => (
+        <ProductCard key={item._id} product={item.product} />
       ))}
     </div>
   );
