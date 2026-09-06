@@ -102,7 +102,9 @@ function ProductCard({ product }: { product: IProduct }) {
           ))}
 
           <span className="ml-1 text-xs text-muted-foreground">
-            ({product.reviews})
+            {product.reviews > 0
+              ? `${product.rating.toFixed(1)} (${product.reviews})`
+              : "No ratings"}
           </span>
         </div>
 

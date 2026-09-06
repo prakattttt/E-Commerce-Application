@@ -107,7 +107,14 @@ const ProductDetails = () => {
         <ProductInfo product={product} />
       </div>
 
-      <ProductReviews product={product} />
+      <ProductReviews
+        product={product}
+        onReviewSubmitted={(rating, reviews) =>
+          setProduct((current) =>
+            current ? { ...current, rating, reviews } : current,
+          )
+        }
+      />
 
       <RelatedProducts
         categorySlug={product.category.slug}

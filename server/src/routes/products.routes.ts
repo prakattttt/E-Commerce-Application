@@ -9,6 +9,11 @@ import {
   getTrendingProducts,
   getRelatedProducts
 } from "../controllers/products.controllers.js";
+import {
+  createReview,
+  getProductReviews,
+} from "../controllers/reviews.controllers.js";
+import { protect } from "../middlewares/authentication.js";
 
 const router: Router = Router();
 
@@ -29,8 +34,12 @@ router.get("/latest", getNewProducts);
 
 router.get("/trending", getTrendingProducts);
 
-router.get("/:slug", getProductBySlug);
+router.get("/:productId/reviews", getProductReviews);
+
+router.post("/:productId/reviews", protect, createReview);
 
 router.get("/:id/related", getRelatedProducts);
+
+router.get("/:slug", getProductBySlug);
 
 export default router;
