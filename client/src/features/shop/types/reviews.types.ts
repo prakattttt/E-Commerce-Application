@@ -33,3 +33,8 @@ export interface CreateReviewResponse {
   rating: number;
   reviews: number;
 }
+
+export interface DeleteReviewResponse {
+  rating: number;
+  reviews: number;
+}

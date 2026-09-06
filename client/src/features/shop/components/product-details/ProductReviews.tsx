@@ -2,12 +2,16 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
 import { useForm, useWatch } from "react-hook-form";
-import { Send, Star } from "lucide-react";
+import { Send, Star, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { fadeUp } from "../../../../animations/index";
 import useAuth from "../../../auth/hooks/useAuth";
-import { createProductReview, getProductReviews } from "../../api/reviews.api";
+import {
+  createProductReview,
+  deleteProductReview,
+  getProductReviews,
+} from "../../api/reviews.api";
 import type { IProduct } from "../../types/products.types";
 import type {
   ProductReviewsResponse,
@@ -34,7 +38,7 @@ const StarRating = ({ rating }: { rating: number }) => (
 );
 
 const ProductReviews = ({ product, onReviewSubmitted }: ProductReviewsProps) => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   const queryClient = useQueryClient();
   const reviewsQueryKey = ["product-reviews", product._id];
 
@@ -76,12 +80,32 @@ const ProductReviews = ({ product, onReviewSubmitted }: ProductReviewsProps) => 
       queryClient.setQueryData<ProductReviewsResponse>(
         reviewsQueryKey,
         (current) => ({
-          reviews: [response.review, ...(current?.reviews ?? [])],
+          reviews: [response.review, ...(current?.reviews ?? [])].slice(0, 5),
         }),
       );
       onReviewSubmitted(response.rating, response.reviews);
       reset();
       toast.success("Your review was submitted.");
+    },
+    onError: (mutationError) => {
+      toast.error(getErrorMessage(mutationError));
+    },
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: (reviewId: string) =>
+      deleteProductReview(product._id, reviewId),
+    onSuccess: (response, reviewId) => {
+      queryClient.setQueryData<ProductReviewsResponse>(
+        reviewsQueryKey,
+        (current) => ({
+          reviews: (current?.reviews ?? []).filter(
+            (review) => review._id !== reviewId,
+          ),
+        }),
+      );
+      onReviewSubmitted(response.rating, response.reviews);
+      toast.success("Review deleted.");
     },
     onError: (mutationError) => {
       toast.error(getErrorMessage(mutationError));
@@ -213,7 +237,13 @@ const ProductReviews = ({ product, onReviewSubmitted }: ProductReviewsProps) => 
       ) : (
         <div className="space-y-4">
           {reviews.map((review) => (
-            <ReviewCard key={review._id} review={review} />
+            <ReviewCard
+              key={review._id}
+              review={review}
+              canDelete={user?.id === review.user._id || user?.role === "admin"}
+              isDeleting={deleteMutation.isPending && deleteMutation.variables === review._id}
+              onDelete={() => deleteMutation.mutate(review._id)}
+            />
           ))}
         </div>
       )}
@@ -221,7 +251,17 @@ const ProductReviews = ({ product, onReviewSubmitted }: ProductReviewsProps) => 
   );
 };
 
-const ReviewCard = ({ review }: { review: IReview }) => (
+const ReviewCard = ({
+  review,
+  canDelete,
+  isDeleting,
+  onDelete,
+}: {
+  review: IReview;
+  canDelete: boolean;
+  isDeleting: boolean;
+  onDelete: () => void;
+}) => (
   <article className="rounded-2xl border border-primary/10 bg-card/80 p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
     <div className="flex flex-wrap items-start justify-between gap-3">
       <div>
@@ -230,9 +270,24 @@ const ReviewCard = ({ review }: { review: IReview }) => (
           <StarRating rating={review.rating} />
         </div>
       </div>
-      <time className="text-sm text-muted-foreground">
-        {new Date(review.createdAt).toLocaleDateString()}
-      </time>
+      <div className="flex items-center gap-3">
+        <time className="text-sm text-muted-foreground">
+          {new Date(review.createdAt).toLocaleDateString()}
+        </time>
+
+        {canDelete && (
+          <button
+            type="button"
+            onClick={onDelete}
+            disabled={isDeleting}
+            title={isDeleting ? "Deleting review" : "Delete review"}
+            aria-label={isDeleting ? "Deleting review" : "Delete review"}
+            className="flex h-8 w-8 items-center justify-center rounded-lg border border-error/20 bg-error/5 text-error transition hover:bg-error/10 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            <Trash2 size={15} />
+          </button>
+        )}
+      </div>
     </div>
     {review.title && <h4 className="mt-4 font-semibold">{review.title}</h4>}
     <p className="mt-2 leading-7 text-muted-foreground">{review.comment}</p>

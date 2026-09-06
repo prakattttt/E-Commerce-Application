@@ -18,7 +18,28 @@ export const getProductReviews = async (productId: string) => {
 
   return Review.find({ product: productId })
     .populate("user", "name avatar")
-    .sort({ createdAt: -1 });
+    .sort({ createdAt: -1 })
+    .limit(5);
+};
+
+const updateProductRating = async (productId: string) => {
+  const [summary] = await Review.aggregate([
+    { $match: { product: new mongoose.Types.ObjectId(productId) } },
+    {
+      $group: {
+        _id: "$product",
+        rating: { $avg: "$rating" },
+        reviews: { $sum: 1 },
+      },
+    },
+  ]);
+
+  const rating = summary ? Number(summary.rating.toFixed(1)) : 0;
+  const reviews = summary?.reviews ?? 0;
+
+  await Product.findByIdAndUpdate(productId, { rating, reviews });
+
+  return { rating, reviews };
 };
 
 export const createProductReview = async (
@@ -91,25 +112,36 @@ export const createProductReview = async (
 
   const review = await Review.create(reviewData);
 
-  const [summary] = await Review.aggregate([
-    { $match: { product: review.product } },
-    {
-      $group: {
-        _id: "$product",
-        rating: { $avg: "$rating" },
-        reviews: { $sum: 1 },
-      },
-    },
-  ]);
-
-  await Product.findByIdAndUpdate(productId, {
-    rating: Number(summary.rating.toFixed(1)),
-    reviews: summary.reviews,
-  });
+  const summary = await updateProductRating(productId);
 
   return {
     review: await Review.findById(review._id).populate("user", "name avatar"),
-    rating: Number(summary.rating.toFixed(1)),
+    rating: summary.rating,
     reviews: summary.reviews,
   };
+};
+
+export const deleteProductReview = async (
+  reviewId: string,
+  userId: string,
+  isAdmin: boolean,
+) => {
+  if (!mongoose.isValidObjectId(reviewId)) {
+    throw new AppError("Review not found.", 404);
+  }
+
+  const review = await Review.findById(reviewId);
+
+  if (!review) {
+    throw new AppError("Review not found.", 404);
+  }
+
+  if (!isAdmin && review.user.toString() !== userId) {
+    throw new AppError("You can only delete your own review.", 403);
+  }
+
+  await review.deleteOne();
+  const summary = await updateProductRating(review.product.toString());
+
+  return summary;
 };

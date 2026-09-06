@@ -11,6 +11,7 @@ import {
 } from "../controllers/products.controllers.js";
 import {
   createReview,
+  deleteReview,
   getProductReviews,
 } from "../controllers/reviews.controllers.js";
 import { protect } from "../middlewares/authentication.js";
@@ -37,6 +38,8 @@ router.get("/trending", getTrendingProducts);
 router.get("/:productId/reviews", getProductReviews);
 
 router.post("/:productId/reviews", protect, createReview);
+
+router.delete("/:productId/reviews/:reviewId", protect, deleteReview);
 
 router.get("/:id/related", getRelatedProducts);
 

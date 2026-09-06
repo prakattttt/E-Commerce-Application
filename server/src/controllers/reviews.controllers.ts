@@ -3,6 +3,7 @@ import type { RequestHandler } from "express";
 
 import {
   createProductReview,
+  deleteProductReview,
   getProductReviews as getProductReviewsService,
 } from "../services/reviews.services.js";
 
@@ -28,6 +29,22 @@ export const createReview: RequestHandler = expressAsyncHandler(
       success: true,
       message: "Review submitted successfully.",
       ...result,
+    });
+  },
+);
+
+export const deleteReview: RequestHandler = expressAsyncHandler(
+  async (req, res) => {
+    const summary = await deleteProductReview(
+      req.params.reviewId as string,
+      req.user._id,
+      req.user.role === "admin",
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Review deleted successfully.",
+      ...summary,
     });
   },
 );
