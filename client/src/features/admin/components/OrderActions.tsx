@@ -168,7 +168,6 @@ const OrderActions = ({ order }: Props) => {
             type="button"
             disabled={
               order.paymentStatus === "Paid" ||
-              paymentStatus === "Paid" ||
               updatePaymentMutation.isPending
             }
             onClick={handlePaymentUpdate}
