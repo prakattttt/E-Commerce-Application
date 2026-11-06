@@ -13,9 +13,9 @@ const MobileMenu = ({ open, closeMenu }: Props) => {
   const { isAuthenticated, logout } = useAuth();
   return (
     <div
-      className={`fixed top-15 left-0 right-0 z-40 overflow-hidden border-b border-border bg-background/90 transition-all duration-300 ease-in-out md:hidden ${
+      className={`fixed top-15 left-0 right-0 z-40 overflow-x-hidden overflow-y-auto border-b border-border bg-background/95 transition-all duration-300 ease-in-out lg:hidden ${
         open
-          ? "max-h-96 translate-y-0 opacity-100"
+          ? "max-h-[calc(100dvh-3.75rem)] translate-y-0 opacity-100"
           : "pointer-events-none max-h-0 -translate-y-2 opacity-0"
       }`}
     >

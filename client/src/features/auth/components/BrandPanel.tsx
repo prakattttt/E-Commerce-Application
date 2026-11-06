@@ -5,7 +5,7 @@ import FeaturesList from "./FeaturesList";
 
 const BrandPanel = () => {
   return (
-    <div className="relative flex h-full flex-col justify-between overflow-hidden bg-primary p-8 text-primary-foreground lg:p-12">
+    <div className="relative hidden lg:flex h-full flex-col justify-between overflow-hidden bg-primary p-8 text-primary-foreground lg:p-12">
       {/* Background decoration */}
       <div className="pointer-events-none absolute -right-32 -top-32 h-96 w-96 rounded-full bg-white/10 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-32 -left-32 h-96 w-96 rounded-full bg-accent/15 blur-3xl" />

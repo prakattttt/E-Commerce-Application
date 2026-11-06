@@ -37,7 +37,7 @@ const NavSearch = () => {
   }, [debouncedSearch]);
 
   return (
-    <div ref={wrapperRef} className="relative hidden md:block">
+    <div ref={wrapperRef} className="relative hidden lg:block">
       <Search
         size={16}
         className={`pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 ${
@@ -50,7 +50,7 @@ const NavSearch = () => {
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         placeholder="Search products..."
-        className={`h-9 w-44 rounded-full border border-border bg-card py-1.5 pl-9 pr-4 text-sm text-foreground transition-all duration-300 ease-in-out focus:w-64 focus:border-muted-foreground focus:outline-none ${
+        className={`h-9 w-40 rounded-full border border-border bg-card py-1.5 pl-9 pr-4 text-sm text-foreground transition-all duration-300 ease-in-out focus:w-56 focus:border-muted-foreground focus:outline-none xl:w-44 xl:focus:w-64 ${
           isTransparent
             ? "placeholder:text-black/80"
             : "placeholder:text-muted-foreground"

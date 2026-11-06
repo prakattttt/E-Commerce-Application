@@ -24,9 +24,9 @@ const Navbar = () => {
           isTransparent ? "bg-transparent" : "bg-background/90 backdrop-blur-xl"
         }`}
       >
-        <div className="mx-auto flex max-w-7xl items-center justify-between md:justify-around px-2 py-3">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-3 py-3 sm:px-6 lg:justify-around">
           {/* Left */}
-          <div className="flex items-center gap-8">
+          <div className="flex items-center gap-4 lg:gap-8">
             {/* Logo */}
             <div>
               <h1 className="font-display cursor-pointer text-xl font-bold tracking-tight">
@@ -36,13 +36,13 @@ const Navbar = () => {
             </div>
 
             {/* Desktop Menu */}
-            <div className="hidden md:block">
+            <div className="hidden lg:block">
               <Menus />
             </div>
           </div>
 
           {/* Right (Desktop) */}
-          <div className="hidden md:flex items-center gap-2">
+          <div className="hidden lg:flex items-center gap-2">
             <NavSearch />
 
             <button
@@ -61,8 +61,9 @@ const Navbar = () => {
           </div>
 
           {/* Mobile Right */}
-          <div className="flex md:hidden items-center gap-2">
+          <div className="flex items-center gap-1 sm:gap-2 lg:hidden">
             <button
+              aria-label="View wishlist"
               className={`rounded-full p-1.5 transition-colors ${
                 isTransparent
                   ? "backdrop-blur-md hover:bg-white/20"
@@ -80,6 +81,8 @@ const Navbar = () => {
             {/* Hamburger */}
             <button
               onClick={() => setOpen((prev) => !prev)}
+              aria-label={open ? "Close navigation menu" : "Open navigation menu"}
+              aria-expanded={open}
               className="rounded-full p-2 transition hover:bg-white/20"
             >
               {open ? (
@@ -93,7 +96,7 @@ const Navbar = () => {
       </nav>
 
       {/* Mobile Menu */}
-      <MobileMenu open={open} closeMenu={() => setOpen(false)}/>
+      <MobileMenu open={open} closeMenu={() => setOpen(false)} />
     </>
   );
 };

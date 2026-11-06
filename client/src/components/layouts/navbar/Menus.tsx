@@ -9,7 +9,7 @@ const Menus = () => {
 
   const [moreOpen, setMoreOpen] = useState(false);
   return (
-    <ul className="hidden text-sm items-center gap-4 font-medium md:flex">
+    <ul className="hidden items-center gap-3 text-sm font-medium lg:flex xl:gap-4">
       {/*Mapping of Menu Items*/}
       {menus.map((menu) => (
         <li key={menu.name}>
