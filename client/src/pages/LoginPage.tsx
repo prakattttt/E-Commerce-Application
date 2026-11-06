@@ -6,7 +6,7 @@ import { fadeUp, scaleIn } from "../animations";
 
 const LoginPage = () => {
   return (
-    <section className="pt-10 grid min-h-screen lg:grid-cols-2">
+    <section className="grid min-h-screen lg:grid-cols-2">
       {/* Left side */}
       <BrandPanel />
 
